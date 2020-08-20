@@ -40,7 +40,7 @@ class WusnProblem():
         # Construct edge set
         edges = [[] for _ in range(len(points))]
 
-        for i in range(inp.num_of_relays):
+        for i in range(1, inp.num_of_relays+1):
             edges[0].append(i)
             edges[i].append(0)
         

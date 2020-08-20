@@ -11,8 +11,8 @@ from __future__ import absolute_import
 from parameters import SHP
 from parameters import MHP
 
-import single_hop_nsgaii
-import multi_hop_nsgaii
+import solver_shn_nrk
+import solver_mhn_nrk
 
 import os
 import joblib
@@ -54,7 +54,7 @@ def run_single_hop_problem(model, input_dir, output_dir):
     print("Run those tests: ")
     print(test_list)
 
-    joblib.Parallel(n_jobs=-1)(joblib.delayed(single_hop_nsgaii.solve)
+    joblib.Parallel(n_jobs=-1)(joblib.delayed(solver_shn_nrk.solve)
                                (file, output_dir=output_dir, visualization=True, shp=shp) for file in test_list)
 
 
@@ -81,7 +81,7 @@ def run_multi_hop_problem(model, input_dir, output_dir):
     print(f"Working on {len(test_list)} tests: ")
     print(test_list)
 
-    joblib.Parallel(n_jobs=-1)(joblib.delayed(multi_hop_nsgaii.solve)(
+    joblib.Parallel(n_jobs=-1)(joblib.delayed(solver_mhn_nrk.solve)(
         file, output_dir=output_dir, visualization=True, mhp=mhp) for file in test_list)
 
 

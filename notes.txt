@@ -1,0 +1,4 @@
+* Trying replace crowding distance to keep diversity of the Pareto by changing crowding distance formulation. Focus on the discretions of objective 1 (number of used relays)
+* Kruskal Crossover: Các cạnh chung của 2 cây giữ lại. Các cạnh mới thêm sử dụng 2 số liệu là num_childs hiện tại và khoảng cách đến cha để chạy kruskal
+* Khởi tạo: Tìm cách khởi tạo tạo ra số lượng relays trải đều
+* Kruskal Mutation: 
