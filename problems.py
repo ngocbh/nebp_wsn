@@ -81,8 +81,10 @@ class WusnProblem():
 
 class SingleHopProblem(WusnProblem):
     def __init__(self, inp : WusnInput):
+        self.max_hop = 2
         super(SingleHopProblem, self).__init__(inp, multi_hop=False)
 
 class MultiHopProblem(WusnProblem):
-    def __init__(self, inp : WusnInput):
+    def __init__(self, inp : WusnInput, max_hop : int):
+        self.max_hop = max_hop
         super(MultiHopProblem, self).__init__(inp, multi_hop=True)

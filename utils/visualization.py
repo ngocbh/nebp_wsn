@@ -111,19 +111,27 @@ def remove_file(fileexp):
             print("Error while deleting file : ", filePath)
 
 
-def save_results(pareto_front, solutions, best_mr, out_dir, visualization=False):
+def default_extract(solution):
+    network = solution.decode()
+    return network.parent, network.num_childs, network.max_depth
+
+def my_np_to_list(x):
+    ret = [e.item() for e in x]
+    return ret
+
+def save_results(pareto_front, solutions, best_mr, out_dir, visualization=False, extract=default_extract):
     # save results
     print(f"saved in {out_dir}")
     pareto_dict = []
     for solution in pareto_front:
         solution_dict = {}
-        network = solution.decode()
-        solution_dict["chromosome"] = NoIndent(list(solution.chromosome))
+        solution_dict["chromosome"] = NoIndent(my_np_to_list(solution.chromosome.genes))
         solution_dict["num_used_relays"] = solution.objectives[0]
         solution_dict["energy_consumption"] = solution.objectives[1]
-        solution_dict["parent"] = NoIndent(network.parent)
-        solution_dict["num_childs"] = NoIndent(network.num_childs)
-        solution_dict["hop"] = network.max_depth
+        parent, num_childs, max_depth = extract(solution)
+        solution_dict["parent"] = NoIndent(parent)
+        solution_dict["num_childs"] = NoIndent(num_childs)
+        solution_dict["hop"] = max_depth
         solution_dict["nondominated_rank"] = solution.nondominated_rank
         solution_dict["crowding_distance"] = solution.crowding_distance
 
@@ -136,13 +144,13 @@ def save_results(pareto_front, solutions, best_mr, out_dir, visualization=False)
     solutions_dict = []
     for solution in solutions:
         solution_dict = {}
-        network = solution.decode()
-        solution_dict["chromosome"] = NoIndent(list(solution.chromosome))
+        solution_dict["chromosome"] = NoIndent(my_np_to_list(solution.chromosome.genes))
         solution_dict["num_used_relays"] = solution.objectives[0]
         solution_dict["energy_consumption"] = solution.objectives[1]
-        solution_dict["parent"] = NoIndent(network.parent)
-        solution_dict["num_childs"] = NoIndent(network.num_childs)
-        solution_dict["hop"] = network.max_depth
+        parent, num_childs, max_depth = extract(solution)
+        solution_dict["parent"] = NoIndent(parent)
+        solution_dict["num_childs"] = NoIndent(num_childs)
+        solution_dict["hop"] = max_depth
         solution_dict["nondominated_rank"] = solution.nondominated_rank
         solution_dict["crowding_distance"] = solution.crowding_distance
 

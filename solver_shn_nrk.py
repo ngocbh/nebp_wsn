@@ -11,11 +11,13 @@ from geneticpython.engines import NSGAIIEngine
 from geneticpython.models.tree import NetworkRandomKeys
 from geneticpython import Population
 from geneticpython.core.operators import TournamentSelection, SBXCrossover, PolynomialMutation
-from netkeys.parameters import SHP
+
 from utils import WusnInput, visualize_front, make_gif, visualize_solutions, remove_file, save_results
+from utils.configurations import load_config, gen_output_dir
 from problems import SingleHopProblem
-from netkeys.networks import SingleHopNetwork
+from networks import SingleHopNetwork
 from collections import defaultdict
+
 import numpy as np
 import matplotlib.pyplot as plt
 import random
@@ -24,7 +26,7 @@ import os
 import sys
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
-
+CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 
 class SingleHopIndividual(NetworkRandomKeys):
     def __init__(self, problem: SingleHopProblem):
@@ -33,9 +35,19 @@ class SingleHopIndividual(NetworkRandomKeys):
         super(SingleHopIndividual, self).__init__(
             problem._idx2edge, network=network)
 
+def check_config(config, filename, model):
+    if config['data']['name'] not in filename:
+        raise ValueError('Model {} is used for {}, file {} is not'.format(model, config['data'], filename))
+    if config['encoding']['name'] != 'netkeys':
+        raise ValueError('encoding {} != {}'.format(config['encoding']['name'], 'netkeys'))
+    if config['algorithm']['name'] != 'nsgaii':
+        raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
-def solve(filename, output_dir='results/single_hop', visualization=False, shp=SHP()):
+def solve(filename, output_dir=None, model='0.0.0.0'):
     start_time = time.time()
+    config = load_config(CONFIG_FILE, model)
+    check_config(config, filename, model)
+    output_dir = output_dir or gen_output_dir(filename, model)
 
     basename, _ = os.path.splitext(os.path.basename(filename))
     os.makedirs(os.path.join(
@@ -53,18 +65,18 @@ def solve(filename, output_dir='results/single_hop', visualization=False, shp=SH
     # print(network.num_used_relays)
     # print(network.calc_max_energy_consumption())
     # return
-    population = Population(indv_temp, shp.POP_SIZE)
-    selection = TournamentSelection(tournament_size=shp.TOURNAMENT_SIZE)
+    population = Population(indv_temp, config['algorithm']['pop_size'])
+    selection = TournamentSelection(tournament_size = config['algorithm']['tournament_size'])
     crossover = SBXCrossover(
-        pc=shp.CRO_PROB, distribution_index=shp.CRO_DI)
+        pc=config['encoding']['cro_prob'], distribution_index=config['encoding']['cro_di'])
     mutation = PolynomialMutation(
-        pm=shp.MUT_PROB, distribution_index=shp.MUT_DI)
+        pm=config['encoding']['mut_prob'], distribution_index=config['encoding']['mut_di'])
 
     engine = NSGAIIEngine(population, selection=selection,
                           crossover=crossover,
                           mutation=mutation,
-                          selection_size=shp.SLT_SIZE,
-                          random_state=shp.SEED)
+                          selection_size=config['algorithm']['slt_size'],
+                          random_state=42)
 
     @engine.minimize_objective
     def objective1(indv):
@@ -88,7 +100,7 @@ def solve(filename, output_dir='results/single_hop', visualization=False, shp=SH
         else:
             return float('inf')
 
-    history = engine.run(generations=shp.GENS)
+    history = engine.run(generations=config['models']['gens'])
 
     pareto_front = engine.get_pareto_front()
     solutions = engine.get_all_solutions()
@@ -119,8 +131,4 @@ def solve(filename, output_dir='results/single_hop', visualization=False, shp=SH
 
 
 if __name__ == '__main__':
-    shp = SHP()
-    model = '0.0.1'
-    shp.load_model(model)
-    solve('data/small/single_hop/ga-dem1_r25_1.json',
-          output_dir=f'results/small/{model}/single_hop', visualization=False, shp=shp)
+    solve('data/small/single_hop/ga-dem1_r25_1.json', model='0.0.0.0')

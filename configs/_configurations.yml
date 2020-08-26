@@ -1,0 +1,74 @@
+# A configuration for small problem
+---
+
+models:
+  - name: "test"
+    gens: 2
+
+  - name: "run 1"
+    gens: 100
+
+  - name: "run 2"
+    gens: 200
+
+
+data:
+  - name: "small"
+    max_hop: 8
+
+  - name: "medium"
+    max_hop: 12
+
+
+encoding:
+  - name: "netkeys"  # 0
+    cro_prob: 0.9
+    cro_di: 5
+    mut_prob: 0.01
+    mut_di: 0.20
+    alpha: 2
+    beta: 6
+
+  - name: "netkeys"  # 1
+    cro_prob: 0.9
+    cro_di: 20
+    mut_prob: 0.01
+    mut_di: 5
+
+  - name: "edgesets"  # 2
+    cro_prob: 0.9
+    mut_prob: 0.1
+
+  - name: "binary"
+    cro_prob: 0.9
+    cro_pe: 0.5
+    mut_prob: 0.1
+
+
+algorithm:
+  - name: "nsgaii"  # 0
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+
+  - name: "nsgaii"  # 1
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 5
+
+  - name: "nsgaii"  # 2
+    pop_size: 300
+    slt_size: 300
+    tournament_size: 2
+
+  - name: "nsgaii"  # 3
+    pop_size: 300
+    slt_size: 300
+    tournament_size: 4
+
+  - name: "moead"  # 5
+    pop_size: 41
+    slt_size: 100
+
+
+

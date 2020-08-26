@@ -13,11 +13,11 @@ from geneticpython.models.tree import NetworkRandomKeys
 from geneticpython import Population
 from geneticpython.core.operators import TournamentSelection, SBXCrossover, PolynomialMutation
 
+from utils.configurations import load_config, gen_output_dir
 from utils import WusnInput
 from utils import visualize_front, make_gif, visualize_solutions, remove_file, save_results
 from problems import MultiHopProblem
-from netkeys.networks import MultiHopNetwork
-from netkeys.parameters import MHP
+from networks import MultiHopNetwork
 
 from random import Random
 from collections import defaultdict
@@ -32,7 +32,7 @@ import sys
 import os
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
-
+CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 
 class MultiHopIndividual(NetworkRandomKeys):
     def __init__(self, problem: MultiHopProblem):
@@ -41,9 +41,20 @@ class MultiHopIndividual(NetworkRandomKeys):
         super(MultiHopIndividual, self).__init__(
             problem._idx2edge, network=network)
 
+def check_config(config, filename, model):
+    if config['data']['name'] not in filename:
+        raise ValueError('Model {} is used for {}, file {} is not'.format(model, config['data'], filename))
+    if config['encoding']['name'] != 'netkeys':
+        raise ValueError('encoding {} != {}'.format(config['encoding']['name'], 'netkeys'))
+    if config['algorithm']['name'] != 'nsgaii':
+        raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
-def solve(filename, output_dir='results/multi_hop', visualization=False, mhp=MHP()):
+def solve(filename, output_dir=None, model='0.0.0.0'):
     start_time = time.time()
+
+    config = load_config(CONFIG_FILE, model)
+    check_config(config, filename, model)
+    output_dir = output_dir or gen_output_dir(filename, model)
 
     basename, _ = os.path.splitext(os.path.basename(filename))
     os.makedirs(os.path.join(
@@ -52,14 +63,14 @@ def solve(filename, output_dir='results/multi_hop', visualization=False, mhp=MHP
 
     wusnfile = os.path.join(WORKING_DIR, filename)
     inp = WusnInput.from_file(wusnfile)
-    problem = MultiHopProblem(inp)
+    problem = MultiHopProblem(inp, config['data']['max_hop'])
 
     indv_temp = MultiHopIndividual(problem)
 
     def init_bias_genes(length, n_relays_edges, random_state=None):
         genes = np.zeros(length)
         for i in range(length):
-            u = random_state.beta(mhp.ALPHA, mhp.BETA)
+            u = random_state.beta(config['encoding']['alpha'], config['encoding']['beta'])
             if i < n_relays_edges:
                 genes[i] = 1 - u
             else:
@@ -79,7 +90,7 @@ def solve(filename, output_dir='results/multi_hop', visualization=False, mhp=MHP
     #         break
     # return
 
-    population = Population(indv_temp, mhp.POP_SIZE)
+    population = Population(indv_temp, config['algorithm']['pop_size'])
 
     @population.register_initialization
     def init_population(rand: Random = Random()):
@@ -98,17 +109,17 @@ def solve(filename, output_dir='results/multi_hop', visualization=False, mhp=MHP
             ret.append(new_indv)
         return ret
 
-    selection = TournamentSelection(tournament_size=mhp.TOURNAMENT_SIZE)
+    selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
     crossover = SBXCrossover(
-        pc=mhp.CRO_PROB, distribution_index=mhp.CRO_DI)
+        pc=config['encoding']['cro_prob'], distribution_index=config['encoding']['cro_di'])
     mutation = PolynomialMutation(
-        pm=mhp.MUT_PROB, distribution_index=mhp.MUT_DI)
+        pm=config['encoding']['mut_prob'], distribution_index=config['encoding']['mut_di'])
 
     engine = NSGAIIEngine(population, selection=selection,
                           crossover=crossover,
                           mutation=mutation,
-                          selection_size=mhp.SLT_SIZE,
-                          random_state=mhp.SEED)
+                          selection_size=config['algorithm']['slt_size'],
+                          random_state=42)
 
     @engine.minimize_objective
     def objective1(indv):
@@ -132,7 +143,7 @@ def solve(filename, output_dir='results/multi_hop', visualization=False, mhp=MHP
         else:
             return float('inf')
 
-    history = engine.run(generations=mhp.GENS)
+    history = engine.run(generations=config['models']['gens'])
 
     pareto_front = engine.get_pareto_front()
     solutions = engine.get_all_solutions()
@@ -164,8 +175,4 @@ def solve(filename, output_dir='results/multi_hop', visualization=False, mhp=MHP
 
 
 if __name__ == '__main__':
-    mhp = MHP()
-    mhp.load_model('0.0.1')
-    output_dir = 'results/small/multi_hop/0.0.1'
-    solve('data/small/multi_hop/ga-dem1_r25_1_0.json',
-          output_dir=output_dir, visualization=True, mhp=mhp)
+    solve('data/small/multi_hop/ga-dem1_r25_1_0.json', model = '0.0.0.0')
