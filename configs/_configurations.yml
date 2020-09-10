@@ -34,8 +34,10 @@ encoding:
     cro_di: 20
     mut_prob: 0.01
     mut_di: 5
+    alpha: 2
+    beta: 6
 
-  - name: "edgesets"  # 2
+  - name: "kruskal"  # 2
     cro_prob: 0.9
     mut_prob: 0.1
 
@@ -43,6 +45,14 @@ encoding:
     cro_prob: 0.9
     cro_pe: 0.5
     mut_prob: 0.1
+
+  - name: "prime"  # 2
+    cro_prob: 0.9
+    mut_prob: 0.1
+    
+  - name: "kruskal"  # 2
+    cro_prob: 0.9
+    mut_prob: 0.7
 
 
 algorithm:

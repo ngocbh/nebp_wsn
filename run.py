@@ -8,9 +8,6 @@ Description:
 
 from __future__ import absolute_import
 
-from parameters import SHP
-from parameters import MHP
-
 import solver_shn_nrk
 import solver_mhn_nrk
 
@@ -32,9 +29,6 @@ def is_done(filename, output_dir):
 
 def run_single_hop_problem(model, input_dir, output_dir):
     print(f"Running single hop problem on model {model}")
-    shp = SHP()
-    shp.load_model(model)
-    print(shp.GENS)
     datapath = os.path.join(WORKING_DIR, input_dir)
 
     test_list = []
@@ -55,13 +49,11 @@ def run_single_hop_problem(model, input_dir, output_dir):
     print(test_list)
 
     joblib.Parallel(n_jobs=-1)(joblib.delayed(solver_shn_nrk.solve)
-                               (file, output_dir=output_dir, visualization=True, shp=shp) for file in test_list)
+                               (file, output_dir=output_dir, visualization=True) for file in test_list)
 
 
 def run_multi_hop_problem(model, input_dir, output_dir):
     print(f"Running multi-hop problem on model {model}")
-    mhp=MHP()
-    mhp.load_model(model)
     datapath = os.path.join(WORKING_DIR, input_dir)
 
     test_list = []
@@ -82,7 +74,7 @@ def run_multi_hop_problem(model, input_dir, output_dir):
     print(test_list)
 
     joblib.Parallel(n_jobs=-1)(joblib.delayed(solver_mhn_nrk.solve)(
-        file, output_dir=output_dir, visualization=True, mhp=mhp) for file in test_list)
+        file, output_dir=output_dir, visualization=True) for file in test_list)
 
 
 if __name__ == "__main__":

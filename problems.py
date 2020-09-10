@@ -62,9 +62,9 @@ class WusnProblem():
 
         self.num_rl2ss_edges = self._num_encoded_edges
         if multi_hop:
-            for sn1 in inp.sensors:
-                for sn2 in inp.sensors:
-                    if distance(sn1, sn2) <= 2*inp.radius:
+            for i, sn1 in enumerate(inp.sensors):
+                for j, sn2 in enumerate(inp.sensors):
+                    if i < j and distance(sn1, sn2) <= 2*inp.radius:
                         u, v = point2idx[sn1], point2idx[sn2]
                         edges[u].append(v)
                         edges[v].append(u)

@@ -27,6 +27,7 @@ import matplotlib.pyplot as plt
 import random
 import json
 import time
+import yaml
 
 import sys
 import os
@@ -38,8 +39,9 @@ class MultiHopIndividual(NetworkRandomKeys):
     def __init__(self, problem: MultiHopProblem):
         self.problem = problem
         network = MultiHopNetwork(problem)
+        node_count = problem._num_of_relays + problem._num_of_sensors + 1
         super(MultiHopIndividual, self).__init__(
-            problem._idx2edge, network=network)
+            number_of_vertices=node_count, edge_list=problem._idx2edge, network=network)
 
 def check_config(config, filename, model):
     if config['data']['name'] not in filename:
@@ -92,22 +94,22 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
 
-    @population.register_initialization
-    def init_population(rand: Random = Random()):
-        print("Initializing population")
-        ret = []
-        for i in range(population.size):
-            new_indv = population.individual_temp.clone()
-            for j in range(100):
-                genes = init_bias_genes(
-                    problem._num_encoded_edges, problem.num_rl2ss_edges, rand)
-                new_indv.update_genes(genes=genes)
-                network = new_indv.decode()
-                if network.is_valid:
-                    print("init sucessfullly indv number {} in {} loops".format(i, j))
-                    break
-            ret.append(new_indv)
-        return ret
+    # @population.register_initialization
+    # def init_population(rand: Random = Random()):
+    #     print("Initializing population")
+    #     ret = []
+    #     for i in range(population.size):
+    #         new_indv = population.individual_temp.clone()
+    #         for j in range(100):
+    #             genes = init_bias_genes(
+    #                 problem._num_encoded_edges, problem.num_rl2ss_edges, rand)
+    #             new_indv.update_genes(genes=genes)
+    #             network = new_indv.decode()
+    #             if network.is_valid:
+    #                 print("init sucessfullly indv number {} in {} loops".format(i, j))
+    #                 break
+    #         ret.append(new_indv)
+    #     return ret
 
     selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
     crossover = SBXCrossover(
@@ -171,8 +173,12 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
                         gen_filter=lambda x: (x % 5 == 0),
                         out_dir=out_dir)
 
+    # save config
+    with open(os.path.join(out_dir, '_config.yml'), mode='w') as f:
+        f.write(yaml.dump(config))
+
     open(os.path.join(out_dir, 'done.flag'), 'a').close()
 
 
 if __name__ == '__main__':
-    solve('data/small/multi_hop/ga-dem1_r25_1_0.json', model = '0.0.0.0')
+    solve('data/small/multi_hop/ga-dem1_r25_1_0.json', model = '1.0.1.0')

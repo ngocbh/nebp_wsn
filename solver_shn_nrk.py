@@ -32,8 +32,9 @@ class SingleHopIndividual(NetworkRandomKeys):
     def __init__(self, problem: SingleHopProblem):
         self.problem = problem
         network = SingleHopNetwork(problem)
+        node_count = problem._num_of_relays + problem._num_of_sensors + 1
         super(SingleHopIndividual, self).__init__(
-            problem._idx2edge, network=network)
+            number_of_vertices=node_count, edge_list=problem._idx2edge, network=network)
 
 def check_config(config, filename, model):
     if config['data']['name'] not in filename:

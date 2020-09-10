@@ -26,7 +26,7 @@ class WusnNetwork(KruskalTree):
         self._points = problem._points
         self.max_hop = problem.max_hop
         self.num_encoded_edges = problem._num_encoded_edges
-        super(WusnNetwork, self).__init__(number_of_vertices=self.node_count, root=0)
+        super(WusnNetwork, self).__init__(number_of_vertices=self.node_count, root=0, edge_list=problem._idx2edge)
 
         self.initialize()
 
@@ -58,7 +58,7 @@ class WusnNetwork(KruskalTree):
                     if visited[v]:
                         self._is_valid = False
                     else:
-                        parent[v] = u
+                        parent[v] = int(u)
                         ret += dfs(v, u, depth + 1)
 
             num_childs[u] = ret - 1
@@ -67,7 +67,6 @@ class WusnNetwork(KruskalTree):
         dfs(self.root, -1, 0)
         self.num_childs = num_childs
         self.parent = parent
-
         self.num_used_relays = self.n
         for i in range(1, self.n + 1):
             if self.num_childs[i] == 0:
@@ -76,7 +75,7 @@ class WusnNetwork(KruskalTree):
                 self.num_childs[0] -= 1
                 # if (0, i) in self.edges:
                 #     self.edges.remove((0, i))
-                # else:
+                # elif (i, 0) in self.edges:
                 #     self.edges.remove((i, 0))
                 # self.adjacency[0].remove(i)
                 # self.adjacency[i].remove(0)
@@ -84,8 +83,9 @@ class WusnNetwork(KruskalTree):
         is_valid &= (max_depth - 1 <= self.max_hop)
         self.max_depth = max_depth
         is_valid &= all(visited[self.n+1:])
-        self._is_valid &= is_valid
+        self._is_valid = is_valid
 
+    @property
     def is_valid(self):
         return self._is_valid
 
