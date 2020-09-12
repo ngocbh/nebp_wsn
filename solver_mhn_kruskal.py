@@ -64,7 +64,8 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
     edge_count = problem._num_of_sensors
     indv_temp = EdgeSets(number_of_vertices=node_count, 
                                 solution=network,
-                                edge_list=problem._idx2edge)
+                                potential_edges=problem._idx2edge,
+                                init_method='KruskalRST')
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
 
@@ -148,5 +149,5 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
 
 
 if __name__ == '__main__':
-    solve('data/small/multi_hop/ga-dem1_r25_1_0.json', model = '1.0.2.0')
+    solve('data/small/multi_hop/no-dem7_r50_1_0.json', model = '1.0.2.0')
 

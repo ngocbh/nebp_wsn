@@ -14,7 +14,7 @@ import os
 import math
 
 
-class WusnNetwork(KruskalTree):
+class WusnKruskalNetwork(KruskalTree):
     def __init__(self, problem: MultiHopProblem):
         self.m = problem._num_of_sensors
         self.n = problem._num_of_relays
@@ -26,12 +26,13 @@ class WusnNetwork(KruskalTree):
         self._points = problem._points
         self.max_hop = problem.max_hop
         self.num_encoded_edges = problem._num_encoded_edges
-        super(WusnNetwork, self).__init__(number_of_vertices=self.node_count, root=0, edge_list=problem._idx2edge)
+        super(WusnKruskalNetwork, self).__init__(number_of_vertices=self.node_count,
+                                                 root=0, potential_edges=problem._idx2edge, init_method='KruskalRST')
 
         self.initialize()
 
     def initialize(self):
-        super(WusnNetwork, self).initialize()
+        super(WusnKruskalNetwork, self).initialize()
         self.parent = [-1 for i in range(self.node_count)]
         self.num_childs = [0 for i in range(self.node_count)]
         self.num_used_relays = 0
@@ -52,7 +53,7 @@ class WusnNetwork(KruskalTree):
             nonlocal max_depth
             visited[u] = True
             max_depth = max(max_depth, depth)
-            
+
             for v in self.adjacency[u]:
                 if v != p:
                     if visited[v]:
@@ -90,7 +91,7 @@ class WusnNetwork(KruskalTree):
         return self._is_valid
 
 
-class SingleHopNetwork(WusnNetwork):
+class SingleHopNetwork(WusnKruskalNetwork):
 
     def calc_max_energy_consumption(self):
         max_energy_consumption = 0
@@ -110,7 +111,7 @@ class SingleHopNetwork(WusnNetwork):
         return max_energy_consumption
 
 
-class MultiHopNetwork(WusnNetwork):
+class MultiHopNetwork(WusnKruskalNetwork):
 
     def calc_max_energy_consumption(self):
 

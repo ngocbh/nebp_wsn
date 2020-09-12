@@ -41,7 +41,7 @@ class MultiHopIndividual(NetworkRandomKeys):
         network = MultiHopNetwork(problem)
         node_count = problem._num_of_relays + problem._num_of_sensors + 1
         super(MultiHopIndividual, self).__init__(
-            number_of_vertices=node_count, edge_list=problem._idx2edge, network=network)
+            number_of_vertices=node_count, potential_edges=problem._idx2edge, network=network)
 
 def check_config(config, filename, model):
     if config['data']['name'] not in filename:
@@ -181,4 +181,4 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
 
 
 if __name__ == '__main__':
-    solve('data/small/multi_hop/ga-dem1_r25_1_0.json', model = '1.0.1.0')
+    solve('data/small/multi_hop/no-dem7_r50_1_0.json', model = '1.0.1.0')

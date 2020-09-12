@@ -11,9 +11,10 @@ from __future__ import absolute_import
 from geneticpython.core.individual import Individual
 from geneticpython.core.operators import TreeMutation
 from geneticpython.utils.validation import check_random_state
-from geneticpython.models import Tree
+from geneticpython.models import Tree, RootedTree
 
 from copy import deepcopy
+from itertools import chain
 
 class WusnMutation(TreeMutation):
 
@@ -61,19 +62,24 @@ class WusnMutation(TreeMutation):
         idx = random_state.random_integers(0, len(removable_edges)-1)
         removed_edge = removable_edges[idx]
 
+        # print(removed_edge, new_edge)
         if removed_edge in edges:
             edges.remove(removed_edge)
         else:
             edges.remove((removed_edge[1], removed_edge[0]))
 
-        edges.add(new_edge)
-        
+        edges.append(new_edge)
+        if isinstance(tree, RootedTree):
+            edges = tree.sort_by_bfs_order(edges)
+
         # make new tree from edges
         tree.initialize()
         for u, v in edges:
             tree.add_edge(u, v)
         tree.repair()
 
+        # print(tree.edges)
+        # print(len(tree.edges), ret_indv.chromosome.length)
         # reencode tree to ret_indv
         try:
             ret_indv.encode(tree)

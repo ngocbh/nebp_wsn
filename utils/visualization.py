@@ -116,7 +116,12 @@ def default_extract(solution):
     return network.parent, network.num_childs, network.max_depth
 
 def my_np_to_list(x):
-    ret = [e.item() for e in x]
+    ret = []
+    for e in x:
+        if not isinstance(e, (float, int)):
+            ret.append(e.item())
+        else:
+            ret.append(e)
     return ret
 
 def save_results(pareto_front, solutions, best_mr, out_dir, visualization=False, extract=default_extract):
@@ -129,7 +134,7 @@ def save_results(pareto_front, solutions, best_mr, out_dir, visualization=False,
         solution_dict["num_used_relays"] = solution.objectives[0]
         solution_dict["energy_consumption"] = solution.objectives[1]
         parent, num_childs, max_depth = extract(solution)
-        solution_dict["parent"] = NoIndent(parent)
+        solution_dict["parent"] = NoIndent(my_np_to_list(parent))
         solution_dict["num_childs"] = NoIndent(num_childs)
         solution_dict["hop"] = max_depth
         solution_dict["nondominated_rank"] = solution.nondominated_rank
@@ -148,7 +153,7 @@ def save_results(pareto_front, solutions, best_mr, out_dir, visualization=False,
         solution_dict["num_used_relays"] = solution.objectives[0]
         solution_dict["energy_consumption"] = solution.objectives[1]
         parent, num_childs, max_depth = extract(solution)
-        solution_dict["parent"] = NoIndent(parent)
+        solution_dict["parent"] = NoIndent(my_np_to_list(parent))
         solution_dict["num_childs"] = NoIndent(num_childs)
         solution_dict["hop"] = max_depth
         solution_dict["nondominated_rank"] = solution.nondominated_rank

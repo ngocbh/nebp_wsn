@@ -67,6 +67,8 @@ def summarize_test(testname, model_dict, working_dir):
     for name, model in model_dict.items():
         model_dir = os.path.join(absworking_dir, model)
         test_dir = os.path.join(model_dir, testname)
+        if not os.path.isdir(test_dir):
+            continue
         pareto = read_pareto(os.path.join(test_dir, 'pareto-front.json'))
         pareto_dict[name] = pareto
         config = yaml.load(open(os.path.join(test_dir, '_config.yml')), Loader=Loader)
@@ -91,7 +93,7 @@ def summarize_model(model_dict, working_dir):
     for model in model_dict.values():
         model_dir = os.path.join(absworking_dir, model)
         for filename in os.listdir(model_dir):
-            if 'dem' in filename:
+            if 'dem' in filename or 'test' in filename:
                 tests.add(filename)
 
     for test in tests:
@@ -100,5 +102,7 @@ def summarize_model(model_dict, working_dir):
 
 
 if __name__ == "__main__":
-    summarize_model({"netkeys-old" : "1.0.1.0.1", "kruskal-old" : "1.0.2.0.1",
-                     "netkeys-new" : "1.0.1.0", "kruskal-new": "1.0.2.0.2", "kruskal-nnew": "1.0.2.0"}, working_dir="results/small/multi_hop")
+    summarize_model({"netkeys" : "1.0.1.0", 
+                     "kruskal": "1.0.2.0", 
+                     "prim": "1.0.4.0",
+                     "prim-new": "1.0.4.0.1"}, working_dir="results/small/multi_hop")

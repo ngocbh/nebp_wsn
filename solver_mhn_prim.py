@@ -10,15 +10,16 @@ from geneticpython.engines import NSGAIIEngine
 from geneticpython import Population
 from geneticpython.core.operators import TournamentSelection
 from geneticpython.tools import visualize_fronts, save_history_as_gif
-from geneticpython.models.tree import EdgeSets
-from geneticpython.core.operators import KruskalCrossover, TreeMutation
+from geneticpython.models.tree import EdgeSets, KruskalTree
+from geneticpython.core.operators import PrimCrossover, TreeMutation
 
 from edge_sets import WusnMutation
 from utils.configurations import load_config, gen_output_dir
 from utils import WusnInput
 from utils import save_results
 from problems import MultiHopProblem
-from networks import MultiHopNetwork
+from rooted_networks import MultiHopNetwork
+from networks import WusnKruskalNetwork
 
 from random import Random
 from collections import defaultdict
@@ -63,28 +64,44 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
     node_count = problem._num_of_relays + problem._num_of_sensors + 1
     edge_count = problem._num_of_sensors
     indv_temp = EdgeSets(number_of_vertices=node_count, 
-                                solution=network,
-                                edge_list=problem._idx2edge)
+                         solution=network,
+                         potential_edges=problem._idx2edge,
+                         init_method='RandWalkRST')
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
+    
+    # kruskal_solution = WusnKruskalNetwork(problem)
+    # @population.register_initialization
+    # def init_population(random_state=None):
+    #     ret = []
+    #     for i in range(population.size):
+    #         kruskal_solution.random_init(random_state)
+    #         tmp_network = network.clone()
+    #         tmp_network.from_edge_list(kruskal_solution.edges)
+
+    #         indv = indv_temp.clone()
+    #         indv.encode(tmp_network)
+
+    #         ret.append(indv)
+    #     return ret
 
     selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
-    crossover = KruskalCrossover(pc=config['encoding']['cro_prob'])
-    mutation = WusnMutation(config['encoding']['mut_prob'], potential_edges=problem._idx2edge) 
+    crossover = PrimCrossover(pc=config['encoding']['cro_prob'])
+    mutation = WusnMutation(pm=config['encoding']['mut_prob'], potential_edges=problem._idx2edge) 
 
-    print(problem._idx2edge)
-    indv_temp.random_init(2)
-    print(indv_temp.chromosome.genes)
-    solution = indv_temp.decode()
-    print(solution._is_valid)
-    indv2 = indv_temp.clone()
-    indv2.random_init(3)
-    print(indv2.chromosome.genes)
-    child1, child2 = crossover.cross(indv_temp, indv2, 3)
-    print(child1.chromosome.genes)
-    child = mutation.mutate(indv_temp, 2)
-    print(child.chromosome.genes)
-    return
+    # print(problem._idx2edge)
+    # indv_temp.random_init(1421)
+    # print(indv_temp.chromosome.genes)
+    # solution = indv_temp.decode()
+    # print(solution._is_valid)
+    # indv2 = indv_temp.clone()
+    # indv2.random_init(1231)
+    # print(indv2.chromosome.genes)
+    # solution2 = indv2.decode()
+    # print(solution2._is_valid)
+    # child = mutation.mutate(indv_temp)
+    # print(child.chromosome.genes)
+    # return
     engine = NSGAIIEngine(population, selection=selection,
                           crossover=crossover,
                           mutation=mutation,
@@ -148,5 +165,5 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
 
 
 if __name__ == '__main__':
-    solve('data/small/multi_hop/test.json', model = '0.0.4.0')
+    solve('data/small/multi_hop/no-dem7_r50_1_0.json', model = '1.0.4.0.2')
 
