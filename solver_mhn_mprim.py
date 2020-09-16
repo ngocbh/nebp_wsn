@@ -11,9 +11,9 @@ from geneticpython import Population
 from geneticpython.core.operators import TournamentSelection
 from geneticpython.tools import visualize_fronts, save_history_as_gif
 from geneticpython.models.tree import EdgeSets, KruskalTree
-from geneticpython.core.operators import PrimCrossover, TreeMutation
+from geneticpython.core.operators import PrimCrossover, TreeMutation, MutationCompact
 
-from edge_sets import WusnMutation
+from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation
 from utils.configurations import load_config, gen_output_dir
 from utils import WusnInput
 from utils import save_results
@@ -40,15 +40,15 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 def check_config(config, filename, model):
     if config['data']['name'] not in filename:
         raise ValueError('Model {} is used for {}, file {} is not'.format(model, config['data'], filename))
-    if config['encoding']['name'] != 'prime':
-        raise ValueError('encoding {} != {}'.format(config['encoding']['name'], 'prime'))
+    if config['encoding']['name'] != 'mprim':
+        raise ValueError('encoding {} != {}'.format(config['encoding']['name'], 'mprim'))
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
-def solve(filename, output_dir=None, model='0.0.0.0'):
+def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True):
     start_time = time.time()
 
-    config = load_config(CONFIG_FILE, model)
+    config = config or load_config(CONFIG_FILE, model)
     check_config(config, filename, model)
     output_dir = output_dir or gen_output_dir(filename, model)
 
@@ -66,45 +66,70 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
     indv_temp = EdgeSets(number_of_vertices=node_count, 
                          solution=network,
                          potential_edges=problem._idx2edge,
-                         init_method='RandWalkRST')
+                         init_method='PrimRST')
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
     
-    # kruskal_solution = WusnKruskalNetwork(problem)
-    # @population.register_initialization
-    # def init_population(random_state=None):
-    #     ret = []
-    #     for i in range(population.size):
-    #         kruskal_solution.random_init(random_state)
-    #         tmp_network = network.clone()
-    #         tmp_network.from_edge_list(kruskal_solution.edges)
+    kruskal_solution = WusnKruskalNetwork(problem)
+    @population.register_initialization
+    def init_population(random_state=None):
+        ret = []
+        for i in range(population.size):
+            kruskal_solution.random_init(random_state)
+            tmp_network = network.clone()
+            tmp_network.from_edge_list(kruskal_solution.edges)
 
-    #         indv = indv_temp.clone()
-    #         indv.encode(tmp_network)
+            indv = indv_temp.clone()
+            indv.encode(tmp_network)
 
-    #         ret.append(indv)
-    #     return ret
+            ret.append(indv)
+        return ret
 
     selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
-    crossover = PrimCrossover(pc=config['encoding']['cro_prob'])
-    mutation = WusnMutation(pm=config['encoding']['mut_prob'], potential_edges=problem._idx2edge) 
-
+    crossover = MPrimCrossover(pc=config['encoding']['cro_prob'])
+    # mutation1 = WusnMutation(pm=1, potential_edges=problem._idx2edge) 
+    # mutation2 = APrimMutation(pm=1)
+    mutation3 = SPrimMutation(pm=1)
+    # mutations = MutationCompact()
+    # mutations.add_mutation(mutation1, pm=0.1)
+    # mutations.add_mutation(mutation2, pm=0.1)
+    # mutations.add_mutation(mutation3, pm=0.5)
     # print(problem._idx2edge)
     # indv_temp.random_init(1421)
+    # edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25), (0, 26), (0, 27), (0, 28), (0, 29), (0, 30), (0, 31), (0, 32), (0, 33), (0, 34), (0, 35), (0, 36), (0, 37), (0, 38), (0, 39), (0, 40), (21, 78), (14, 52), (25, 44), (20, 77), (18, 54), (35, 60), (3, 59), (25, 75), (3, 61), (30, 65), (24, 73), (10, 41), (27, 68), (39, 64), (1, 69), (35, 47), (30, 57), (19, 50), (26, 55), (24, 79), (36, 58), (2, 70), (14, 53), (11, 46), (19, 67), (3, 42), (20, 74), (78, 62), (2, 71), (34, 63), (41, 72), (4, 66), (39, 80), (68, 56), (18, 43), (66, 49), (34, 51), (36, 48), (11, 76), (69, 45)]
+    # network.from_edge_list(edge_list)
+    # indv_temp.encode(network) 
     # print(indv_temp.chromosome.genes)
     # solution = indv_temp.decode()
     # print(solution._is_valid)
+    # print(solution.num_used_relays)
+    # print(solution.calc_max_energy_consumption())
+    # child = mutation.mutate(indv_temp, 1)
+    # print(child.chromosome.genes)
+    # solution2 = child.decode()
+    # print(solution2._is_valid)
+    # print(solution2.num_used_relays)
+    # print(solution2.calc_max_energy_consumption())
+    
     # indv2 = indv_temp.clone()
     # indv2.random_init(1231)
     # print(indv2.chromosome.genes)
     # solution2 = indv2.decode()
     # print(solution2._is_valid)
-    # child = mutation.mutate(indv_temp)
-    # print(child.chromosome.genes)
+    # print(solution2.calc_max_energy_consumption())
+    # child = crossover.cross(indv_temp, indv2, 1)
+    # print(child[0].chromosome.genes)
+    # solution3 = child[0].decode()
+    # print(solution3._is_valid)
+    # print(solution3.calc_max_energy_consumption())
+
+    # solution4 = child[1].decode()
+    # print(solution4._is_valid)
+    # print(solution4.calc_max_energy_consumption())
     # return
     engine = NSGAIIEngine(population, selection=selection,
                           crossover=crossover,
-                          mutation=mutation,
+                          mutation=mutation3,
                           selection_size=config['algorithm']['slt_size'],
                           random_state=42)
 
@@ -139,7 +164,6 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
 
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
-    history.dump(os.path.join(out_dir, 'history.json'))
 
     with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
         f.write(f"running time: {end_time-start_time:}")
@@ -152,11 +176,13 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
                      filepath=os.path.join(out_dir, 'pareto_fronts.png'),
                      objective_name=['relays', 'energy consumption'])
 
-    save_history_as_gif(history,
-                        title="NSGAII - multi-hop",
-                        objective_name=['relays', 'energy'],
-                        gen_filter=lambda x: (x % 5 == 0),
-                        out_dir=out_dir)
+    if save_history:
+        history.dump(os.path.join(out_dir, 'history.json'))
+        save_history_as_gif(history,
+                            title="NSGAII - multi-hop",
+                            objective_name=['relays', 'energy'],
+                            gen_filter=lambda x: (x % 5 == 0),
+                            out_dir=out_dir)
 
     open(os.path.join(out_dir, 'done.flag'), 'a').close()
     # save config
@@ -165,5 +191,5 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
 
 
 if __name__ == '__main__':
-    solve('data/small/multi_hop/no-dem7_r50_1_0.json', model = '1.0.4.0.2')
+    solve('data/small/multi_hop/no-dem7_r50_1_0.json', model = '1.0.5.0.3')
 

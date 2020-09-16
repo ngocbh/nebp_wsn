@@ -36,3 +36,11 @@ class MPrimCrossover(Crossover):
                     potential_adj[u].append(v)
                     potential_adj[v].append(u)
 
+        trees[0].build_cprim_tree(trees[0].calc_max_energy_consumption(), edge_union, random_state)
+        trees[1].build_cprim_tree(trees[1].calc_max_energy_consumption(), edge_union, random_state)
+
+        # print(trees[0].edges)
+        children[0].encode(trees[0])
+        children[1].encode(trees[1])
+
+        return children[0], children[1]

@@ -44,10 +44,10 @@ def check_config(config, filename, model):
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
-def solve(filename, output_dir=None, model='0.0.0.0'):
+def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True):
     start_time = time.time()
 
-    config = load_config(CONFIG_FILE, model)
+    config = config or load_config(CONFIG_FILE, model)
     check_config(config, filename, model)
     output_dir = output_dir or gen_output_dir(filename, model)
 
@@ -123,7 +123,6 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
 
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
-    history.dump(os.path.join(out_dir, 'history.json'))
 
     with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
         f.write(f"running time: {end_time-start_time:}")
@@ -136,11 +135,13 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
                      filepath=os.path.join(out_dir, 'pareto_fronts.png'),
                      objective_name=['relays', 'energy consumption'])
 
-    save_history_as_gif(history,
-                        title="NSGAII - multi-hop",
-                        objective_name=['relays', 'energy'],
-                        gen_filter=lambda x: (x % 5 == 0),
-                        out_dir=out_dir)
+    if save_history:
+        history.dump(os.path.join(out_dir, 'history.json'))
+        save_history_as_gif(history,
+                            title="NSGAII - multi-hop",
+                            objective_name=['relays', 'energy'],
+                            gen_filter=lambda x: (x % 5 == 0),
+                            out_dir=out_dir)
 
     open(os.path.join(out_dir, 'done.flag'), 'a').close()
     # save config

@@ -26,32 +26,6 @@ def is_done(filename, output_dir):
         return True
     return False
 
-
-def run_single_hop_problem(model, input_dir, output_dir):
-    print(f"Running single hop problem on model {model}")
-    datapath = os.path.join(WORKING_DIR, input_dir)
-
-    test_list = []
-    done_list = []
-
-    for file in os.listdir(datapath):
-        if 'dem' not in file:
-            continue
-        filepath = os.path.join(datapath, file)
-        if not is_done(file, output_dir) or OVERWRITE:
-            test_list.append(filepath)
-        else:
-            done_list.append(filepath)
-
-    print("Done those tests: ")
-    print(done_list)
-    print("Run those tests: ")
-    print(test_list)
-
-    joblib.Parallel(n_jobs=-1)(joblib.delayed(solver_shn_nrk.solve)
-                               (file, output_dir=output_dir, visualization=True) for file in test_list)
-
-
 def run_multi_hop_problem(model, input_dir, output_dir):
     print(f"Running multi-hop problem on model {model}")
     datapath = os.path.join(WORKING_DIR, input_dir)
@@ -79,15 +53,6 @@ def run_multi_hop_problem(model, input_dir, output_dir):
 
 if __name__ == "__main__":
     # print("Running Test Model...")
-    # run_single_hop_problem("test", 'data/medium/single_hop', 'results/medium/test/single_hop')
-    # run_multi_hop_problem("test", 'data/medium/multi_hop', 'results/medium/test/multi_hop')
-    print("Running 0.0.1 model")
-    print("Running small data")
-    run_single_hop_problem('0.0.1','data/small/single_hop', 'results/small/0.0.1/single_hop')
-    print("Running medium data")
-    run_single_hop_problem('0.0.1', 'data/medium/single_hop', 'results/medium/0.0.1/single_hop')
     run_multi_hop_problem('0.0.1', 'data/medium/multi_hop', 'results/medium/0.0.1/multi_hop')
-    print("Running 0.0.2 model")
-    run_single_hop_problem('0.0.2', 'data/medium/single_hop', 'results/medium/0.0.2/single_hop')
     run_multi_hop_problem('0.0.2', 'data/medium/multi_hop', 'results/medium/0.0.2/multi_hop')
     

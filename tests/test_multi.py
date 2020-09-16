@@ -1,3 +1,8 @@
+import os, sys, inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir)
+
 from problems import WusnProblem, MultiHopProblem
 from networks import MultiHopNetwork
 from utils import WusnInput
@@ -28,7 +33,7 @@ def calc_num_childs(network, parent_list):
 def test(filename, parent, num_childs):
     wusnfile = os.path.join(WORKING_DIR, filename)
     inp = WusnInput.from_file(wusnfile)
-    problem = MultiHopProblem(inp)
+    problem = MultiHopProblem(inp, 8)
     
     network = MultiHopNetwork(problem) 
     
@@ -48,6 +53,6 @@ def test(filename, parent, num_childs):
     print(energy)
 
 if __name__ == '__main__':
-    parent = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 33, 40, 34, 15, 34, 72, 34, 1, 15, 17, 72, 34, 33, 8, 33, 40, 34, 34, 8, 34, 40, 40, 34, 15, 8, 33, 8, 40, 33, 33, 26, 33, 33, 15, 8, 8, 15, 33, 72]
-    num_childs = [70, 1, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 5, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 9, 8, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0]
-    test('data/small/multi_hop/ga-dem1_r25_1_0.json', parent, num_childs)
+    parent = [0, 0, 0, 0, 0, -1, -1, 0, 0, 0, 0, 0, -1, -1, 0, 0, -1, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, -1, 0, 0, 0, 20, 39, 15, 57, 31, 36, 26, 25, 36, 24, 20, 19, 38, 4, 27, 8, 18, 35, 17, 3, 39, 40, 34, 11, 1, 32, 9, 34, 54, 9, 2, 7, 14, 15, 10, 60, 30, 28, 21, 23]
+    num_childs =[71, 1, 1, 2, 2, 0, 0, 1, 1, 2, 1, 1, 0, 0, 1, 2, 0, 1, 2, 1, 2, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 2, 1, 2, 0, 1, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] 
+    test('../data/small/multi_hop/no-dem7_r50_1_0.json', parent, num_childs)

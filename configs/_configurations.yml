@@ -41,18 +41,18 @@ encoding:
     cro_prob: 0.9
     mut_prob: 0.1
 
-  - name: "binary"
+  - name: "binary" # 3
     cro_prob: 0.9
     cro_pe: 0.5
     mut_prob: 0.1
 
-  - name: "prime"  # 2
+  - name: "prim"  # 4
     cro_prob: 0.9
     mut_prob: 0.1
     
-  - name: "kruskal"  # 2
+  - name: "mprim"  # 5
     cro_prob: 0.9
-    mut_prob: 0.7
+    mut_prob: 0.1
 
 
 algorithm:

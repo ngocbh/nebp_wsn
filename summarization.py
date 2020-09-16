@@ -65,6 +65,7 @@ def summarize_test(testname, model_dict, working_dir):
     config_dict = {}
     comparison_name = "sum"
     for name, model in model_dict.items():
+        comparison_name += '+' + model
         model_dir = os.path.join(absworking_dir, model)
         test_dir = os.path.join(model_dir, testname)
         if not os.path.isdir(test_dir):
@@ -74,7 +75,6 @@ def summarize_test(testname, model_dict, working_dir):
         config = yaml.load(open(os.path.join(test_dir, '_config.yml')), Loader=Loader)
         config["model_name"] = model
         config_dict[name] = config
-        comparison_name += '+' + model
     
     output_dir = os.path.join(absworking_dir, comparison_name)
     out_test_dir = os.path.join(output_dir, testname)
@@ -105,4 +105,8 @@ if __name__ == "__main__":
     summarize_model({"netkeys" : "1.0.1.0", 
                      "kruskal": "1.0.2.0", 
                      "prim": "1.0.4.0",
-                     "prim-new": "1.0.4.0.1"}, working_dir="results/small/multi_hop")
+                     "mprim": "1.0.5.0",
+                     "smprim": "1.0.5.0.1",
+                     "ssmprim": "1.0.5.0.2",
+                     "cmsaprim": "1.0.5.0.3"}, working_dir="results/small/multi_hop")
+

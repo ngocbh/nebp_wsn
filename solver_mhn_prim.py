@@ -40,15 +40,15 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 def check_config(config, filename, model):
     if config['data']['name'] not in filename:
         raise ValueError('Model {} is used for {}, file {} is not'.format(model, config['data'], filename))
-    if config['encoding']['name'] != 'prime':
-        raise ValueError('encoding {} != {}'.format(config['encoding']['name'], 'prime'))
+    if config['encoding']['name'] != 'prim':
+        raise ValueError('encoding {} != {}'.format(config['encoding']['name'], 'prim'))
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
-def solve(filename, output_dir=None, model='0.0.0.0'):
+def solve(filename, output_dir=None, model='0.0.4.0', config=None, save_history=True):
     start_time = time.time()
 
-    config = load_config(CONFIG_FILE, model)
+    config = config or load_config(CONFIG_FILE, model)
     check_config(config, filename, model)
     output_dir = output_dir or gen_output_dir(filename, model)
 
@@ -66,24 +66,24 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
     indv_temp = EdgeSets(number_of_vertices=node_count, 
                          solution=network,
                          potential_edges=problem._idx2edge,
-                         init_method='RandWalkRST')
+                         init_method='PrimRST')
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
     
-    # kruskal_solution = WusnKruskalNetwork(problem)
-    # @population.register_initialization
-    # def init_population(random_state=None):
-    #     ret = []
-    #     for i in range(population.size):
-    #         kruskal_solution.random_init(random_state)
-    #         tmp_network = network.clone()
-    #         tmp_network.from_edge_list(kruskal_solution.edges)
+    kruskal_solution = WusnKruskalNetwork(problem)
+    @population.register_initialization
+    def init_population(random_state=None):
+        ret = []
+        for i in range(population.size):
+            kruskal_solution.random_init(random_state)
+            tmp_network = network.clone()
+            tmp_network.from_edge_list(kruskal_solution.edges)
 
-    #         indv = indv_temp.clone()
-    #         indv.encode(tmp_network)
+            indv = indv_temp.clone()
+            indv.encode(tmp_network)
 
-    #         ret.append(indv)
-    #     return ret
+            ret.append(indv)
+        return ret
 
     selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
     crossover = PrimCrossover(pc=config['encoding']['cro_prob'])
@@ -99,8 +99,8 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
     # print(indv2.chromosome.genes)
     # solution2 = indv2.decode()
     # print(solution2._is_valid)
-    # child = mutation.mutate(indv_temp)
-    # print(child.chromosome.genes)
+    # child1, child2 = crossover.cross(indv_temp, indv2, 1)
+    # print(child1.chromosome.genes)
     # return
     engine = NSGAIIEngine(population, selection=selection,
                           crossover=crossover,
@@ -139,8 +139,6 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
 
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
-    history.dump(os.path.join(out_dir, 'history.json'))
-
     with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
         f.write(f"running time: {end_time-start_time:}")
 
@@ -152,11 +150,13 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
                      filepath=os.path.join(out_dir, 'pareto_fronts.png'),
                      objective_name=['relays', 'energy consumption'])
 
-    save_history_as_gif(history,
-                        title="NSGAII - multi-hop",
-                        objective_name=['relays', 'energy'],
-                        gen_filter=lambda x: (x % 5 == 0),
-                        out_dir=out_dir)
+    if save_history:
+        history.dump(os.path.join(out_dir, 'history.json'))
+        save_history_as_gif(history,
+                            title="NSGAII - multi-hop",
+                            objective_name=['relays', 'energy'],
+                            gen_filter=lambda x: (x % 5 == 0),
+                            out_dir=out_dir)
 
     open(os.path.join(out_dir, 'done.flag'), 'a').close()
     # save config
