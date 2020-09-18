@@ -156,9 +156,11 @@ class WusnBinaryIndividual(BinaryIndividual):
         self.energy = None
         super().__init__(length=length)
 
-def solve(filename, output_dir=None, model='0.0.0.0'):
+def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True, seed=None):
     start_time = time.time()
-    config = load_config(CONFIG_FILE, model)
+
+    seed = seed or 42
+    config = config or load_config(CONFIG_FILE, model)
     check_config(config, filename, model)
     output_dir = output_dir or gen_output_dir(filename, model)
 
@@ -186,7 +188,7 @@ def solve(filename, output_dir=None, model='0.0.0.0'):
                           crossover=crossover,
                           mutation=mutation,
                           selection_size=config['algorithm']['slt_size'],
-                          random_state=42)
+                          random_state=seed)
 
     @engine.minimize_objective
     def objective1(indv):

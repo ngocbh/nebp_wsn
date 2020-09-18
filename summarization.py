@@ -8,6 +8,7 @@ Description:
 from geneticpython.tools.visualization import visualize_fronts
 from geneticpython.tools.analyzers.pareto_metrics import delta_metric, coverage_metric, spacing_metric, non_dominated_solutions
 from yaml import Loader
+from os.path import join
 
 import json
 import os
@@ -59,13 +60,11 @@ def summarize_metrics(pareto_dict, output_dir):
     filepath = os.path.join(output_dir, 'metrics_comparison.csv')
     df.to_csv(filepath, index=False)
 
-def summarize_test(testname, model_dict, working_dir):
+def summarize_test(testname, model_dict, working_dir, cname):
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
     pareto_dict = {}
     config_dict = {}
-    comparison_name = "sum"
     for name, model in model_dict.items():
-        comparison_name += '+' + model
         model_dir = os.path.join(absworking_dir, model)
         test_dir = os.path.join(model_dir, testname)
         if not os.path.isdir(test_dir):
@@ -76,7 +75,7 @@ def summarize_test(testname, model_dict, working_dir):
         config["model_name"] = model
         config_dict[name] = config
     
-    output_dir = os.path.join(absworking_dir, comparison_name)
+    output_dir = os.path.join(absworking_dir, cname)
     out_test_dir = os.path.join(output_dir, testname)
     os.makedirs(out_test_dir, exist_ok=True)
 
@@ -86,20 +85,81 @@ def summarize_test(testname, model_dict, working_dir):
     visualize_test(pareto_dict, output_dir=out_test_dir, show=False)
     summarize_metrics(pareto_dict, output_dir=out_test_dir)
 
-def summarize_model(model_dict, working_dir):
+
+def summarize_model(model_dict, working_dir, cname=None, testnames=None):
     tests = set()
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
     
+    comparison_name = "sum"
     for model in model_dict.values():
+        comparison_name += '+' + model
         model_dir = os.path.join(absworking_dir, model)
         for filename in os.listdir(model_dir):
-            if 'dem' in filename or 'test' in filename:
+            inp_name = f'{filename}.json'
+            if ('dem' in filename or 'test' in filename) and \
+                    (testnames is None or inp_name in testnames):
                 tests.add(filename)
 
+    cname = cname or comparison_name
+    output_dir = os.path.join(absworking_dir, cname)
+    with open(join(output_dir, 'model_dict.json'), mode='w') as f:
+        f.write(json.dumps(model_dict, indent=4))
+
     for test in tests:
-        summarize_test(test, model_dict, working_dir)
+        summarize_test(test, model_dict, working_dir, cname)
 
 
+def calc_average_metrics(summarization_list, working_dir, cname, testnames=None):
+    all_tests = set()
+    absworking_dir = os.path.join(WORKING_DIR, working_dir)
+    for model in summarization_list:
+        model_dir = os.path.join(absworking_dir, model)
+        for filename in os.listdir(model_dir):
+            inp_name = f'{filename}.json'
+            if ('dem' in filename or 'test' in filename) and \
+                    (testnames is None or inp_name in testnames):
+                all_tests.add(filename)
+
+    output_dir = os.path.join(absworking_dir, cname)
+    os.makedirs(output_dir, exist_ok=True)
+
+    feasible_tests = all_tests.copy()
+    for model in summarization_list:
+        model_dir = os.path.join(absworking_dir, model)
+        model_tests = set()
+        for filename in os.listdir(model_dir):
+            inp_name = f'{filename}.json'
+            if ('dem' in filename or 'test' in filename) and \
+                    (testnames is None or inp_name in testnames):
+                model_tests.add(filename)
+        feasible_tests.intersection(model_tests)
+
+    with open(os.path.join(output_dir, 'status.txt'), mode='w') as f:
+        f.write('Feasible_tests: ')
+        f.write(str(feasible_tests))
+        f.write('\nUnsolved_tests: ' + str(all_tests.difference(feasible_tests)))
+
+    for test in feasible_tests:
+        metric_sum = None
+        models = None
+        for summ in summarization_list:
+            test_dir = join(join(absworking_dir, summ), test)
+            test_df = pd.read_csv(join(test_dir, 'metrics_comparison.csv'))
+            models = test_df['models']
+            test_df = test_df.drop(columns='models')
+            if metric_sum is None:
+                metric_sum = test_df
+            elif metric_sum.shape != test_df.shape:
+                raise ValueError(f'difference metric shape on test {summ}:{test}')
+            else:
+                metric_sum = metric_sum.add(test_df, fill_value=0)
+        metric_sum = metric_sum.div(len(summarization_list))
+        metric_sum.insert(0, 'models', models, True)
+        test_dir = join(output_dir, test)
+        os.makedirs(test_dir, exist_ok=True)
+        filepath = join(test_dir, 'metrics_average_comparison.csv')
+        metric_sum.to_csv(filepath, index=False)
+        
 
 if __name__ == "__main__":
     summarize_model({"netkeys" : "1.0.1.0", 

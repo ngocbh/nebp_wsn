@@ -45,9 +45,10 @@ def check_config(config, filename, model):
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
-def solve(filename, output_dir=None, model='0.0.4.0', config=None, save_history=True):
+def solve(filename, output_dir=None, model='0.0.4.0', config=None, save_history=True, seed=None):
     start_time = time.time()
 
+    seed = seed or 42
     config = config or load_config(CONFIG_FILE, model)
     check_config(config, filename, model)
     output_dir = output_dir or gen_output_dir(filename, model)
@@ -106,7 +107,7 @@ def solve(filename, output_dir=None, model='0.0.4.0', config=None, save_history=
                           crossover=crossover,
                           mutation=mutation,
                           selection_size=config['algorithm']['slt_size'],
-                          random_state=42)
+                          random_state=seed)
 
     @engine.minimize_objective
     def objective1(indv):
