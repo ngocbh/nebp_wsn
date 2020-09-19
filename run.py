@@ -69,6 +69,7 @@ def multi_run_solver(solver, model, input_dir, k, output_dir=None, testnames=Non
     return model_list
 
 def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
+    print("Running guided prim solver...")
     output_dir = input_dir.replace('data', 'results') 
     gprim_model = f'{ept}.{testset}.5.0'
     gprim_model_list = multi_run_solver(solver_mhn_gprim, 
@@ -78,6 +79,7 @@ def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
                                         testnames=testnames,
                                         save_history=False)
 
+    print("Running kruskal solver...")
     kruskal_model = f'{ept}.{testset}.2.0' 
     kruskal_model_list = multi_run_solver(solver_mhn_kruskal, 
                                          model=kruskal_model, 
@@ -86,6 +88,7 @@ def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
                                          testnames=testnames,
                                          save_history=False)
 
+    print("Running prim solver...")
     prim_model = f'{ept}.{testset}.4.0'
     prim_model_list = multi_run_solver(solver_mhn_prim, 
                                          model=prim_model, 
@@ -94,6 +97,7 @@ def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
                                          testnames=testnames,
                                          save_history=False)
 
+    print("Running netkeys solver...")
     netkeys_model = f'{ept}.{testset}.1.0'
     netkeys_model_list = multi_run_solver(solver_mhn_nrk, 
                                          model=netkeys_model, 
@@ -102,6 +106,7 @@ def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
                                          testnames=testnames,
                                          save_history=False)
 
+    print("Summarizing...")
     summarization_list = []
     for i in range(k):
         model_dict = {}
