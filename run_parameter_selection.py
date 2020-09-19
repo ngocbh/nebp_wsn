@@ -36,10 +36,11 @@ def choose_pc(solver, model):
     test_path = './data/small/multi_hop'
     for i in range(len(pc_list)):
         smodel = '{}.{}.{}'.format(model, i, 1) 
+        out_model_dir = os.path.join(out_dir, smodel)
         config['encoding']['cro_prob'] = pc_list[i]
         config['encoding']['mut_prob'] = pm
         model_dict[smodel] = smodel
-        run.run_solver(solver, smodel, test_path, out_dir, tests, save_history=False, config=config)
+        run.run_solver(solver, smodel, test_path, out_model_dir, tests, save_history=False, config=config)
 
     summarization.summarize_model(model_dict, working_dir=out_dir, cname=f'sum-pc-{model}')
         
@@ -54,10 +55,11 @@ def choose_pm(solver, model):
     test_path = './data/small/multi_hop'
     for i in range(len(pm_list)):
         smodel = '{}.{}.{}'.format(model, 4, i) 
+        out_model_dir = os.path.join(out_dir, smodel)
         config['encoding']['cro_prob'] = pc
         config['encoding']['mut_prob'] = pm_list[i]
         model_dict[smodel] = smodel
-        run.run_solver(solver, smodel, test_path, out_dir, tests, save_history=False, config=config)
+        run.run_solver(solver, smodel, test_path, out_model_dir, tests, save_history=False, config=config)
 
     summarization.summarize_model(model_dict, working_dir=out_dir, cname=f'sum-pm-{model}')
 
