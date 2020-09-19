@@ -102,6 +102,7 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None):
 
     cname = cname or comparison_name
     output_dir = os.path.join(absworking_dir, cname)
+    os.makedirs(output_dir, exist_ok=True)
     with open(join(output_dir, 'model_dict.json'), mode='w') as f:
         f.write(json.dumps(model_dict, indent=4))
 
