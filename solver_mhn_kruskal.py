@@ -18,7 +18,7 @@ from utils.configurations import load_config, gen_output_dir
 from utils import WusnInput
 from utils import save_results
 from problems import MultiHopProblem
-from networks import MultiHopNetwork
+from networks import MultiHopNetwork, WusnKruskalNetwork
 
 from random import Random
 from collections import defaultdict
@@ -62,7 +62,6 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     problem = MultiHopProblem(inp, config['data']['max_hop'])
     network = MultiHopNetwork(problem)
     node_count = problem._num_of_relays + problem._num_of_sensors + 1
-    edge_count = problem._num_of_sensors
     indv_temp = EdgeSets(number_of_vertices=node_count, 
                                 solution=network,
                                 potential_edges=problem._idx2edge,
@@ -151,5 +150,5 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 
 if __name__ == '__main__':
-    solve('data/small/multi_hop/no-dem7_r50_1_0.json', model = '1.0.2.0')
+    solve('data/small/multi_hop/ga-dem1_r25_1_40.json', model = '0.0.2.0')
 

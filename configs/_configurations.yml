@@ -3,7 +3,7 @@
 
 models:
   - name: "test"
-    gens: 2
+    gens: 5
 
   - name: "run 1"
     gens: 100
