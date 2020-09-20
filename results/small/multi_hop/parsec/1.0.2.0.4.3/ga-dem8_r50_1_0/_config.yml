@@ -1,0 +1,15 @@
+algorithm:
+  name: nsgaii
+  pop_size: 100
+  slt_size: 100
+  tournament_size: 2
+data:
+  max_hop: 8
+  name: small
+encoding:
+  cro_prob: 0.9
+  mut_prob: 0.2
+  name: kruskal
+models:
+  gens: 100
+  name: run 1
