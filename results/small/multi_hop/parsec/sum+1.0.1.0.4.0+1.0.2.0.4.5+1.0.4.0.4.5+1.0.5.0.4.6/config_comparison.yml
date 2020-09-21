@@ -1,0 +1,72 @@
+guided prim:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 8
+    name: small
+  encoding:
+    cro_prob: 0.9
+    mut_prob: 0.5
+    name: mprim
+  model_name: 1.0.5.0.4.6
+  models:
+    gens: 100
+    name: run 1
+kruskal:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 8
+    name: small
+  encoding:
+    cro_prob: 0.9
+    mut_prob: 0.4
+    name: kruskal
+  model_name: 1.0.2.0.4.5
+  models:
+    gens: 100
+    name: run 1
+netkeys:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 8
+    name: small
+  encoding:
+    alpha: 2
+    beta: 6
+    cro_di: 20
+    cro_prob: 0.9
+    mut_di: 5
+    mut_prob: 0.05
+    name: netkeys
+  model_name: 1.0.1.0.4.0
+  models:
+    gens: 100
+    name: run 1
+prim:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 8
+    name: small
+  encoding:
+    cro_prob: 0.9
+    mut_prob: 0.4
+    name: prim
+  model_name: 1.0.4.0.4.5
+  models:
+    gens: 100
+    name: run 1

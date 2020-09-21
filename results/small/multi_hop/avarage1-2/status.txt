@@ -1,2 +1,2 @@
-Feasible_tests: {'ga-dem1_r25_1_40', 'ga-dem1_r25_1_0'}
+Feasible_tests: {'ga-dem1_r25_1_0', 'ga-dem1_r25_1_40'}
 Unsolved_tests: set()

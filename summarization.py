@@ -177,11 +177,8 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
         
 
 if __name__ == "__main__":
-    summarize_model({"netkeys" : "1.0.1.0", 
-                     "kruskal": "1.0.2.0", 
-                     "prim": "1.0.4.0",
-                     "mprim": "1.0.5.0",
-                     "smprim": "1.0.5.0.1",
-                     "ssmprim": "1.0.5.0.2",
-                     "cmsaprim": "1.0.5.0.3"}, working_dir="results/small/multi_hop")
+    summarize_model({"netkeys" : "1.0.1.0.4.0", 
+                     "kruskal": "1.0.2.0.4.5", 
+                     "prim": "1.0.4.0.4.5",
+                     "guided prim": "1.0.5.0.4.6"}, working_dir="results/small/multi_hop/parsec")
 

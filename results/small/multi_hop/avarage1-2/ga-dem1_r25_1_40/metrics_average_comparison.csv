@@ -1,5 +1,5 @@
-models,delta,spacing,nds,c_netkeys,c_prim,c_kruskal,c_guided prim
-netkeys,inf,inf,1.5,0.0,0.0,0.0,0.1
-prim,0.4722225298437427,0.5126365349010988,4.5,0.75,0.0,1.0,0.325
-kruskal,inf,inf,1.0,0.0,0.0,0.0,0.0
-guided prim,0.805554836924906,0.9803538147534717,4.5,0.75,0.575,1.0,0.0
+models,delta,spacing,nds,c_netkeys,c_prim,c_kruskal,c_guided prim,score
+netkeys,inf,inf,1.5,0.0,0.0,0.0,0.1,0.0
+prim,0.4722225298437427,0.5126365349010988,4.5,0.75,0.0,1.0,0.325,2.0
+kruskal,inf,inf,1.0,0.0,0.0,0.0,0.0,0.0
+guided prim,0.805554836924906,0.9803538147534717,4.5,0.75,0.575,1.0,0.0,3.0

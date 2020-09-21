@@ -1,0 +1,5 @@
+models,delta,spacing,nds,c_netkeys,c_kruskal,c_prim,c_guided prim,score
+netkeys,0.0,0.0,2,0.0,0.0,0.0,0.0,0
+kruskal,0.0,0.0,2,1.0,0.0,1.0,0.0,2
+prim,7.642964675961632e-08,0.00027325144395610204,4,1.0,0.0,0.0,0.0,1
+guided prim,0.0,0.0,2,1.0,0.5,1.0,0.0,3

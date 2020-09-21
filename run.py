@@ -125,5 +125,5 @@ def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
 if __name__ == "__main__":
     # print("Running Test Model...")
     testnames = {'ga-dem1_r25_1_0.json', 'ga-dem1_r25_1_40.json'}
-    run_mhn_experiment(0, './data/small/multi_hop', testset=0, testnames=testnames, k=2)
+    run_mhn_experiment(1, './data/small/multi_hop', testset=0, testnames=None, k=10)
     
