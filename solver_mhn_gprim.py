@@ -90,7 +90,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     crossover = MPrimCrossover(pc=config['encoding']['cro_prob'])
     # mutation1 = WusnMutation(pm=1, potential_edges=problem._idx2edge) 
     # mutation2 = APrimMutation(pm=1)
-    mutation3 = SPrimMutation(pm=config['encoding']['cro_prob'])
+    mutation3 = SPrimMutation(pm=config['encoding']['mut_prob'])
     # mutations = MutationCompact()
     # mutations.add_mutation(mutation1, pm=0.1)
     # mutations.add_mutation(mutation2, pm=0.1)
@@ -192,5 +192,5 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 
 if __name__ == '__main__':
-    solve('data/small/multi_hop/ga-dem1_r25_1_40.json', model = '0.0.5.0')
+    solve('data/small/multi_hop/ga-dem1_r25_1_40.json', model = '1.0.5.0.2')
 
