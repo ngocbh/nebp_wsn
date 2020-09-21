@@ -43,18 +43,32 @@ def summarize_metrics(pareto_dict, output_dir):
     metrics['nds'] = []
     for key in pareto_dict.keys():
         metrics['c_' + key] = []
+    metrics['score'] = []
 
+    n = len(pareto_dict.keys())
+    c_matrix = [[] for _ in range(n)]
     i = 0
+
     for name, pareto in pareto_dict.items():
         if name != metrics['models'][i]:
             raise ValueError("Summarize metrics error")
-        i += 1
 
         metrics['delta'].append(delta_metric(pareto))
         metrics['spacing'].append(spacing_metric(pareto))
         metrics['nds'].append(non_dominated_solutions(pareto))
         for other_name, other_pareto in pareto_dict.items():
-            metrics['c_' + other_name].append(coverage_metric(pareto, other_pareto))
+            c = coverage_metric(pareto, other_pareto)
+            metrics['c_' + other_name].append(c)
+            c_matrix[i].append(c)
+
+        i += 1
+    
+    for i in range(n):
+        score = 0
+        for j in range(n):
+            if c_matrix[i][j] - c_matrix[j][i] > 0:
+                score += 1
+        metrics['score'].append(score)
 
     df = pd.DataFrame(data=metrics)
     filepath = os.path.join(output_dir, 'metrics_comparison.csv')
