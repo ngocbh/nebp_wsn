@@ -14,6 +14,7 @@ from geneticpython.models.tree import EdgeSets, KruskalTree
 from geneticpython.core.operators import PrimCrossover, TreeMutation, MutationCompact
 
 from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation
+from initalization import initialize_pop
 from utils.configurations import load_config, gen_output_dir
 from utils import WusnInput
 from utils import save_results
@@ -52,7 +53,6 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     config = config or load_config(CONFIG_FILE, model)
     check_config(config, filename, model)
     output_dir = output_dir or gen_output_dir(filename, model)
-
     basename, _ = os.path.splitext(os.path.basename(filename))
     os.makedirs(os.path.join(
         WORKING_DIR, '{}/{}'.format(output_dir, basename)), exist_ok=True)
@@ -64,27 +64,24 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     network = MultiHopNetwork(problem)
     node_count = problem._num_of_relays + problem._num_of_sensors + 1
     edge_count = problem._num_of_sensors
+
     indv_temp = EdgeSets(number_of_vertices=node_count, 
                          solution=network,
                          potential_edges=problem._idx2edge,
                          init_method='PrimRST')
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
-    
-    kruskal_solution = WusnKruskalNetwork(problem)
+
     @population.register_initialization
     def init_population(random_state=None):
-        ret = []
-        for i in range(population.size):
-            kruskal_solution.random_init(random_state)
-            tmp_network = network.clone()
-            tmp_network.from_edge_list(kruskal_solution.edges)
-
-            indv = indv_temp.clone()
-            indv.encode(tmp_network)
-
-            ret.append(indv)
-        return ret
+        return initialize_pop(config['encoding']['init_method'],
+                              network=network, 
+                              problem=problem,
+                              indv_temp=indv_temp, 
+                              size=population.size,
+                              max_hop=config['data']['max_hop'],
+                              random_state=random_state)
+    
 
     selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
     crossover = MPrimCrossover(pc=config['encoding']['cro_prob'])
@@ -105,6 +102,8 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     # print(solution._is_valid)
     # print(solution.num_used_relays)
     # print(solution.calc_max_energy_consumption())
+    # print(solution.max_depth)
+    # print(solution.edges)
     # child = mutation.mutate(indv_temp, 1)
     # print(child.chromosome.genes)
     # solution2 = child.decode()
@@ -166,6 +165,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
 
+    history.dump(os.path.join(out_dir, 'history.json'))
     with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
         f.write(f"running time: {end_time-start_time:}")
 
@@ -178,7 +178,6 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                      objective_name=['relays', 'energy consumption'])
 
     if save_history:
-        history.dump(os.path.join(out_dir, 'history.json'))
         save_history_as_gif(history,
                             title="NSGAII - multi-hop",
                             objective_name=['relays', 'energy'],
@@ -192,5 +191,5 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 
 if __name__ == '__main__':
-    solve('data/small/multi_hop/ga-dem1_r25_1_40.json', model = '1.0.5.0.2')
+    solve('data/_small/multi_hop/test.json', model = '1.0.5.0.2')
 

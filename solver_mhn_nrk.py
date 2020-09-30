@@ -156,6 +156,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
 
+    history.dump(os.path.join(out_dir, 'history.json'))
     with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
         f.write(f"running time: {end_time-start_time:}")
 
@@ -168,7 +169,6 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                      objective_name=['relays', 'energy consumption'])
 
     if save_history:
-        history.dump(os.path.join(out_dir, 'history.json'))
         save_history_as_gif(history,
                             title="NSGAII - multi-hop",
                             objective_name=['relays', 'energy'],

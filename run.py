@@ -41,7 +41,6 @@ def run_solver(solver, model, input_dir, output_dir=None, testnames=None, **kwar
     test_list = []
     done_list = []
 
-    print(testnames)
     output_dir = output_dir or gen_output_dir(input_dir, model)
     for file in os.listdir(datapath):
         if 'dem' not in file or (testnames is not None and file not in testnames):

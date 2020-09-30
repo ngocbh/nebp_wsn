@@ -5,3 +5,4 @@ from .wusn_mutation import *
 from .mprim_crossover import MPrimCrossover
 from .sprim_mutation import SPrimMutation
 from .aprim_mutation import APrimMutation
+from .cprim_init import cprim_init

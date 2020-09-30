@@ -71,20 +71,23 @@ def solve(filename, output_dir=None, model='0.0.4.0', config=None, save_history=
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
     
-    kruskal_solution = WusnKruskalNetwork(problem)
-    @population.register_initialization
-    def init_population(random_state=None):
-        ret = []
-        for i in range(population.size):
-            kruskal_solution.random_init(random_state)
-            tmp_network = network.clone()
-            tmp_network.from_edge_list(kruskal_solution.edges)
+    if config['encoding']['init_method'] == 'KruskalRST': 
+        kruskal_solution = WusnKruskalNetwork(problem)
+        @population.register_initialization
+        def init_population(random_state=None):
+            ret = []
+            for i in range(population.size):
+                kruskal_solution.random_init(random_state)
+                tmp_network = network.clone()
+                tmp_network.from_edge_list(kruskal_solution.edges)
 
-            indv = indv_temp.clone()
-            indv.encode(tmp_network)
+                indv = indv_temp.clone()
+                indv.encode(tmp_network)
 
-            ret.append(indv)
-        return ret
+                ret.append(indv)
+            return ret
+    else:
+        indv_temp.solution.set_initialization_method(config['encoding']['init_method'])
 
     selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
     crossover = PrimCrossover(pc=config['encoding']['cro_prob'])
@@ -140,6 +143,7 @@ def solve(filename, output_dir=None, model='0.0.4.0', config=None, save_history=
 
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
+    history.dump(os.path.join(out_dir, 'history.json'))
     with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
         f.write(f"running time: {end_time-start_time:}")
 
@@ -152,7 +156,6 @@ def solve(filename, output_dir=None, model='0.0.4.0', config=None, save_history=
                      objective_name=['relays', 'energy consumption'])
 
     if save_history:
-        history.dump(os.path.join(out_dir, 'history.json'))
         save_history_as_gif(history,
                             title="NSGAII - multi-hop",
                             objective_name=['relays', 'energy'],

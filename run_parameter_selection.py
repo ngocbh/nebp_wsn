@@ -27,28 +27,6 @@ def random_tests():
 
     return rand.sample(tests, 10)
 
-def sum_score(working_dir):
-    metric_sum = None
-    n_tests = 0
-    for test in os.listdir(working_dir):
-        if 'dem' in test:
-            test_dir = os.path.join(working_dir, test)
-            test_df = pd.read_csv(join(test_dir, 'metrics_comparison.csv'))
-            models = test_df['models']
-            test_df = test_df.drop(columns='models')
-            if metric_sum is None:
-                metric_sum = test_df
-            elif metric_sum.shape != test_df.shape:
-                raise ValueError(f'difference metric shape on test {test}')
-            else:
-                metric_sum = metric_sum.add(test_df, fill_value=0)
-            n_tests += 1
-    metric_sum = metric_sum.div(n_tests)
-    metric_sum.insert(0, 'models', models, True)
-    out_file = join(working_dir, 'sum_test_scores.csv')
-    metric_sum.to_csv(out_file, index=False)
-
-
 def choose_pc(solver, model, tests):
     pc_list = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
     pm = 0.1
@@ -95,11 +73,11 @@ if __name__ == '__main__':
     # choose_parameters(solver_mhn_kruskal, "1.0.2.0", tests)
     # choose_parameters(solver_mhn_nrk, "1.0.1.0", tests)
     # choose_parameters(solver_mhn_prim, "1.0.4.0", tests)
-    sum_score('./results/small/multi_hop/parsec/sum-pc-1.0.1.0')
-    sum_score('./results/small/multi_hop/parsec/sum-pc-1.0.2.0')
-    sum_score('./results/small/multi_hop/parsec/sum-pc-1.0.4.0')
-    sum_score('./results/small/multi_hop/parsec/sum-pc-1.0.5.0')
-    sum_score('./results/small/multi_hop/parsec/sum-pm-1.0.1.0')
-    sum_score('./results/small/multi_hop/parsec/sum-pm-1.0.2.0')
-    sum_score('./results/small/multi_hop/parsec/sum-pm-1.0.4.0')
-    sum_score('./results/small/multi_hop/parsec/sum-pm-1.0.5.0')
+    summarization.average_tests_score('./results/small/multi_hop/parsec/sum-pc-1.0.1.0')
+    summarization.average_tests_score('./results/small/multi_hop/parsec/sum-pc-1.0.2.0')
+    summarization.average_tests_score('./results/small/multi_hop/parsec/sum-pc-1.0.4.0')
+    summarization.average_tests_score('./results/small/multi_hop/parsec/sum-pc-1.0.5.0')
+    summarization.average_tests_score('./results/small/multi_hop/parsec/sum-pm-1.0.1.0')
+    summarization.average_tests_score('./results/small/multi_hop/parsec/sum-pm-1.0.2.0')
+    summarization.average_tests_score('./results/small/multi_hop/parsec/sum-pm-1.0.4.0')
+    summarization.average_tests_score('./results/small/multi_hop/parsec/sum-pm-1.0.5.0')

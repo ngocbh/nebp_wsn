@@ -75,7 +75,7 @@ class WusnNetwork(RootedTree):
                 # self.adjacency[0].remove(i)
                 # self.adjacency[i].remove(0)
 
-        is_valid &= (max_depth - 1 <= self.max_hop)
+        is_valid &= (max_depth <= self.max_hop)
         self.max_depth = max_depth
         is_valid &= all(visited[self.n+1:])
         self._is_valid = is_valid

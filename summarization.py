@@ -176,6 +176,29 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
         metric_sum.to_csv(filepath, index=False)
         
 
+
+def average_tests_score(working_dir):
+    metric_sum = None
+    n_tests = 0
+    for test in os.listdir(working_dir):
+        if 'dem' in test:
+            test_dir = os.path.join(working_dir, test)
+            test_df = pd.read_csv(join(test_dir, 'metrics_comparison.csv'))
+            models = test_df['models']
+            test_df = test_df.drop(columns='models')
+            if metric_sum is None:
+                metric_sum = test_df
+            elif metric_sum.shape != test_df.shape:
+                raise ValueError(f'difference metric shape on test {test}')
+            else:
+                metric_sum = metric_sum.add(test_df, fill_value=0)
+            n_tests += 1
+    metric_sum = metric_sum.div(n_tests)
+    metric_sum.insert(0, 'models', models, True)
+    out_file = join(working_dir, 'sum_test_scores.csv')
+    metric_sum.to_csv(out_file, index=False)
+
+
 if __name__ == "__main__":
     summarize_model({"netkeys" : "1.0.1.0.4.0", 
                      "kruskal": "1.0.2.0.4.5", 
