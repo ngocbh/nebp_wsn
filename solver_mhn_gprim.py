@@ -46,13 +46,18 @@ def check_config(config, filename, model):
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
+def update_max_hop(config, inp):
+    config['data']['max_hop'] = config['data']['max_hop'] or inp.default_max_hop
+
 def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True, seed=None):
     start_time = time.time()
 
     seed = seed or 42
     config = config or load_config(CONFIG_FILE, model)
     check_config(config, filename, model)
+    print(output_dir)
     output_dir = output_dir or gen_output_dir(filename, model)
+    print(output_dir)
     basename, _ = os.path.splitext(os.path.basename(filename))
     os.makedirs(os.path.join(
         WORKING_DIR, '{}/{}'.format(output_dir, basename)), exist_ok=True)
@@ -60,6 +65,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
     wusnfile = os.path.join(WORKING_DIR, filename)
     inp = WusnInput.from_file(wusnfile)
+    update_max_hop(config, inp)
     problem = MultiHopProblem(inp, config['data']['max_hop'])
     network = MultiHopNetwork(problem)
     node_count = problem._num_of_relays + problem._num_of_sensors + 1
@@ -79,7 +85,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                               problem=problem,
                               indv_temp=indv_temp, 
                               size=population.size,
-                              max_hop=config['data']['max_hop'],
+                              max_hop=problem.max_hop,
                               random_state=random_state)
     
 

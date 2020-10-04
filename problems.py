@@ -18,6 +18,7 @@ class WusnProblem():
         self._num_of_relays = inp.num_of_relays
 
         self._hop = WusnConstants.hop
+        self.default_max_hop = inp.default_max_hop
 
         self.graph_construct(inp, multi_hop)
 
@@ -86,5 +87,5 @@ class SingleHopProblem(WusnProblem):
 
 class MultiHopProblem(WusnProblem):
     def __init__(self, inp : WusnInput, max_hop : int):
-        self.max_hop = max_hop
         super(MultiHopProblem, self).__init__(inp, multi_hop=True)
+        self.max_hop = max_hop or inp.default_max_hop

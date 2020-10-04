@@ -20,6 +20,7 @@ from utils import save_results
 from problems import MultiHopProblem
 from rooted_networks import MultiHopNetwork
 from networks import WusnKruskalNetwork
+from initalization import initialize_pop
 
 from random import Random
 from collections import defaultdict
@@ -45,6 +46,9 @@ def check_config(config, filename, model):
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
+def update_max_hop(config, inp):
+    config['data']['max_hop'] = config['data']['max_hop'] or inp.default_max_hop
+
 def solve(filename, output_dir=None, model='0.0.4.0', config=None, save_history=True, seed=None):
     start_time = time.time()
 
@@ -60,6 +64,7 @@ def solve(filename, output_dir=None, model='0.0.4.0', config=None, save_history=
 
     wusnfile = os.path.join(WORKING_DIR, filename)
     inp = WusnInput.from_file(wusnfile)
+    update_max_hop(config, inp)
     problem = MultiHopProblem(inp, config['data']['max_hop'])
     network = MultiHopNetwork(problem)
     node_count = problem._num_of_relays + problem._num_of_sensors + 1
@@ -70,24 +75,15 @@ def solve(filename, output_dir=None, model='0.0.4.0', config=None, save_history=
                          init_method='PrimRST')
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
-    
-    if config['encoding']['init_method'] == 'KruskalRST': 
-        kruskal_solution = WusnKruskalNetwork(problem)
-        @population.register_initialization
-        def init_population(random_state=None):
-            ret = []
-            for i in range(population.size):
-                kruskal_solution.random_init(random_state)
-                tmp_network = network.clone()
-                tmp_network.from_edge_list(kruskal_solution.edges)
-
-                indv = indv_temp.clone()
-                indv.encode(tmp_network)
-
-                ret.append(indv)
-            return ret
-    else:
-        indv_temp.solution.set_initialization_method(config['encoding']['init_method'])
+    @population.register_initialization
+    def init_population(random_state=None):
+        return initialize_pop(config['encoding']['init_method'],
+                              network=network, 
+                              problem=problem,
+                              indv_temp=indv_temp, 
+                              size=population.size,
+                              max_hop=problem.max_hop,
+                              random_state=random_state)
 
     selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
     crossover = PrimCrossover(pc=config['encoding']['cro_prob'])

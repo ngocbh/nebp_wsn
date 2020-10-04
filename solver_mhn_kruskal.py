@@ -19,6 +19,7 @@ from utils import WusnInput
 from utils import save_results
 from problems import MultiHopProblem
 from networks import MultiHopNetwork, WusnKruskalNetwork
+from initalization import initialize_pop
 
 from random import Random
 from collections import defaultdict
@@ -44,6 +45,9 @@ def check_config(config, filename, model):
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
+def update_max_hop(config, inp):
+    config['data']['max_hop'] = config['data']['max_hop'] or inp.default_max_hop
+
 def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True, seed=None):
     start_time = time.time()
 
@@ -59,6 +63,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
     wusnfile = os.path.join(WORKING_DIR, filename)
     inp = WusnInput.from_file(wusnfile)
+    update_max_hop(config, inp)
     problem = MultiHopProblem(inp, config['data']['max_hop'])
     network = MultiHopNetwork(problem)
     node_count = problem._num_of_relays + problem._num_of_sensors + 1
@@ -68,6 +73,16 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                                 init_method='KruskalRST')
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
+
+    @population.register_initialization
+    def init_population(random_state=None):
+        return initialize_pop(config['encoding']['init_method'],
+                              network=network, 
+                              problem=problem,
+                              indv_temp=indv_temp, 
+                              size=population.size,
+                              max_hop=problem.max_hop,
+                              random_state=random_state)
 
     selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
     crossover = KruskalCrossover(pc=config['encoding']['cro_prob'])

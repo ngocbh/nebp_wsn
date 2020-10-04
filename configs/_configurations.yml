@@ -14,25 +14,25 @@ models:
 
 data:
   - name: "small"
-    max_hop: 8
+    max_hop: 0
 
   - name: "medium"
-    max_hop: 12
+    max_hop: 0
 
   - name: "ept_init"
-    max_hop: 8
+    max_hop: 0
 
   - name: "ept_efficiency"
-    max_hop: 8
+    max_hop: 0
 
   - name: "ept_scalability"
-    max_hop: 8
+    max_hop: 0
 
   - name: "ept_sparsity"
-    max_hop: 8
+    max_hop: 0
 
   - name: "ept_entropy"
-    max_hop: 8
+    max_hop: 0
 
 
 encoding:

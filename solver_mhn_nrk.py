@@ -18,6 +18,7 @@ from utils import WusnInput
 from utils import visualize_front, make_gif, visualize_solutions, remove_file, save_results
 from problems import MultiHopProblem
 from networks import MultiHopNetwork
+from initalization import initialize_pop
 
 from random import Random
 from collections import defaultdict
@@ -36,12 +37,18 @@ WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 
 class MultiHopIndividual(NetworkRandomKeys):
-    def __init__(self, problem: MultiHopProblem):
+    def __init__(self, problem: MultiHopProblem, network: MultiHopNetwork):
         self.problem = problem
-        network = MultiHopNetwork(problem)
         node_count = problem._num_of_relays + problem._num_of_sensors + 1
+        edge_list = list(problem._idx2edge)
+        for i in range(1, problem._num_of_relays + 1):
+            edge_list.append((0, i))
+        
         super(MultiHopIndividual, self).__init__(
-            number_of_vertices=node_count, potential_edges=problem._idx2edge, network=network)
+            number_of_vertices=node_count, 
+            potential_edges=edge_list, 
+            network=network, 
+            use_encode=True)
 
 def check_config(config, filename, model):
     if config['data']['name'] not in filename:
@@ -50,6 +57,9 @@ def check_config(config, filename, model):
         raise ValueError('encoding {} != {}'.format(config['encoding']['name'], 'netkeys'))
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
+
+def update_max_hop(config, inp):
+    config['data']['max_hop'] = config['data']['max_hop'] or inp.default_max_hop
 
 def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True, seed=None):
     start_time = time.time()
@@ -66,51 +76,21 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
     wusnfile = os.path.join(WORKING_DIR, filename)
     inp = WusnInput.from_file(wusnfile)
+    update_max_hop(config, inp)
     problem = MultiHopProblem(inp, config['data']['max_hop'])
-
-    indv_temp = MultiHopIndividual(problem)
-
-    def init_bias_genes(length, n_relays_edges, random_state=None):
-        genes = np.zeros(length)
-        for i in range(length):
-            u = random_state.beta(config['encoding']['alpha'], config['encoding']['beta'])
-            if i < n_relays_edges:
-                genes[i] = 1 - u
-            else:
-                genes[i] = u
-        return genes
-
-    # rand = random.Random()
-    # for i in range(10000):
-    #     genes = init_bias_genes(problem._num_encoded_edges, problem.num_rl2ss_edges, rand)
-    #     print(len(genes), problem._num_encoded_edges, problem.num_rl2ss_edges)
-    #     indv_temp.update_genes(genes)
-    #     network = indv_temp.decode()
-    #     print(network.num_used_relays, network.max_depth)
-    #     print(network.calc_max_energy_consumption())
-    #     print(i, network.is_valid)
-    #     if network.is_valid:
-    #         break
-    # return
+    network = MultiHopNetwork(problem)
+    indv_temp = MultiHopIndividual(problem, network)
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
-
-    # @population.register_initialization
-    # def init_population(rand: Random = Random()):
-    #     print("Initializing population")
-    #     ret = []
-    #     for i in range(population.size):
-    #         new_indv = population.individual_temp.clone()
-    #         for j in range(100):
-    #             genes = init_bias_genes(
-    #                 problem._num_encoded_edges, problem.num_rl2ss_edges, rand)
-    #             new_indv.update_genes(genes=genes)
-    #             network = new_indv.decode()
-    #             if network.is_valid:
-    #                 print("init sucessfullly indv number {} in {} loops".format(i, j))
-    #                 break
-    #         ret.append(new_indv)
-    #     return ret
+    @population.register_initialization
+    def init_population(random_state=None):
+        return initialize_pop(config['encoding']['init_method'],
+                              network=network, 
+                              problem=problem,
+                              indv_temp=indv_temp, 
+                              size=population.size,
+                              max_hop=problem.max_hop,
+                              random_state=random_state)
 
     selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
     crossover = SBXCrossover(

@@ -27,7 +27,7 @@ class WusnConstants:
 
 class WusnInput:
     def __init__(self, _W=500, _H=500, _depth=1., _height=10., _num_of_relays=10, _num_of_sensors=50,
-                 _radius=20., _relays=None, _sensors=None, _BS=None):
+                 _radius=20., _relays=None, _sensors=None, _BS=None, _max_hop=None):
         self.W = _W
         self.H = _H
         self.depth = _depth
@@ -38,6 +38,7 @@ class WusnInput:
         self.num_of_sensors = _num_of_sensors
         self.radius = _radius
         self.BS = _BS
+        self.default_max_hop = _max_hop
 
     @classmethod
     def from_file(cls, path):
@@ -54,6 +55,19 @@ class WusnInput:
         num_of_relays = d['num_of_relays']
         num_of_sensors = d['num_of_sensors']
         radius = d['radius']
+        max_hop = None
+        if 'max_hop' in d:
+            max_hop = d['max_hop']
+        else:
+            if num_of_relays == 20: 
+                max_hop = 6
+            elif num_of_relays == 40:
+                max_hop = 8
+            elif num_of_relays == 100:
+                max_hop = 12
+            elif num_of_relays == 200:
+                max_hop = 16
+
         relays = []
         sensors = []
         BS = Point.from_dict(d['center'])
@@ -62,7 +76,7 @@ class WusnInput:
         for i in range(num_of_relays):
             relays.append(RelayNode.from_dict(d['relays'][i]))
 
-        return cls(W, H, depth, height, num_of_relays, num_of_sensors, radius, relays, sensors, BS)
+        return cls(W, H, depth, height, num_of_relays, num_of_sensors, radius, relays, sensors, BS, max_hop)
 
     def freeze(self):
         self.sensors = tuple(self.sensors)
