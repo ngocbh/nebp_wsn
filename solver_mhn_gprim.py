@@ -55,9 +55,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     seed = seed or 42
     config = config or load_config(CONFIG_FILE, model)
     check_config(config, filename, model)
-    print(output_dir)
     output_dir = output_dir or gen_output_dir(filename, model)
-    print(output_dir)
     basename, _ = os.path.splitext(os.path.basename(filename))
     os.makedirs(os.path.join(
         WORKING_DIR, '{}/{}'.format(output_dir, basename)), exist_ok=True)
@@ -89,7 +87,6 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                               random_state=random_state)
     
 
-    selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
     crossover = MPrimCrossover(pc=config['encoding']['cro_prob'])
     # mutation1 = WusnMutation(pm=1, potential_edges=problem._idx2edge) 
     # mutation2 = APrimMutation(pm=1)
@@ -133,10 +130,11 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     # print(solution4._is_valid)
     # print(solution4.calc_max_energy_consumption())
     # return
-    engine = NSGAIIEngine(population, selection=selection,
+    engine = NSGAIIEngine(population=population,
                           crossover=crossover,
-                          mutation=mutation3,
+                          tournament_size=config['algorithm']['tournament_size'],
                           selection_size=config['algorithm']['slt_size'],
+                          mutation=mutation3,
                           random_state=seed)
 
     @engine.minimize_objective
@@ -197,5 +195,5 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 
 if __name__ == '__main__':
-    solve('data/_small/multi_hop/test.json', model = '1.0.5.0.2')
+    solve('data/_small/multi_hop/ga-dem1_r25_1_0.json', model = '1.0.5.0')
 

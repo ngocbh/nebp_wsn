@@ -78,6 +78,12 @@ class WusnNetwork(RootedTree):
         is_valid &= (max_depth <= self.max_hop)
         self.max_depth = max_depth
         is_valid &= all(visited[self.n+1:])
+        is_valid &= (len(self.edges) == self.number_of_vertices-1)
+
+        for i in range(1, self.n+1):
+            if is_valid and (0, i) not in self.edges and (i, 0) not in self.edges:
+                raise ValueError('Network is not valid but is_valid is true')
+
         self._is_valid = is_valid
 
     @property

@@ -84,7 +84,6 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                               max_hop=problem.max_hop,
                               random_state=random_state)
 
-    selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
     crossover = KruskalCrossover(pc=config['encoding']['cro_prob'])
     mutation = WusnMutation(config['encoding']['mut_prob'], potential_edges=problem._idx2edge) 
 
@@ -101,10 +100,11 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     # child = mutation.mutate(indv_temp, 2)
     # print(child.chromosome.genes)
     # return
-    engine = NSGAIIEngine(population, selection=selection,
+    engine = NSGAIIEngine(population=population,
                           crossover=crossover,
-                          mutation=mutation,
+                          tournament_size=config['algorithm']['tournament_size'],
                           selection_size=config['algorithm']['slt_size'],
+                          mutation=mutation,
                           random_state=seed)
 
     @engine.minimize_objective

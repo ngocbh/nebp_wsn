@@ -92,16 +92,16 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                               max_hop=problem.max_hop,
                               random_state=random_state)
 
-    selection = TournamentSelection(tournament_size=config['algorithm']['tournament_size'])
-    crossover = SBXCrossover(
-        pc=config['encoding']['cro_prob'], distribution_index=config['encoding']['cro_di'])
-    mutation = PolynomialMutation(
-        pm=config['encoding']['mut_prob'], distribution_index=config['encoding']['mut_di'])
+    crossover = SBXCrossover(pc=config['encoding']['cro_prob'], 
+                             distribution_index=config['encoding']['cro_di'])
+    mutation = PolynomialMutation(pm=config['encoding']['mut_prob'], 
+                                  distribution_index=config['encoding']['mut_di'])
 
-    engine = NSGAIIEngine(population, selection=selection,
+    engine = NSGAIIEngine(population=population,
                           crossover=crossover,
-                          mutation=mutation,
+                          tournament_size=config['algorithm']['tournament_size'],
                           selection_size=config['algorithm']['slt_size'],
+                          mutation=mutation,
                           random_state=seed)
 
     @engine.minimize_objective
@@ -135,7 +135,6 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
-
     history.dump(os.path.join(out_dir, 'history.json'))
     with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
         f.write(f"running time: {end_time-start_time:}")
@@ -163,4 +162,4 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 
 if __name__ == '__main__':
-    solve('data/small/multi_hop/no-dem7_r50_1_0.json', model = '1.0.1.0')
+    solve('data/_tiny/multi_hop/ga-dem1_r25_1_0.json', model = '1.7.1.0')

@@ -67,6 +67,8 @@ class WusnInput:
                 max_hop = 12
             elif num_of_relays == 200:
                 max_hop = 16
+            else:
+                max_hop = 8
 
         relays = []
         sensors = []

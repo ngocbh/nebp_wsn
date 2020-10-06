@@ -180,11 +180,11 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     indv_temp.energy = None
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
-    selection = TournamentSelection(tournament_size = config['algorithm']['tournament_size'])
     crossover = UniformCrossover(pc=config['encoding']['cro_prob'], pe=config['encoding']['cro_pe'])
     mutation = FlipBitMutation(pm=config['encoding']['mut_prob']) 
 
-    engine = NSGAIIEngine(population, selection=selection,
+    engine = NSGAIIEngine(population, 
+                          tournament_size=config['algorithm']['tournament_size'],
                           crossover=crossover,
                           mutation=mutation,
                           selection_size=config['algorithm']['slt_size'],

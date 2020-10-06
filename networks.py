@@ -84,6 +84,19 @@ class WusnKruskalNetwork(KruskalTree):
         is_valid &= (max_depth <= self.max_hop)
         self.max_depth = max_depth
         is_valid &= all(visited[self.n+1:])
+        is_valid &= (len(self.edges) == self.number_of_vertices-1)
+
+        potential_edge_set = set(self.potential_edges)
+        for u, v in self.edges:
+            if u != 0 and v != 0 and (u, v) not in potential_edge_set \
+                    and (v, u) not in potential_edge_set:
+                is_valid &= False
+
+        edge_set = set(self.edges)
+        for i in range(1, self.n+1):
+            if is_valid and (0, i) not in edge_set and (i, 0) not in edge_set:
+                raise ValueError('Network is not valid but is_valid is true')
+
         self._is_valid = is_valid
 
     @property

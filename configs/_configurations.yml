@@ -34,6 +34,11 @@ data:
   - name: "ept_entropy"
     max_hop: 0
 
+  - name: "tiny"
+    max_hop: 0
+
+  - name: "large"
+    max_hop: 0
 
 encoding:
   - name: "netkeys"  # 0
@@ -75,6 +80,10 @@ encoding:
     cro_prob: 0.7
     mut_prob: 0.5
 
+  - name: "prufer"  # 5
+    init_method: "KruskalRST"
+    cro_prob: 0.7
+    mut_prob: 0.1
 
 algorithm:
   - name: "nsgaii"  # 0

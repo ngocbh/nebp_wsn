@@ -1,0 +1,1002 @@
+[
+  {
+    "chromosome": [0, 0, 0, 3, 2, 1, 4],
+    "crowding_distance": Infinity,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 3, 2, 1, 4],
+    "crowding_distance": Infinity,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 1, 1, 0, 0, 0, 6],
+    "crowding_distance": Infinity,
+    "energy_consumption": 0.00060504,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [4, 0, 0, 0, 0, 0, 1, 0, 0],
+    "num_used_relays": 0.0,
+    "parent": [-1, -1, -1, -1, -1, 0, 0, 0, 6]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 6],
+    "crowding_distance": Infinity,
+    "energy_consumption": 0.00060504,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [4, 0, 0, 0, 0, 0, 1, 0, 0],
+    "num_used_relays": 0.0,
+    "parent": [-1, -1, -1, -1, -1, 0, 0, 0, 6]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 1, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 1, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 6, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 2, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 3, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 3, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 1, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 3, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 3, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 3, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 1, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 6, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 3, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 6, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 2, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 3, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 3, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 6, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 3, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 2, 1, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 3, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 3, 2, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  },
+  {
+    "chromosome": [0, 0, 0, 0, 0, 0, 4],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [5, 0, 0, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, -1, -1, -1, 0, 0, 0, 0, 4]
+  }
+]
