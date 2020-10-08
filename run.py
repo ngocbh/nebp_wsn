@@ -34,19 +34,20 @@ def is_done(filename, output_dir):
         return True
     return False
 
-def run_solver(solver, model, input_dir, output_dir=None, testnames=None, **kwargs):
+def run_solver(solver, model, input_dir, output_dir=None, testnames=None, overwrite=False, **kwargs):
     print(f"Running multi-hop problem on model {model}")
     datapath = os.path.join(WORKING_DIR, input_dir)
 
     test_list = []
     done_list = []
 
+    print(testnames)
     output_dir = output_dir or gen_output_dir(input_dir, model)
     for file in os.listdir(datapath):
-        if 'dem' not in file or (testnames is not None and file not in testnames):
+        if 'dem' not in file or (testnames is not None and all(e not in file for e in testnames)):
             continue
         filepath = os.path.join(datapath, file)
-        if not is_done(file, output_dir) or OVERWRITE:
+        if not is_done(file, output_dir) or overwrite:
             test_list.append(filepath)
         else:
             done_list.append(filepath)
@@ -67,7 +68,7 @@ def multi_run_solver(solver, model, input_dir, k, output_dir=None, testnames=Non
         run_solver(solver, smodel, input_dir=input_dir, output_dir=output_dir, testnames=testnames, seed=seed, **kwargs)
     return model_list
 
-def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
+def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10, overwrite=False):
     print("Running guided prim solver...")
     output_dir = input_dir.replace('data', 'results') 
     gprim_model = f'{ept}.{testset}.5.0'
@@ -76,7 +77,8 @@ def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
                                         input_dir=input_dir, 
                                         k=k, 
                                         testnames=testnames,
-                                        save_history=False)
+                                        save_history=False, 
+                                        overwrite=overwrite)
 
     print("Running kruskal solver...")
     kruskal_model = f'{ept}.{testset}.2.0' 
@@ -85,7 +87,8 @@ def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
                                          input_dir=input_dir, 
                                          k=k,
                                          testnames=testnames,
-                                         save_history=False)
+                                         save_history=False,
+                                         overwrite=overwrite)
 
     print("Running prim solver...")
     prim_model = f'{ept}.{testset}.4.0'
@@ -94,7 +97,8 @@ def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
                                          input_dir=input_dir, 
                                          k=k,
                                          testnames=testnames,
-                                         save_history=False)
+                                         save_history=False,
+                                         overwrite=overwrite)
 
     print("Running netkeys solver...")
     netkeys_model = f'{ept}.{testset}.1.0'
@@ -103,7 +107,8 @@ def run_mhn_experiment(ept, input_dir, testset=0, testnames=None, k=10):
                                          input_dir=input_dir, 
                                          k=k,
                                          testnames=testnames,
-                                         save_history=False)
+                                         save_history=False,
+                                         overwrite=overwrite)
 
     print("Summarizing...")
     summarization_list = []

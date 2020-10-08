@@ -27,13 +27,13 @@ def read_pareto(filepath):
     pareto = list(pareto)
     return pareto
 
-def visualize_test(pareto_dict, output_dir, show=True):
+def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
     filepath = os.path.join(output_dir, 'front_comparison.png')
     visualize_fronts(pareto_dict, 
                      filepath=filepath,
                      title='pareto fronts comparison', 
                      objective_name=['used relays', 'energy'], 
-                     save=True, show=show)
+                     save=True, show=show, **kwargs)
 
 def summarize_metrics(pareto_dict, output_dir):
     metrics = {}
@@ -74,7 +74,7 @@ def summarize_metrics(pareto_dict, output_dir):
     filepath = os.path.join(output_dir, 'metrics_comparison.csv')
     df.to_csv(filepath, index=False)
 
-def summarize_test(testname, model_dict, working_dir, cname):
+def summarize_test(testname, model_dict, working_dir, cname, **kwargs):
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
     pareto_dict = {}
     config_dict = {}
@@ -96,11 +96,11 @@ def summarize_test(testname, model_dict, working_dir, cname):
     with open(os.path.join(output_dir, 'config_comparison.yml'), mode='w') as f:
         f.write(yaml.dump(config_dict))
 
-    visualize_test(pareto_dict, output_dir=out_test_dir, show=False)
+    visualize_test(pareto_dict, output_dir=out_test_dir, show=False, **kwargs)
     summarize_metrics(pareto_dict, output_dir=out_test_dir)
 
 
-def summarize_model(model_dict, working_dir, cname=None, testnames=None):
+def summarize_model(model_dict, working_dir, cname=None, testnames=None, **kwargs):
     tests = set()
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
     
@@ -121,7 +121,7 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None):
         f.write(json.dumps(model_dict, indent=4))
 
     for test in tests:
-        summarize_test(test, model_dict, working_dir, cname)
+        summarize_test(test, model_dict, working_dir, cname, **kwargs)
 
 
 def calc_average_metrics(summarization_list, working_dir, cname, testnames=None):
