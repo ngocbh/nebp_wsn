@@ -294,23 +294,23 @@ def run_ept_3(testnames=None):
     all_model_dict = {}
     for h, max_hop in enumerate(max_hops):
         all_model_dict[max_hop] = {}
-        # md = run_solver(solver_mhn_gprim, f'{g}.2.5.0.{h}', max_hop, out_dir)
-        # all_model_dict[max_hop]['guided prim'] = md 
+        md = run_solver(solver_mhn_gprim, f'{g}.2.5.0.{h}', max_hop, out_dir)
+        all_model_dict[max_hop]['guided prim'] = md 
         md = run_solver(solver_mhn_kruskal, f'{g}.2.2.0.{h}', max_hop, out_dir)
         all_model_dict[max_hop]['kruskal'] = md 
-        # md = run_solver(solver_mhn_nrk, f'{g}.2.1.0.{h}', max_hop, out_dir)
-        # all_model_dict[max_hop]['netkeys'] = md 
-        # md = run_solver(solver_mhn_prim, f'{g}.2.4.0.{h}', max_hop, out_dir)
-        # all_model_dict[max_hop]['prim'] = md 
-        # md = run_solver(solver_mhn_prufer, f'{g}.2.6.0.{h}', max_hop, out_dir)
-        # all_model_dict[max_hop]['prufer'] = md 
+        md = run_solver(solver_mhn_nrk, f'{g}.2.1.0.{h}', max_hop, out_dir)
+        all_model_dict[max_hop]['netkeys'] = md 
+        md = run_solver(solver_mhn_prim, f'{g}.2.4.0.{h}', max_hop, out_dir)
+        all_model_dict[max_hop]['prim'] = md 
+        md = run_solver(solver_mhn_prufer, f'{g}.2.6.0.{h}', max_hop, out_dir)
+        all_model_dict[max_hop]['prufer'] = md 
 
     plot(all_model_dict, out_dir)
 
 
 if __name__ == '__main__':
-    testname = 'tiny_ga-dem3' if TESTING else 'tiny_ga-dem3'
+    testname = 'tiny_ga-dem3' if TESTING else ''
     testnames = [testname]
-    # run_ept_1(testnames)
+    run_ept_1(testnames)
     # run_ept_2(testnames)
-    run_ept_3(testnames)
+    # run_ept_3(testnames)
