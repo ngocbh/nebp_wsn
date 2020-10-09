@@ -200,9 +200,17 @@ def average_tests_score(working_dir):
 
 
 if __name__ == "__main__":
+    marker = ['>', (5,0), (5,1), (5,2), '+', 'o'] 
+    marker.reverse()
     summarize_model({"netkeys" : "1.0.1.0", 
                      "prufer": "1.0.6.0",
                      "kruskal": "1.0.2.0", 
                      "prim": "1.0.4.0",
-                     "guided prim": "1.0.5.0"}, working_dir="results/_small/multi_hop")
+                     "guided prim": "1.0.5.0"}, 
+                    working_dir="results/_small/multi_hop", 
+                    s=20, 
+                    marker=marker, 
+                    plot_line=True, 
+                    linewidth=0.8,
+                    linestyle='dashed')
 

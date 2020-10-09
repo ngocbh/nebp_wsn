@@ -31,12 +31,12 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 INIT_METHODS = ['PrimRST', 'KruskalRST',
-                'RandWalkRST', 'CPrimRST', 'Mix_1', 'Mix_2']
+                'RandWalkRST', 'Mix_1', 'Mix_2']
 INIT_METHODS_LEGEND = ['prim', 'kruskal',
-                       'randwalk', 'cprim', 'mix_1', 'mix_2']
+                       'randwalk', 'mix_1', 'Mix_2']
 
 RERUN = False
-TESTING = True
+TESTING = False
 
 
 def objective1(indv):
@@ -273,8 +273,16 @@ def run_ept_3(testnames=None):
             run.run_solver(solver, smodel, test_path, output_dir=out_model_dir, overwrite=RERUN,
                            testnames=testnames, save_history=False, config=config, seed=42)
 
+        marker = ['>', (5,0), (5,1), (5,2), '+', 'o'] 
+        marker.reverse()
         summarization.summarize_model(
-            model_dict, working_dir=out_dir, cname=f'sum-{model}', plot_line=True)
+            model_dict, working_dir=out_dir, 
+            cname=f'sum-{model}', 
+            s=20, 
+            marker=marker, 
+            plot_line=True, 
+            linewidth=0.8,
+            linestyle='dashed')
         return model_dict
 
     def plot(all_model_dict, out_dir):
@@ -286,22 +294,22 @@ def run_ept_3(testnames=None):
     all_model_dict = {}
     for h, max_hop in enumerate(max_hops):
         all_model_dict[max_hop] = {}
-        md = run_solver(solver_mhn_gprim, f'{g}.2.5.0.{h}', max_hop, out_dir)
-        all_model_dict[max_hop]['guided prim'] = md 
+        # md = run_solver(solver_mhn_gprim, f'{g}.2.5.0.{h}', max_hop, out_dir)
+        # all_model_dict[max_hop]['guided prim'] = md 
         md = run_solver(solver_mhn_kruskal, f'{g}.2.2.0.{h}', max_hop, out_dir)
         all_model_dict[max_hop]['kruskal'] = md 
-        md = run_solver(solver_mhn_nrk, f'{g}.2.1.0.{h}', max_hop, out_dir)
-        all_model_dict[max_hop]['netkeys'] = md 
-        md = run_solver(solver_mhn_prim, f'{g}.2.4.0.{h}', max_hop, out_dir)
-        all_model_dict[max_hop]['prim'] = md 
-        md = run_solver(solver_mhn_prufer, f'{g}.2.6.0.{h}', max_hop, out_dir)
-        all_model_dict[max_hop]['prufer'] = md 
+        # md = run_solver(solver_mhn_nrk, f'{g}.2.1.0.{h}', max_hop, out_dir)
+        # all_model_dict[max_hop]['netkeys'] = md 
+        # md = run_solver(solver_mhn_prim, f'{g}.2.4.0.{h}', max_hop, out_dir)
+        # all_model_dict[max_hop]['prim'] = md 
+        # md = run_solver(solver_mhn_prufer, f'{g}.2.6.0.{h}', max_hop, out_dir)
+        # all_model_dict[max_hop]['prufer'] = md 
 
     plot(all_model_dict, out_dir)
 
 
 if __name__ == '__main__':
-    testname = 'tiny_ga-dem3' if TESTING else 'medium'
+    testname = 'tiny_ga-dem3' if TESTING else 'tiny_ga-dem3'
     testnames = [testname]
     # run_ept_1(testnames)
     # run_ept_2(testnames)
