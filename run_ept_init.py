@@ -201,12 +201,14 @@ def run_ept_2(testnames=None):
         bp = plt.boxplot(data_1, positions=pos, widths=0.6, notch=False)
         set_box_color(bp, box_colors[0])
 
+        
         pos = [i for i in range(2, len(data_1)*3+2, 3)]
         bp = plt.boxplot(data_2, positions=pos, widths=0.6, notch=False)
         set_box_color(bp, box_colors[1])
 
         ax.set_xticklabels(INIT_METHODS_LEGEND)
-        ax.set_xticks([i+0.5 for i in range(1, len(INIT_METHODS)*3+1, 3)])
+        pos = [i+0.5 for i in range(1, len(INIT_METHODS)*3+1, 3)]
+        ax.set_xticks(pos)
         merged = list(itertools.chain.from_iterable(data_1 + data_2))
         max_relays = max(merged)
         plt.ylim(top=max_relays + 1)
@@ -248,7 +250,7 @@ def run_ept_2(testnames=None):
         out_test_dir = join(out_dir, basename)
         os.makedirs(out_test_dir, exist_ok=True)
         filepath = join(test_path, testname)
-        max_hop1, max_hop2 = (6, 10) if TESTING else (10, 20)
+        max_hop1, max_hop2 = (6, 10) if TESTING else (16, 30)
         outname = 'relays\' distribution'
         if not os.path.isfile(os.path.join(out_test_dir, 'done_ept_2.flag')) or RERUN:
             run(filepath, out_test_dir, max_hop1, max_hop2)
@@ -312,6 +314,6 @@ def run_ept_3(testnames=None):
 if __name__ == '__main__':
     testname = 'tiny_ga-dem3' if TESTING else ''
     testnames = [testname]
-    run_ept_1(testnames)
-    # run_ept_2(testnames)
+    # run_ept_1(testnames)
+    run_ept_2(testnames)
     # run_ept_3(testnames)
