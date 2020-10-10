@@ -31,9 +31,9 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 INIT_METHODS = ['PrimRST', 'KruskalRST',
-                'RandWalkRST', 'Mix_1', 'Mix_2']
-INIT_METHODS_LEGEND = ['prim', 'kruskal',
-                       'randwalk', 'mix_1', 'Mix_2']
+                'RandWalkRST', 'Mix_1']
+INIT_METHODS_LEGEND = ['Prim', 'Kruskal',
+                       'RandWalk', 'Mix1']
 
 RERUN = False
 TESTING = False
@@ -84,10 +84,11 @@ def run_ept_1(testnames=None):
         ds = []
         for i in range(len(INIT_METHODS)):
             n_hop = 10 if TESTING else 30
+            n_hop_start = 1 if TESTING else 6
             n_seed = 1 if TESTING else 30
             pop_size = 20 if TESTING else 100
             d = []
-            for hop in range(1, n_hop+1):
+            for hop in range(n_hop_start, n_hop+1):
                 sum_valid_solutions = 0
                 for seed in range(1, n_seed+1):
                     solutions = init_population(

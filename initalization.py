@@ -81,13 +81,13 @@ def initialize_pop(init_method, network, problem, indv_temp, size, max_hop, rand
     elif init_method == 'Mix_1':
         ret = []
         ret = kruskal_rst(network, problem, indv_temp, int(size/4), max_hop, random_state)
-        ret.extend(cprim_rst(network, problem, indv_temp, int(size/4), max_hop, random_state))
-        ret.extend(prim_rst(network, problem, indv_temp, int(size/4), max_hop, random_state))
+        # ret.extend(cprim_rst(network, problem, indv_temp, int(size/4), max_hop, random_state))
+        ret.extend(prim_rst(network, problem, indv_temp, int(size/2), max_hop, random_state))
         ret.extend(random_walk_rst(network, problem, indv_temp, int(size/4), max_hop, random_state))
         return ret
     elif init_method == 'Mix_2':
         ret = []
         ret = kruskal_rst(network, problem, indv_temp, int(size/2), max_hop, random_state)
-        ret.extend(cprim_rst(network, problem, indv_temp, int(size/2), max_hop, random_state))
+        ret.extend(prim_rst(network, problem, indv_temp, int(size/2), max_hop, random_state))
         return ret
         
