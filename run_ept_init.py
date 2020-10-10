@@ -81,6 +81,7 @@ def init_population(filename, init_method, size, max_hop, random_state):
 
 def run_ept_1(testnames=None):
     def run(filepath, out_test_dir):
+        print(f"Running: {filepath}")
         ds = []
         for i in range(len(INIT_METHODS)):
             n_hop = 10 if TESTING else 30
@@ -148,6 +149,7 @@ def run_ept_2(testnames=None):
     test_path = './data/ept_init'
 
     def run(filepath, out_test_dir, max_hop1, max_hop2):
+        print(f"Running: {filepath}")
         data_1 = []
         data_2 = []
         label_1 = []
