@@ -277,7 +277,7 @@ def run_ept_3(testnames=None):
             print(config)
             model_dict[smodel] = smodel
             run.run_solver(solver, smodel, test_path, output_dir=out_model_dir, overwrite=RERUN,
-                           testnames=testnames, save_history=False, config=config, seed=42)
+                           testnames=testnames, save_history=True, config=config, seed=42)
 
         marker = ['>', (5,0), (5,1), (5,2), '+', 'o'] 
         marker.reverse()
