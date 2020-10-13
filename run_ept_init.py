@@ -295,7 +295,7 @@ def run_ept_3(testnames=None):
 
     out_dir = 'results/ept_init/ept_3'
     g = 0 if TESTING else 1
-    max_hops = [6, 10] if TESTING else [10, 20]
+    max_hops = [6, 10] if TESTING else [10, 16, 37]
     all_model_dict = {}
     for h, max_hop in enumerate(max_hops):
         all_model_dict[max_hop] = {}
@@ -314,8 +314,8 @@ def run_ept_3(testnames=None):
 
 
 if __name__ == '__main__':
-    testname = 'tiny_ga-dem3' if TESTING else ''
+    testname = 'tiny_ga-dem3' if TESTING else 'medium'
     testnames = [testname]
     # run_ept_1(testnames)
-    run_ept_2(testnames)
-    # run_ept_3(testnames)
+    # run_ept_2(testnames)
+    run_ept_3(testnames)

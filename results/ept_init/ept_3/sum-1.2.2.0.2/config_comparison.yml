@@ -1,0 +1,72 @@
+1.2.2.0.2.0:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 37
+    name: ept_init
+  encoding:
+    cro_prob: 0.7
+    init_method: PrimRST
+    mut_prob: 0.4
+    name: kruskal
+  model_name: 1.2.2.0.2.0
+  models:
+    gens: 100
+    name: run 1
+1.2.2.0.2.1:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 37
+    name: ept_init
+  encoding:
+    cro_prob: 0.7
+    init_method: KruskalRST
+    mut_prob: 0.4
+    name: kruskal
+  model_name: 1.2.2.0.2.1
+  models:
+    gens: 100
+    name: run 1
+1.2.2.0.2.2:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 37
+    name: ept_init
+  encoding:
+    cro_prob: 0.7
+    init_method: RandWalkRST
+    mut_prob: 0.4
+    name: kruskal
+  model_name: 1.2.2.0.2.2
+  models:
+    gens: 100
+    name: run 1
+1.2.2.0.2.3:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 37
+    name: ept_init
+  encoding:
+    cro_prob: 0.7
+    init_method: Mix_1
+    mut_prob: 0.4
+    name: kruskal
+  model_name: 1.2.2.0.2.3
+  models:
+    gens: 100
+    name: run 1
