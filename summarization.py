@@ -261,6 +261,32 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
         # plt.show()
         plt.close('all')
 
+    def compact_data_to_csv(output_dir, data):
+        def normalize_name(name):
+            return name.split('_')[0] if 'NIn' in name else name
+        models = list(next(iter(data.values())).keys())
+        pis = list(next(iter(next(iter(data.values())).values())).keys())
+        normalized_data = {}
+        normalized_data['Instance'] = []
+        for pi in pis:
+            for model in models:
+                normalized_data[f'{pi}_{model}'] = []
+
+        for testname, test_data in data.items():
+            normalized_data['Instance'].append(normalize_name(testname))
+            for model, model_data in test_data.items():
+                for pi, d in model_data.items():
+                    d = np.array(d)
+                    d_mean = np.mean(d)
+                    d_std = np.std(d)
+                    res = "${:.3g} \pm {:.3g}$".format(d_mean, d_std)
+                    normalized_data[f'{pi}_{model}'].append(res)
+
+        filepath = os.path.join(output_dir, 'compacted_results.csv')
+        df = pd.DataFrame(data=normalized_data)
+        df = df.sort_values(by='Instance')
+        df.to_csv(filepath, index=False)
+
     all_tests = set()
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
     for model in summarization_list:
@@ -292,11 +318,12 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
                 str(all_tests.difference(feasible_tests)))
 
     boxchart_data = []
+    barchart_data = {}
 
     for test in feasible_tests:
         metric_sum = None
         models = None
-        barchart_data = None
+        barchart_test_data = None
         boxchart_test_data = None
         bar_metric_temp = OrderedDict({  'nds': [], 'delta': [], 'spacing': []})
 
@@ -305,11 +332,11 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
             test_df = pd.read_csv(join(test_dir, 'metrics_comparison.csv'))
             models = test_df['models']
 
-            if boxchart_test_data is None or barchart_data is None:
+            if boxchart_test_data is None or barchart_test_data is None:
                 boxchart_test_data = {}
-                barchart_data = {}
+                barchart_test_data = {}
                 for model in models:
-                    barchart_data[model] = copy.deepcopy(bar_metric_temp)
+                    barchart_test_data[model] = copy.deepcopy(bar_metric_temp)
                     boxchart_test_data[model] = {}
                     for other_model in models:
                         boxchart_test_data[model][other_model] = []
@@ -317,7 +344,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
             for _, row in test_df.iterrows():
                 model = row['models']
                 for key in bar_metric_temp.keys():
-                    barchart_data[model][key].append(row[key])
+                    barchart_test_data[model][key].append(row[key])
 
                 for other_model in models:
                     boxchart_test_data[model][other_model].append(
@@ -340,10 +367,12 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
         metric_sum.to_csv(filepath, index=False)
 
         # print(barchart_data)
-        plot_bar_chart(test_dir, barchart_data)
+        # plot_bar_chart(test_dir, barchart_test_data)
         boxchart_data.append(boxchart_test_data)
+        barchart_data[test] = barchart_test_data
 
-    plot_box_chart(output_dir, boxchart_data)
+    # plot_box_chart(output_dir, boxchart_data)
+    compact_data_to_csv(output_dir, barchart_data)
 
 def average_tests_score(working_dir):
     metric_sum = None
@@ -361,6 +390,7 @@ def average_tests_score(working_dir):
             else:
                 metric_sum = metric_sum.add(test_df, fill_value=0)
             n_tests += 1
+
     metric_sum = metric_sum.div(n_tests)
     metric_sum.insert(0, 'models', models, True)
     out_file = join(working_dir, 'sum_test_scores.csv')

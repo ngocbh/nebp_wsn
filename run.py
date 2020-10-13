@@ -153,7 +153,7 @@ def run_mhn_experiment(ept, input_dir, output_dir=None, testset=0, testnames=Non
         model_dict['E'] = gprim_model_list[i]
         cname = f'summarization_{i+1}'
         summarization_list.append(cname)
-        summarization.summarize_model(model_dict, output_dir, cname, testnames, **kwargs)
+        # summarization.summarize_model(model_dict, output_dir, cname, testnames, **kwargs)
 
 
     summarization.calc_average_metrics(summarization_list, output_dir, f'avarage1-{k}', testnames)
