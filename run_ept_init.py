@@ -277,7 +277,7 @@ def run_ept_3(testnames=None):
             print(config)
             model_dict[smodel] = smodel
             run.run_solver(solver, smodel, test_path, output_dir=out_model_dir, overwrite=RERUN,
-                           testnames=testnames, save_history=False, config=config, seed=42)
+                           testnames=testnames, save_history=True, config=config, seed=42)
 
         marker = ['>', (5,0), (5,1), (5,2), '+', 'o'] 
         marker.reverse()
@@ -318,7 +318,7 @@ def run_ept_3(testnames=None):
 
 def run_ept_4(testnames=None):
 
-    out_dir = 'results/ept_init/ept_4'
+    out_dir = 'results/ept_init/ept_3'
     max_hops = [6, 10] if TESTING else [10, 16, 37]
     g = 0 if TESTING else 1
 
@@ -326,6 +326,7 @@ def run_ept_4(testnames=None):
         for i, init_method in enumerate(INIT_METHODS):
             model_dict = {
                 'guided prim': f'{g}.2.5.0.{h}.{i}',
+                'guided prim2': f'{g}.2.7.0.{h}.{i}',
                 'kruskal': f'{g}.2.2.0.{h}.{i}',
                 'netkeys': f'{g}.2.1.0.{h}.{i}',
                 'prim': f'{g}.2.4.0.{h}.{i}',
@@ -338,5 +339,5 @@ if __name__ == '__main__':
     testnames = [testname]
     # run_ept_1(testnames)
     # run_ept_2(testnames)
-    run_ept_3(testnames)
-    # run_ept_4(testnames)
+    # run_ept_3(testnames)
+    run_ept_4(testnames)
