@@ -29,35 +29,28 @@ WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
-INIT_METHODS = ['PrimRST', 'KruskalRST', 'RandWalkRST', 'CPrimRST', 'Mix_1', 'Mix_2']
-INIT_METHODS_LEGEND = ['prim', 'kruskal', 'randwalk', 'cprim', 'mix_1', 'mix_2']
-
 RERUN=False
 TESTING=True
 
 
 def run_ept():
-    def run_solver(solver, model_name, model):
-        config = load_config(CONFIG_FILE, model)
-        out_dir = 'results/ept_efficiency'
+    def plot():
+        pass
 
-        model_dict = {}
-        test_path = './data/ept_efficiency'
+    ept = 0 if TESTING else 1
+    input_dir = './data/test' if TESTING else './data/ept_efficiency'
+    output_dir = None
+    testset = 0 if TESTING else 3
+    testnames = 'test' if TESTING else ''
+    k = 5
+    config = None
+    if TESTING:
+        config = {'models': {}, 'algorithm': {}}
+        config['models']['gens'] = 2
+        config['algorithm']['pop_size'] = 10
+        config['algorithm']['selection_size'] = 10
 
-        out_model_dir = os.path.join(out_dir, model)
-        os.makedirs(out_model_dir, exist_ok=True)
-        print(config)
-        model_dict[model_name] = model
-        run.run_solver(solver, model, test_path, output_dir=out_model_dir, save_history=False, config=config, seed=42)
-
-        summarization.summarize_model(model_dict, working_dir=out_dir, cname=f'sum-{model}')
-
-    g = 0 if TESTING else 1
-    run_solver(solver_mhn_gprim, 'guided prim', f'{g}.2.5.0')
-    run_solver(solver_mhn_kruskal, 'kruskal', f'{g}.2.2.0')
-    run_solver(solver_mhn_nrk, 'netkeys', f'{g}.2.1.0')
-    run_solver(solver_mhn_prim, 'prim', f'{g}.2.4.0')
-    run_solver(solver_mhn_prufer, 'prufer', f'{g}.2.6.0')
+    run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, overwrite=RERUN, config=config)
 
 if __name__ == '__main__':
     run_ept()

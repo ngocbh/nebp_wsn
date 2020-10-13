@@ -1,0 +1,99 @@
+A:
+  algorithm:
+    name: nsgaii
+    pop_size: 10
+    selection_size: 10
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 8
+    name: test
+  encoding:
+    cro_prob: 0.7
+    init_method: KruskalRST
+    mut_prob: 0.1
+    name: prufer
+  model_name: 0.0.6.0.4
+  models:
+    gens: 2
+    name: test
+B:
+  algorithm:
+    name: nsgaii
+    pop_size: 10
+    selection_size: 10
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 8
+    name: test
+  encoding:
+    alpha: 2
+    beta: 6
+    cro_di: 20
+    cro_prob: 0.7
+    init_method: PrimRST
+    mut_di: 5
+    mut_prob: 0.05
+    name: netkeys
+  model_name: 0.0.1.0.4
+  models:
+    gens: 2
+    name: test
+C:
+  algorithm:
+    name: nsgaii
+    pop_size: 10
+    selection_size: 10
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 8
+    name: test
+  encoding:
+    cro_prob: 0.7
+    init_method: PrimRST
+    mut_prob: 0.4
+    name: prim
+  model_name: 0.0.4.0.4
+  models:
+    gens: 2
+    name: test
+D:
+  algorithm:
+    name: nsgaii
+    pop_size: 10
+    selection_size: 10
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 8
+    name: test
+  encoding:
+    cro_prob: 0.7
+    init_method: PrimRST
+    mut_prob: 0.4
+    name: kruskal
+  model_name: 0.0.2.0.4
+  models:
+    gens: 2
+    name: test
+E:
+  algorithm:
+    name: nsgaii
+    pop_size: 10
+    selection_size: 10
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 8
+    name: test
+  encoding:
+    cro_prob: 0.7
+    init_method: PrimRST
+    mut_prob: 0.5
+    name: mprim
+  model_name: 0.0.5.0.4
+  models:
+    gens: 2
+    name: test

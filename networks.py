@@ -88,7 +88,9 @@ class WusnKruskalNetwork(KruskalTree):
 
         potential_edge_set = set(self.potential_edges)
         for u, v in self.edges:
-            if u != 0 and v != 0 and (u, v) not in potential_edge_set \
+            if (u == 0 and v <= self.n) or (v == 0 and u <= self.n):
+                continue
+            if (u, v) not in potential_edge_set \
                     and (v, u) not in potential_edge_set:
                 is_valid &= False
 

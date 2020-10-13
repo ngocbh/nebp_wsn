@@ -16,6 +16,16 @@ def load_config(filepath, model):
     
     return config
     
+
+def update_max_hop(config, inp):
+    config['data']['max_hop'] = config['data']['max_hop'] or inp.default_max_hop
+
+def update_config(config, new_config):
+    ret = config
+    for key, value in new_config.items():
+        ret[key].update(value)
+    return ret
+
 def gen_output_dir(filename, model):
     output_dir = filename.replace('data', 'results')
     output_dir = os.path.dirname(output_dir)
