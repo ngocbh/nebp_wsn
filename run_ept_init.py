@@ -37,7 +37,7 @@ INIT_METHODS_LEGEND = ['Prim', 'Kruskal',
                        'RandWalk', 'Mix1']
 
 RERUN = False
-TESTING = False
+TESTING = True
 
 
 def objective1(indv):
@@ -317,7 +317,6 @@ def run_ept_3(testnames=None):
     plot(all_model_dict, out_dir)
 
 def run_ept_4(testnames=None):
-
     out_dir = 'results/ept_init/ept_3'
     max_hops = [6, 10] if TESTING else [10, 16, 37]
     g = 0 if TESTING else 1
@@ -335,9 +334,9 @@ def run_ept_4(testnames=None):
             summarization.summarize_model( model_dict, working_dir=out_dir, cname=f'sum-{g}.{h}.{i}')
 
 if __name__ == '__main__':
-    testname = 'tiny_ga-dem3' if TESTING else 'medium'
+    testname = 'test' if TESTING else 'medium'
     testnames = [testname]
     # run_ept_1(testnames)
     # run_ept_2(testnames)
-    # run_ept_3(testnames)
-    run_ept_4(testnames)
+    run_ept_3(testnames)
+    # run_ept_4(testnames)

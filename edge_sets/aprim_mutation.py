@@ -43,8 +43,9 @@ class APrimMutation(Mutation):
                 unused_relays.append(i)
             else:
                 used_relays.append(i)
-        slt_relay = random_state.choice(unused_relays)
-        used_relays.append(slt_relay)
+        if len(unused_relays) > 0:
+            slt_relay = random_state.choice(unused_relays)
+            used_relays.append(slt_relay)
 
         used_relays_mask = [False] * tree.number_of_vertices
         for e in used_relays:
