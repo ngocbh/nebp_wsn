@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
 import solver_mhn_gprim
+import solver_mhn_gprim2
 import solver_mhn_kruskal
 import solver_mhn_nrk
 import solver_mhn_prim
@@ -84,8 +85,8 @@ def run_ept_1(testnames=None):
         print(f"Running: {filepath}")
         ds = []
         for i in range(len(INIT_METHODS)):
-            n_hop = 10 if TESTING else 30
-            n_hop_start = 1 if TESTING else 6
+            n_hop = 10 if TESTING else 37
+            n_hop_start = 1 if TESTING else 8
             n_seed = 1 if TESTING else 30
             pop_size = 20 if TESTING else 100
             d = []
@@ -309,9 +310,28 @@ def run_ept_3(testnames=None):
         all_model_dict[max_hop]['prim'] = md 
         md = run_solver(solver_mhn_prufer, f'{g}.2.6.0.{h}', max_hop, out_dir)
         all_model_dict[max_hop]['prufer'] = md 
+        md = run_solver(solver_mhn_gprim2, f'{g}.2.7.0.{h}', max_hop, out_dir)
+        all_model_dict[max_hop]['guided prim'] = md 
+
 
     plot(all_model_dict, out_dir)
 
+def run_ept_4(testnames=None):
+
+    out_dir = 'results/ept_init/ept_4'
+    max_hops = [6, 10] if TESTING else [10, 16, 37]
+    g = 0 if TESTING else 1
+
+    for h, max_hops in enumerate(max_hops):
+        for i, init_method in enumerate(INIT_METHODS):
+            model_dict = {
+                'guided prim': f'{g}.2.5.0.{h}.{i}',
+                'kruskal': f'{g}.2.2.0.{h}.{i}',
+                'netkeys': f'{g}.2.1.0.{h}.{i}',
+                'prim': f'{g}.2.4.0.{h}.{i}',
+                'prufer': f'{g}.2.6.0.{h}.{i}',
+            }
+            summarization.summarize_model( model_dict, working_dir=out_dir, cname=f'sum-{g}.{h}.{i}')
 
 if __name__ == '__main__':
     testname = 'tiny_ga-dem3' if TESTING else 'medium'
@@ -319,3 +339,4 @@ if __name__ == '__main__':
     # run_ept_1(testnames)
     # run_ept_2(testnames)
     run_ept_3(testnames)
+    # run_ept_4(testnames)

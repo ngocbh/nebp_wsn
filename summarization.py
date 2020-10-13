@@ -6,9 +6,11 @@ Github: https://github.com/ngocjr7
 Description: 
 """
 from geneticpython.tools.visualization import visualize_fronts
-from geneticpython.tools.analyzers.pareto_metrics import delta_metric, coverage_metric, spacing_metric, non_dominated_solutions
+from geneticpython.tools.analyzers import delta_apostrophe, coverage, \
+    spacing, non_dominated_solutions, hypervolume_2d
 from yaml import Loader
 from os.path import join
+from collections import OrderedDict
 
 import json
 import os
@@ -47,6 +49,7 @@ def summarize_metrics(pareto_dict, output_dir):
     metrics['delta'] = []
     metrics['spacing'] = []
     metrics['nds'] = []
+    # metrics['hypervolume'] = []
     for key in pareto_dict.keys():
         metrics['c_' + key] = []
     metrics['score'] = []
@@ -59,11 +62,13 @@ def summarize_metrics(pareto_dict, output_dir):
         if name != metrics['models'][i]:
             raise ValueError("Summarize metrics error")
 
-        metrics['delta'].append(delta_metric(pareto))
-        metrics['spacing'].append(spacing_metric(pareto))
+        metrics['delta'].append(delta_apostrophe(pareto))
+        metrics['spacing'].append(spacing(pareto))
         metrics['nds'].append(non_dominated_solutions(pareto))
+        # metrics['hypervolume'].append(hypervolume_2d(pareto))
+
         for other_name, other_pareto in pareto_dict.items():
-            c = coverage_metric(pareto, other_pareto)
+            c = coverage(pareto, other_pareto)
             metrics['c_' + other_name].append(c)
             c_matrix[i].append(c)
 
@@ -148,10 +153,10 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
             sp.set_visible(False)
 
     def plot_bar_chart(test_dir, data):
-        plt.style.use('seaborn-darkgrid')
+        plt.style.use('bmh')
         plt.grid(False)
         palette = plt.get_cmap('Set1')
-        PI_MAP = {'delta': '$\Delta\'$', 'nds': '$NDS$', 'hypervolume': '$HV$'}
+        PI_MAP = {'delta': '$\Delta\'$', 'nds': '$NDS$', 'hypervolume': '$HV$', 'spacing': '$spacing$'}
 
         models = data.keys()
         for value in data.values():
@@ -209,6 +214,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
         plt.close('all')
 
     def plot_box_chart(out_dir, data):
+        # plt.style.use('seaborn-whitegrid')
         def box_plot(ax, data):
             n = len(data)
             width= 1.1 / (n + (n+1)/2)
@@ -248,7 +254,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
             ax.tick_params(axis='y', which='both', right=False, left=False, labelleft=False)
             ax.set_yticks([i*0.2 for i in range(6)])        
 
-        fig.tight_layout(pad=0.2)
+        fig.tight_layout(pad=1)
 
         filepath = os.path.join(out_dir, 'box_plot.png')
         plt.savefig(filepath)
@@ -292,7 +298,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
         models = None
         barchart_data = None
         boxchart_test_data = None
-        bar_metric_temp = {'delta': [], 'nds': []}
+        bar_metric_temp = OrderedDict({  'nds': [], 'delta': [], 'spacing': []})
 
         for summ in summarization_list:
             test_dir = join(join(absworking_dir, summ), test)

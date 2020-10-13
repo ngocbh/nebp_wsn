@@ -1,0 +1,6 @@
+models,delta,spacing,nds,c_guided prim,c_kruskal,c_netkeys,c_prim,c_prufer,score
+guided prim,0.8333311691842339,1.1330965999417184,7,0.0,1.0,1.0,0.25,1.0,4
+kruskal,inf,inf,1,0.0,0.0,0.0,0.0,0.0,0
+netkeys,inf,inf,1,0.0,0.0,0.0,0.0,0.0,0
+prim,1.1111111602778787,1.4145841607184348,4,0.0,1.0,1.0,0.0,1.0,3
+prufer,inf,inf,1,0.0,0.0,0.0,0.0,0.0,0
