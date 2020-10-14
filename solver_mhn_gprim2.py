@@ -149,7 +149,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
             else:
                 return 0
 
-    engine = NSGAIIEngine(population=population,
+    engine = MyNSGAIIEngine(population=population,
                           crossover=crossover,
                           tournament_size=config['algorithm']['tournament_size'],
                           selection_size=config['algorithm']['slt_size'],
@@ -188,6 +188,8 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
+
+    print("Number of improved crossover: {}".format(MPrimCrossover.no_improved))
 
     history.dump(os.path.join(out_dir, 'history.json'))
     with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
