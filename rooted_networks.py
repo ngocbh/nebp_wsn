@@ -147,10 +147,15 @@ class MultiHopNetwork(WusnNetwork):
 
         return max_energy_consumption 
 
-    def max_childs(self, i, max_energy, d):
+    def max_childs(self, i, max_energy, d, strict_lower=True):
         y = (i > self.n) 
-        return int( (max_energy - self.transmission_energy(wc.k_bit, d) - y * wc.k_bit * wc.e_da) \
-                   / (wc.k_bit * wc.e_elec + wc.k_bit * wc.e_da) )
+        nmc = (max_energy - self.transmission_energy(wc.k_bit, d) - y * wc.k_bit * wc.e_da) \
+                   / (wc.k_bit * wc.e_elec + wc.k_bit * wc.e_da)
+        if abs(nmc - int(nmc)) < 1e-10 and strict_lower:
+            return int(nmc) - 1
+        else:
+            return int(nmc)
+
 
     def add_child(self, u, max_childs):
         max_childs[u] -= 1
@@ -164,7 +169,7 @@ class MultiHopNetwork(WusnNetwork):
         max_childs[u] = min(x, max_childs[u])
         return max_childs[u]
 
-    def run_algorithm(self, C, A, adj, max_childs, max_energy, random_state, used_max_childs=True):
+    def run_algorithm(self, C, A, adj, max_childs, max_energy, random_state, used_max_childs=True, strict_lower=True):
         while len(C) < self.node_count and len(A) > 0:
             u, v = A.random_choice(random_state)
             A.remove((u, v))
@@ -178,7 +183,7 @@ class MultiHopNetwork(WusnNetwork):
                 if used_max_childs:
                     self.add_child(u, max_childs)
                     d = distance(self._points[u], self._points[v])
-                    max_childs[v] = min(max_childs[u], self.max_childs(v, max_energy, d))
+                    max_childs[v] = min(max_childs[u], self.max_childs(v, max_energy, d, strict_lower))
                 for w in adj[v]:
                     if w not in C:
                         A.add((v, w))
@@ -196,12 +201,12 @@ class MultiHopNetwork(WusnNetwork):
         for u in uadj[0]:
             C.add(u)
             d = distance(self._points[0], self._points[u])
-            max_childs[u] = self.max_childs(u, max_energy, d)
+            max_childs[u] = self.max_childs(u, max_energy, d, strict_lower=True)
             if max_childs[u] > 0:
                 for v in uadj[u]:
                     A.add((u, v))
 
-        self.run_algorithm(C, A, uadj, max_childs, max_energy, random_state)
+        self.run_algorithm(C, A, uadj, max_childs, max_energy, random_state, strict_lower=True)
 
         # print(len(self.edges))
         # phase 2: continue building tree with full edges
@@ -213,7 +218,7 @@ class MultiHopNetwork(WusnNetwork):
                         if v not in C:
                             A.add((u, v))
 
-        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state)
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, strict_lower=True)
 
         # print(len(self.edges))
         # phase 3: continue building tree without upper_bound
@@ -225,7 +230,7 @@ class MultiHopNetwork(WusnNetwork):
                     if v not in C:
                         A.add((u, v))
 
-        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False)
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False, strict_lower=True)
         # print(len(self.edges))
         self.repair()
 
@@ -247,12 +252,12 @@ class MultiHopNetwork(WusnNetwork):
             C.add(u)
             if used_relays[u]:
                 d = distance(self._points[0], self._points[u])
-                max_childs[u] = self.max_childs(u, max_energy, d)
+                max_childs[u] = self.max_childs(u, max_energy, d, strict_lower=False)
                 if max_childs[u] > 0:
                     for v in adj[u]:
                         A.add((u, v))
 
-        self.run_algorithm(C, A, adj, max_childs, max_energy, random_state)
+        self.run_algorithm(C, A, adj, max_childs, max_energy, random_state, strict_lower=False)
         # print(len(self.edges))
 
         for u in C:
@@ -261,7 +266,7 @@ class MultiHopNetwork(WusnNetwork):
                     if v not in C:
                         A.add((u, v))
 
-        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state)
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, strict_lower=False)
         # print(len(self.edges))
 
         # # phase 2: continue building tree with full edges
@@ -274,8 +279,7 @@ class MultiHopNetwork(WusnNetwork):
                             A.add((u, v))
         # print(len(self.edges))
 
-        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False)
-        
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False, strict_lower=False)
         # phase 3: continue building tree without upper_bound
 
         if len(C) < self.node_count:
@@ -284,7 +288,7 @@ class MultiHopNetwork(WusnNetwork):
                     if v not in C:
                         A.add((u, v))
 
-        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False)
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False, strict_lower=False)
         # print(len(self.edges))
         self.repair()
         # print(self.num_used_relays)
