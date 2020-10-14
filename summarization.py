@@ -115,6 +115,7 @@ def summarize_test(testname, model_dict, working_dir, cname, **kwargs):
 
 def summarize_model(model_dict, working_dir, cname=None, testnames=None,
                     marker=None, s=20, plot_line=True, linewidth=0.8, linestyle='dashed', **kwargs):
+    print("Summarizing {}: {}".format(cname, model_dict))
     tests = set()
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
 

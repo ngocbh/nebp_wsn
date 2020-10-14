@@ -37,7 +37,7 @@ INIT_METHODS_LEGEND = ['Prim', 'Kruskal',
                        'RandWalk', 'Mix1']
 
 RERUN = False
-TESTING = True
+TESTING = False
 
 
 def objective1(indv):
@@ -338,5 +338,5 @@ if __name__ == '__main__':
     testnames = [testname]
     # run_ept_1(testnames)
     # run_ept_2(testnames)
-    run_ept_3(testnames)
-    # run_ept_4(testnames)
+    # run_ept_3(testnames)
+    run_ept_4(testnames)

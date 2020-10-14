@@ -14,7 +14,7 @@ from geneticpython.tools import visualize_fronts, save_history_as_gif
 from geneticpython.models.tree import EdgeSets, KruskalTree
 from geneticpython.core.operators import PrimCrossover, TreeMutation, MutationCompact
 
-from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation
+from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation, MyNSGAIIEngine
 from initalization import initialize_pop
 from utils.configurations import *
 from utils import WusnInput
@@ -149,13 +149,12 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
             else:
                 return 0
 
-    engine = NSGAIIEngine(population=population,
+    engine = MyNSGAIIEngine(population=population,
                           crossover=crossover,
                           tournament_size=config['algorithm']['tournament_size'],
-                          selection_size=config['algorithm']['slt_size'],
+                          selection_size=config['algorithm']['slt_size']//2,
                           mutation=mutations,
-                          random_state=seed,
-                          crowded_comparator=crowed_comparator)
+                          random_state=seed)
 
     @engine.minimize_objective
     def objective1(indv):
