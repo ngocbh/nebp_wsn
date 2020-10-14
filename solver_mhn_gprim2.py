@@ -86,10 +86,10 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                               random_state=random_state)
     
 
-    crossover = MPrimCrossover(pc=config['encoding']['cro_prob'])
+    crossover = MPrimCrossover(pc=1)
     # mutation1 = WusnMutation(pm=1, potential_edges=problem._idx2edge) 
     # mutation2 = APrimMutation(pm=1)
-    mutation3 = SPrimMutation(pm=0)
+    mutation3 = SPrimMutation(pm=1)
     # mutations = MutationCompact()
     #mutations.add_mutation(mutation1, pm=0.4)
     # mutations.add_mutation(mutation2, pm=0.5)
@@ -152,10 +152,9 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     engine = MyNSGAIIEngine(population=population,
                           crossover=crossover,
                           tournament_size=config['algorithm']['tournament_size'],
-                          selection_size=config['algorithm']['slt_size'],
+                          selection_size=config['algorithm']['slt_size']//2,
                           mutation=mutation3,
-                          random_state=seed,
-			  crowded_comparator=crowded_comparator)
+                          random_state=seed)
 
     @engine.minimize_objective
     def objective1(indv):

@@ -1,0 +1,17 @@
+algorithm:
+  name: nsgaii
+  pop_size: 100
+  slt_size: 100
+  tournament_size: 2
+data:
+  max_hop: 16
+  name: ept_init
+encoding:
+  cro_prob: 0.7
+  init_method: Mix_1
+  mut_add_prob: 0.4
+  mut_sub_prob: 0.4
+  name: mprim2
+models:
+  gens: 100
+  name: run 1
