@@ -87,13 +87,13 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     
 
     crossover = MPrimCrossover(pc=config['encoding']['cro_prob'])
-    # mutation1 = WusnMutation(pm=1, potential_edges=problem._idx2edge) 
+    mutation1 = WusnMutation(pm=1, potential_edges=problem._idx2edge) 
     mutation2 = APrimMutation(pm=1)
     mutation3 = SPrimMutation(pm=1)
     mutations = MutationCompact()
-    # mutations.add_mutation(mutation1, pm=0.1)
+    mutations.add_mutation(mutation1, pm=0.4)
     mutations.add_mutation(mutation2, pm=config['encoding']['mut_add_prob'])
-    mutations.add_mutation(mutation3, pm=config['encoding']['mut_sub_prob'])
+    # mutations.add_mutation(mutation3, pm=config['encoding']['mut_sub_prob'])
     # print(problem._idx2edge)
     # indv_temp.random_init(1421)
     # edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25), (0, 26), (0, 27), (0, 28), (0, 29), (0, 30), (0, 31), (0, 32), (0, 33), (0, 34), (0, 35), (0, 36), (0, 37), (0, 38), (0, 39), (0, 40), (21, 78), (14, 52), (25, 44), (20, 77), (18, 54), (35, 60), (3, 59), (25, 75), (3, 61), (30, 65), (24, 73), (10, 41), (27, 68), (39, 64), (1, 69), (35, 47), (30, 57), (19, 50), (26, 55), (24, 79), (36, 58), (2, 70), (14, 53), (11, 46), (19, 67), (3, 42), (20, 74), (78, 62), (2, 71), (34, 63), (41, 72), (4, 66), (39, 80), (68, 56), (18, 43), (66, 49), (34, 51), (36, 48), (11, 76), (69, 45)]
