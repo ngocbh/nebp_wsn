@@ -14,7 +14,7 @@ from geneticpython.tools import visualize_fronts, save_history_as_gif
 from geneticpython.models.tree import EdgeSets, KruskalTree
 from geneticpython.core.operators import PrimCrossover, TreeMutation, MutationCompact
 
-from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation, MyNSGAIIEngine
+from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation, MyNSGAIIEngine, MyMutationCompact
 from initalization import initialize_pop
 from utils.configurations import *
 from utils import WusnInput
@@ -88,13 +88,14 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     
 
     crossover = MPrimCrossover(pc=0.7)
-    mutation1 = WusnMutation(pm=0.1, potential_edges=problem._idx2edge) 
+    mutation1 = WusnMutation(pm=0.2, potential_edges=problem._idx2edge) 
     # mutation2 = APrimMutation(pm=1)
-    # mutation3 = SPrimMutation(pm=1)
-    # mutations = MutationCompact()
-    #mutations.add_mutation(mutation1, pm=0.4)
+    mutation3 = SPrimMutation(pm=0.5)
+    mutations = MyMutationCompact()
+    a = config['models']['gens']
+    mutations.add_mutation(mutation1, (2 * a // 3) * config['algorithm']['slt_size'] )
     # mutations.add_mutation(mutation2, pm=0.5)
-    # mutations.add_mutation(mutation3, pm=0.5)
+    mutations.add_mutation(mutation3, (a - (2 * a // 3)) * config['algorithm']['slt_size'] )
     # print(problem._idx2edge)
     # indv_temp.random_init(1421)
     # edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25), (0, 26), (0, 27), (0, 28), (0, 29), (0, 30), (0, 31), (0, 32), (0, 33), (0, 34), (0, 35), (0, 36), (0, 37), (0, 38), (0, 39), (0, 40), (21, 78), (14, 52), (25, 44), (20, 77), (18, 54), (35, 60), (3, 59), (25, 75), (3, 61), (30, 65), (24, 73), (10, 41), (27, 68), (39, 64), (1, 69), (35, 47), (30, 57), (19, 50), (26, 55), (24, 79), (36, 58), (2, 70), (14, 53), (11, 46), (19, 67), (3, 42), (20, 74), (78, 62), (2, 71), (34, 63), (41, 72), (4, 66), (39, 80), (68, 56), (18, 43), (66, 49), (34, 51), (36, 48), (11, 76), (69, 45)]
@@ -154,7 +155,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                           crossover=crossover,
                           tournament_size=config['algorithm']['tournament_size'],
                           selection_size=config['algorithm']['slt_size'],
-                          mutation=mutation1,
+                          mutation=mutations,
                           random_state=seed)
 
     @engine.minimize_objective
@@ -217,5 +218,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 
 if __name__ == '__main__':
-    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model = '1.8.7.0.0', config={'data': {'max_hop': 10}})
+    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model = '1.8.7.0.0', 
+          config={'data': {'max_hop': 10},
+                  'models': {'gens': 150}})
 
