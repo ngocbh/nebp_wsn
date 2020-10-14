@@ -271,7 +271,7 @@ def run_ept_3(testnames=None):
             out_model_dir = os.path.join(out_dir, smodel)
             os.makedirs(out_model_dir, exist_ok=True)
             config['encoding']['init_method'] = INIT_METHODS[i]
-            # config['models']['gens'] = 2 if TESTING else 100
+            config['models']['gens'] = 2 if TESTING else 150
             config['data']['max_hop'] = max_hop
             config['algorithm']['pop_size'] = 20 if TESTING else 100
             print(config)
@@ -302,6 +302,8 @@ def run_ept_3(testnames=None):
         all_model_dict[max_hop] = {}
         md = run_solver(solver_mhn_gprim, f'{g}.2.5.0.{h}', max_hop, out_dir)
         all_model_dict[max_hop]['guided prim'] = md 
+        md = run_solver(solver_mhn_gprim2, f'{g}.2.7.0.{h}', max_hop, out_dir)
+        all_model_dict[max_hop]['guided prim'] = md 
         md = run_solver(solver_mhn_kruskal, f'{g}.2.2.0.{h}', max_hop, out_dir)
         all_model_dict[max_hop]['kruskal'] = md 
         md = run_solver(solver_mhn_nrk, f'{g}.2.1.0.{h}', max_hop, out_dir)
@@ -310,8 +312,6 @@ def run_ept_3(testnames=None):
         all_model_dict[max_hop]['prim'] = md 
         md = run_solver(solver_mhn_prufer, f'{g}.2.6.0.{h}', max_hop, out_dir)
         all_model_dict[max_hop]['prufer'] = md 
-        md = run_solver(solver_mhn_gprim2, f'{g}.2.7.0.{h}', max_hop, out_dir)
-        all_model_dict[max_hop]['guided prim'] = md 
 
 
     plot(all_model_dict, out_dir)
