@@ -54,6 +54,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     config = config or {}
     config = update_config(load_config(CONFIG_FILE, model), config)
     check_config(config, filename, model)
+    print(config)
     output_dir = output_dir or gen_output_dir(filename, model)
     basename, _ = os.path.splitext(os.path.basename(filename))
     os.makedirs(os.path.join(
@@ -86,10 +87,10 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                               random_state=random_state)
     
 
-    crossover = MPrimCrossover(pc=1)
-    # mutation1 = WusnMutation(pm=1, potential_edges=problem._idx2edge) 
+    crossover = MPrimCrossover(pc=0.7)
+    mutation1 = WusnMutation(pm=0.1, potential_edges=problem._idx2edge) 
     # mutation2 = APrimMutation(pm=1)
-    mutation3 = SPrimMutation(pm=1)
+    # mutation3 = SPrimMutation(pm=1)
     # mutations = MutationCompact()
     #mutations.add_mutation(mutation1, pm=0.4)
     # mutations.add_mutation(mutation2, pm=0.5)
@@ -149,11 +150,11 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
             else:
                 return 0
 
-    engine = MyNSGAIIEngine(population=population,
+    engine = NSGAIIEngine(population=population,
                           crossover=crossover,
                           tournament_size=config['algorithm']['tournament_size'],
-                          selection_size=config['algorithm']['slt_size']//2,
-                          mutation=mutation3,
+                          selection_size=config['algorithm']['slt_size'],
+                          mutation=mutation1,
                           random_state=seed)
 
     @engine.minimize_objective
@@ -216,5 +217,5 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 
 if __name__ == '__main__':
-    solve('data/_small/multi_hop/ga-dem1_r25_1_0.json', model = '1.0.7.0')
+    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model = '1.8.7.0.0', config={'data': {'max_hop': 10}})
 
