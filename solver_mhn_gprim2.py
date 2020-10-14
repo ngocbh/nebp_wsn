@@ -129,12 +129,33 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     # print(solution4._is_valid)
     # print(solution4.calc_max_energy_consumption())
     # return
+
+    def crowed_comparator(p1, p2):
+        if p1.nondominated_rank < p2.nondominated_rank:
+            if p1.nondominated_rank >= p2.nondominated_rank - 1 and \
+                    p1.crowding_distance == 0 and p2.crowding_distance != 0:
+                return 1
+            return -1
+        elif p1.nondominated_rank > p2.nondominated_rank:
+            if p1.nondominated_rank - 1 <= p2.nondominated_rank and \
+                    p1.crowding_distance != 0 and p2.crowding_distance == 0:
+                return -1
+            return 1
+        else:
+            if p1.crowding_distance > p2.crowding_distance:
+                return -1
+            elif p1.crowding_distance < p2.crowding_distance:
+                return 1
+            else:
+                return 0
+
     engine = NSGAIIEngine(population=population,
                           crossover=crossover,
                           tournament_size=config['algorithm']['tournament_size'],
                           selection_size=config['algorithm']['slt_size'],
                           mutation=mutations,
-                          random_state=seed)
+                          random_state=seed,
+                          crowded_comparator=crowed_comparator)
 
     @engine.minimize_objective
     def objective1(indv):
