@@ -9,6 +9,7 @@ from geneticpython.utils import rset
 import sys
 import os
 import math
+import copy
 
 
 class WusnNetwork(RootedTree):
@@ -129,23 +130,26 @@ class MultiHopNetwork(WusnNetwork):
         else:
             return k * wc.e_elec + k * wc.e_mp * (d ** 4)
 
-    def calc_max_energy_consumption(self):
-        max_energy_consumption = 0
+    def energy_consumption(self, x, y, d):
+        e_t = self.transmission_energy(wc.k_bit, d)
+        e_r = x * wc.k_bit * (wc.e_elec + wc.e_da) + y * wc.k_bit * wc.e_da
+        e = e_r + e_t
+        return e
 
+    def get_energy_consumption_list(self):
+        ret = [0]
         for index in range(1, self.node_count):
             if self.parent[index] != -1:
                 d = distance(self._points[index],
                              self._points[self.parent[index]])
-                e_t = self.transmission_energy(wc.k_bit, d)
+                e = self.energy_consumption(self.num_childs[index], (index > self.n), d)
+                ret.append(e)
 
-                e_r = self.num_childs[index] * wc.k_bit * (wc.e_elec + wc.e_da) + (
-                    index > self.n) * wc.k_bit * wc.e_da
+        return ret
 
-                e = e_r + e_t
-
-                max_energy_consumption = max(max_energy_consumption, e)
-
-        return max_energy_consumption 
+    def calc_max_energy_consumption(self):
+        ep_list = self.get_energy_consumption_list()
+        return max(ep_list) 
 
     def max_childs(self, i, max_energy, d, strict_lower=True):
         y = (i > self.n) 
@@ -155,7 +159,6 @@ class MultiHopNetwork(WusnNetwork):
             return int(nmc) - 1
         else:
             return int(nmc)
-
 
     def add_child(self, u, max_childs):
         max_childs[u] -= 1
@@ -292,6 +295,9 @@ class MultiHopNetwork(WusnNetwork):
         # print(len(self.edges))
         self.repair()
         # print(self.num_used_relays)
+
+    def build_eprim_tree(self, max_energy, slt_node, random_state):
+        edges = copy.deepcopy(self.edges)
 
 
 

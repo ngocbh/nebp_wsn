@@ -24,10 +24,12 @@ import joblib
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 OVERWRITE = False
 
+
 def gen_output_dir(input_dir, model):
     output_dir = input_dir.replace('data', 'results')
     output_dir = os.path.join(output_dir, model)
     return output_dir
+
 
 def is_done(filename, output_dir):
     filebase, _ = os.path.splitext(os.path.basename(filename))
@@ -37,6 +39,7 @@ def is_done(filename, output_dir):
     if os.path.isfile(os.path.join(dirname, 'done.flag')):
         return True
     return False
+
 
 def run_solver(solver, model, input_dir, output_dir=None, testnames=None, overwrite=False, **kwargs):
     print(f"Running multi-hop problem on model {model}")
@@ -48,7 +51,7 @@ def run_solver(solver, model, input_dir, output_dir=None, testnames=None, overwr
     print(testnames)
     output_dir = output_dir or gen_output_dir(input_dir, model)
     for file in os.listdir(datapath):
-        if ('dem' not in file ) or (testnames is not None and all(e not in file for e in testnames)):
+        if ('dem' not in file) or (testnames is not None and all(e not in file for e in testnames)):
             continue
         filepath = os.path.join(datapath, file)
         if not is_done(file, output_dir) or overwrite:
@@ -64,78 +67,88 @@ def run_solver(solver, model, input_dir, output_dir=None, testnames=None, overwr
     joblib.Parallel(n_jobs=-1)(joblib.delayed(solver.solve)(
         file, output_dir=output_dir, model=model, **kwargs) for file in test_list)
 
+
 def multi_run_solver(solver, model, input_dir, k, output_dir=None, testnames=None, **kwargs):
     model_list = []
     for seed in range(1, k+1):
         smodel = '{}.{}'.format(model, seed)
         model_list.append(smodel)
-        run_solver(solver, smodel, input_dir=input_dir, output_dir=output_dir, testnames=testnames, seed=seed, **kwargs)
+        run_solver(solver, smodel, input_dir=input_dir,
+                   output_dir=output_dir, testnames=testnames, seed=seed, **kwargs)
     return model_list
 
-def run_mhn_experiment(ept, input_dir, output_dir=None, testset=0, testnames=None, k=10, overwrite=False, config=None, **kwargs):
+
+def run_mhn_experiment(ept, 
+                       input_dir, 
+                       output_dir=None, 
+                       testset=0, 
+                       testnames=None, 
+                       k=10, 
+                       overwrite=False, 
+                       config=None, 
+                       **kwargs):
     print("Running guided prim solver...")
-    output_dir = output_dir or input_dir.replace('data', 'results') 
+    output_dir = output_dir or input_dir.replace('data', 'results')
     gprim_model = f'{ept}.{testset}.5.0'
-    gprim_model_list = multi_run_solver(solver_mhn_gprim, 
-                                        model=gprim_model, 
-                                        input_dir=input_dir, 
-                                        k=k, 
+    gprim_model_list = multi_run_solver(solver_mhn_gprim,
+                                        model=gprim_model,
+                                        input_dir=input_dir,
+                                        k=k,
                                         testnames=testnames,
-                                        save_history=False, 
+                                        save_history=False,
                                         overwrite=overwrite,
                                         config=config)
 
-
     # print("Running guided prim 2 solver...")
-    # output_dir = input_dir.replace('data', 'results') 
+    # output_dir = input_dir.replace('data', 'results')
     # gprim_model2 = f'{ept}.{testset}.7.0'
-    # gprim_model2_list = multi_run_solver(solver_mhn_gprim2, 
-    #                                     model=gprim_model2, 
-    #                                     input_dir=input_dir, 
-    #                                     k=k, 
+    # gprim_model2_list = multi_run_solver(solver_mhn_gprim2,
+    #                                     model=gprim_model2,
+    #                                     input_dir=input_dir,
+    #                                     k=k,
     #                                     testnames=testnames,
-    #                                     save_history=False, 
+    #                                     save_history=False,
     #                                     overwrite=overwrite,
     #                                     config=config)
 
     print("Running kruskal solver...")
-    kruskal_model = f'{ept}.{testset}.2.0' 
-    kruskal_model_list = multi_run_solver(solver_mhn_kruskal, 
-                                         model=kruskal_model, 
-                                         input_dir=input_dir, 
-                                         k=k,
-                                         testnames=testnames,
-                                         save_history=False,
-                                         overwrite=overwrite,
-                                         config=config)
+    kruskal_model = f'{ept}.{testset}.2.0'
+    kruskal_model_list = multi_run_solver(solver_mhn_kruskal,
+                                          model=kruskal_model,
+                                          input_dir=input_dir,
+                                          k=k,
+                                          testnames=testnames,
+                                          save_history=False,
+                                          overwrite=overwrite,
+                                          config=config)
 
     print("Running prim solver...")
     prim_model = f'{ept}.{testset}.4.0'
-    prim_model_list = multi_run_solver(solver_mhn_prim, 
-                                         model=prim_model, 
-                                         input_dir=input_dir, 
-                                         k=k,
-                                         testnames=testnames,
-                                         save_history=False,
-                                         overwrite=overwrite,
-                                         config=config)
+    prim_model_list = multi_run_solver(solver_mhn_prim,
+                                       model=prim_model,
+                                       input_dir=input_dir,
+                                       k=k,
+                                       testnames=testnames,
+                                       save_history=False,
+                                       overwrite=overwrite,
+                                       config=config)
 
     print("Running netkeys solver...")
     netkeys_model = f'{ept}.{testset}.1.0'
-    netkeys_model_list = multi_run_solver(solver_mhn_nrk, 
-                                         model=netkeys_model, 
-                                         input_dir=input_dir, 
-                                         k=k,
-                                         testnames=testnames,
-                                         save_history=False,
-                                         overwrite=overwrite,
-                                         config=config)
+    netkeys_model_list = multi_run_solver(solver_mhn_nrk,
+                                          model=netkeys_model,
+                                          input_dir=input_dir,
+                                          k=k,
+                                          testnames=testnames,
+                                          save_history=False,
+                                          overwrite=overwrite,
+                                          config=config)
 
     print("Running prufer solver...")
     prufer_model = f'{ept}.{testset}.6.0'
-    prufer_model_list = multi_run_solver(solver_mhn_prufer, 
-                                         model=prufer_model, 
-                                         input_dir=input_dir, 
+    prufer_model_list = multi_run_solver(solver_mhn_prufer,
+                                         model=prufer_model,
+                                         input_dir=input_dir,
                                          k=k,
                                          testnames=testnames,
                                          save_history=False,
@@ -146,21 +159,24 @@ def run_mhn_experiment(ept, input_dir, output_dir=None, testset=0, testnames=Non
     summarization_list = []
     for i in range(k):
         model_dict = OrderedDict()
-        model_dict['A'] = prufer_model_list[i] 
+        model_dict['A'] = prufer_model_list[i]
         model_dict['B'] = netkeys_model_list[i]
         model_dict['C'] = prim_model_list[i]
         model_dict['D'] = kruskal_model_list[i]
         model_dict['E'] = gprim_model_list[i]
         cname = f'summarization_{i+1}'
         summarization_list.append(cname)
-        # summarization.summarize_model(model_dict, output_dir, cname, testnames, **kwargs)
+        summarization.summarize_model(
+            model_dict, output_dir, cname, testnames, **kwargs)
 
+    summarization.calc_average_metrics(
+        summarization_list, output_dir, f'avarage1-{k}', testnames)
 
-    summarization.calc_average_metrics(summarization_list, output_dir, f'avarage1-{k}', testnames)
+    return summarization_list
 
 
 if __name__ == "__main__":
     # print("Running Test Model...")
     testnames = {'ga-dem1_r25_1_0.json', 'ga-dem1_r25_1_40.json'}
-    run_mhn_experiment(1, './data/small/multi_hop', testset=0, testnames=None, k=10)
-    
+    run_mhn_experiment(1, './data/small/multi_hop',
+                       testset=0, testnames=None, k=10)

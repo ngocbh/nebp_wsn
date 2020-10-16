@@ -6,7 +6,7 @@ models:
     gens: 5
 
   - name: "run 1"
-    gens: 100
+    gens: -1
 
   - name: "run 2"
     gens: 200
@@ -90,6 +90,12 @@ encoding:
     mut_prob: 0.1
 
   - name: "mprim2"
+    init_method: "KruskalRST"
+    cro_prob: 0.7
+    mut_sub_prob: 0.4
+    mut_add_prob: 0.4
+
+  - name: "mprim3"
     init_method: "KruskalRST"
     cro_prob: 0.7
     mut_sub_prob: 0.4

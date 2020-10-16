@@ -14,7 +14,7 @@ from geneticpython import Population
 from geneticpython.core.operators import TournamentSelection, SBXCrossover, PolynomialMutation
 
 from utils.configurations import *
-from utils import WusnInput
+from utils import WusnInput, energy_consumption
 from utils import visualize_front, make_gif, visualize_solutions, remove_file, save_results
 from problems import MultiHopProblem
 from networks import MultiHopNetwork
@@ -75,6 +75,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     wusnfile = os.path.join(WORKING_DIR, filename)
     inp = WusnInput.from_file(wusnfile)
     update_max_hop(config, inp)
+    update_gens(config, inp)
     problem = MultiHopProblem(inp, config['data']['max_hop'])
     network = MultiHopNetwork(problem)
     indv_temp = MultiHopIndividual(problem, network)
@@ -155,6 +156,9 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     # save config
     with open(os.path.join(out_dir, '_config.yml'), mode='w') as f:
         f.write(yaml.dump(config))
+
+    with open(os.path.join(out_dir, 'r.txt'), mode='w') as f:
+        f.write('{} {}'.format(problem._num_of_relays, energy_consumption(problem._num_of_sensors, 1, problem._radius * 2)))
 
     open(os.path.join(out_dir, 'done.flag'), 'a').close()
 

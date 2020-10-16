@@ -43,13 +43,13 @@ def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
                      save=True, show=show, **kwargs)
 
 
-def summarize_metrics(pareto_dict, output_dir):
+def summarize_metrics(pareto_dict, output_dir, r):
     metrics = {}
     metrics['models'] = list(pareto_dict.keys())
     metrics['delta'] = []
     metrics['spacing'] = []
     metrics['nds'] = []
-    # metrics['hypervolume'] = []
+    metrics['hypervolume'] = []
     for key in pareto_dict.keys():
         metrics['c_' + key] = []
     metrics['score'] = []
@@ -65,7 +65,7 @@ def summarize_metrics(pareto_dict, output_dir):
         metrics['delta'].append(delta_apostrophe(pareto))
         metrics['spacing'].append(spacing(pareto))
         metrics['nds'].append(non_dominated_solutions(pareto))
-        # metrics['hypervolume'].append(hypervolume_2d(pareto))
+        metrics['hypervolume'].append(hypervolume_2d(pareto, r))
 
         for other_name, other_pareto in pareto_dict.items():
             c = coverage(pareto, other_pareto)
@@ -90,17 +90,26 @@ def summarize_test(testname, model_dict, working_dir, cname, **kwargs):
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
     pareto_dict = {}
     config_dict = {}
+    rs = []
     for name, model in model_dict.items():
         model_dir = os.path.join(absworking_dir, model)
         test_dir = os.path.join(model_dir, testname)
-        if not os.path.isdir(test_dir):
+        if not os.path.isdir(test_dir) and os.path.isfile(os.path.join(test_dir, 'done.flag')):
             continue
         pareto = read_pareto(os.path.join(test_dir, 'pareto-front.json'))
+        with open(os.path.join(test_dir, 'r.txt')) as f:
+            data = f.read().split()
+            r = tuple([float(e) for e in data])
+            rs.append(r)
         pareto_dict[name] = pareto
         config = yaml.load(
             open(os.path.join(test_dir, '_config.yml')), Loader=Loader)
         config["model_name"] = model
         config_dict[name] = config
+
+    for r in rs:
+        if r != rs[0]:
+            raise ValueError("Catched different r {}".format(testname))
 
     output_dir = os.path.join(absworking_dir, cname)
     out_test_dir = os.path.join(output_dir, testname)
@@ -110,7 +119,7 @@ def summarize_test(testname, model_dict, working_dir, cname, **kwargs):
         f.write(yaml.dump(config_dict))
 
     visualize_test(pareto_dict, output_dir=out_test_dir, show=False, **kwargs)
-    summarize_metrics(pareto_dict, output_dir=out_test_dir)
+    summarize_metrics(pareto_dict, output_dir=out_test_dir, r=r)
 
 
 def summarize_model(model_dict, working_dir, cname=None, testnames=None,
@@ -326,7 +335,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
         models = None
         barchart_test_data = None
         boxchart_test_data = None
-        bar_metric_temp = OrderedDict({  'nds': [], 'delta': [], 'spacing': []})
+        bar_metric_temp = OrderedDict({  'nds': [], 'delta': [], 'hypervolume': []})
 
         for summ in summarization_list:
             test_dir = join(join(absworking_dir, summ), test)
@@ -368,11 +377,11 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
         metric_sum.to_csv(filepath, index=False)
 
         # print(barchart_data)
-        # plot_bar_chart(test_dir, barchart_test_data)
+        plot_bar_chart(test_dir, barchart_test_data)
         boxchart_data.append(boxchart_test_data)
         barchart_data[test] = barchart_test_data
 
-    # plot_box_chart(output_dir, boxchart_data)
+    plot_box_chart(output_dir, boxchart_data)
     compact_data_to_csv(output_dir, barchart_data)
 
 def average_tests_score(working_dir):

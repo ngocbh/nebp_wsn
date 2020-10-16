@@ -9,6 +9,8 @@ import math
 import os
 import pickle
 
+
+
 class WusnConstants:
     # Unit: J
     e_elec = 50 * 1e-9
@@ -24,6 +26,20 @@ class WusnConstants:
 
     E_da = e_da * k_bit
 
+wc = WusnConstants()
+
+def transmission_energy(k, d):
+    d0 = math.sqrt(wc.e_fs / wc.e_mp)
+    if d <= d0:
+        return k * wc.e_elec + k * wc.e_fs * (d ** 2)
+    else:
+        return k * wc.e_elec + k * wc.e_mp * (d ** 4)
+
+def energy_consumption(x, y, d):
+    e_t = transmission_energy(wc.k_bit, d)
+    e_r = x * wc.k_bit * (wc.e_elec + wc.e_da) + y * wc.k_bit * wc.e_da
+    e = e_r + e_t
+    return e
 
 class WusnInput:
     def __init__(self, _W=500, _H=500, _depth=1., _height=10., _num_of_relays=10, _num_of_sensors=50,

@@ -15,7 +15,7 @@ from geneticpython.core.operators import KruskalCrossover, TreeMutation
 
 from edge_sets import WusnMutation
 from utils.configurations import *
-from utils import WusnInput
+from utils import WusnInput, energy_consumption
 from utils import save_results
 from problems import MultiHopProblem
 from networks import MultiHopNetwork, WusnKruskalNetwork
@@ -45,9 +45,6 @@ def check_config(config, filename, model):
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
-def update_max_hop(config, inp):
-    config['data']['max_hop'] = config['data']['max_hop'] or inp.default_max_hop
-
 def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True, seed=None):
     start_time = time.time()
 
@@ -65,6 +62,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     wusnfile = os.path.join(WORKING_DIR, filename)
     inp = WusnInput.from_file(wusnfile)
     update_max_hop(config, inp)
+    update_gens(config, inp)
     problem = MultiHopProblem(inp, config['data']['max_hop'])
     network = MultiHopNetwork(problem)
     node_count = problem._num_of_relays + problem._num_of_sensors + 1
@@ -159,10 +157,14 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                             gen_filter=lambda x: (x % 5 == 0),
                             out_dir=out_dir)
 
-    open(os.path.join(out_dir, 'done.flag'), 'a').close()
     # save config
     with open(os.path.join(out_dir, '_config.yml'), mode='w') as f:
         f.write(yaml.dump(config))
+
+    with open(os.path.join(out_dir, 'r.txt'), mode='w') as f:
+        f.write('{} {}'.format(problem._num_of_relays, energy_consumption(problem._num_of_sensors, 1, problem._radius * 2)))
+
+    open(os.path.join(out_dir, 'done.flag'), 'a').close()
 
 
 if __name__ == '__main__':

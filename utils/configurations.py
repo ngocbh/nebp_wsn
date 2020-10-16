@@ -20,6 +20,19 @@ def load_config(filepath, model):
 def update_max_hop(config, inp):
     config['data']['max_hop'] = config['data']['max_hop'] or inp.default_max_hop
 
+def update_gens(config, inp):
+    if config['models']['gens'] == -1:
+        gens = 100
+        if inp.num_of_relays <= 40:
+            gens = 100
+        elif inp.num_of_relays <= 100:
+            gens = 200
+        elif inp.num_of_relays <= 200:
+            gens = 300
+        else:
+            gens = 400
+        config['models']['gens'] = gens
+
 def update_config(config, new_config):
     ret = config
     for key, value in new_config.items():
