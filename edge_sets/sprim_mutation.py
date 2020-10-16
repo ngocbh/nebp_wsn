@@ -20,6 +20,10 @@ from itertools import chain
 
 class SPrimMutation(Mutation):
 
+    def __init__(self, pm, max_hop=None):
+        self.max_hop = max_hop
+        super(SPrimMutation, self).__init__(pm=pm)
+
     def mutate(self, indv: Individual, random_state=None):
         random_state = check_random_state(random_state)
         ret_indv = indv.clone()
@@ -53,7 +57,7 @@ class SPrimMutation(Mutation):
 
         max_energy = tree.calc_max_energy_consumption()
         edges = deepcopy(tree.edges)
-        tree.build_mprim_tree(max_energy, used_relays_mask, edges, random_state)
+        tree.build_mprim_tree(max_energy, used_relays_mask, edges, random_state, max_hop=self.max_hop)
 
         ret_indv.encode(tree)
 

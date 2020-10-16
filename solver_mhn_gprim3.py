@@ -15,7 +15,7 @@ from geneticpython.tools import visualize_fronts, save_history_as_gif
 from geneticpython.models.tree import EdgeSets, KruskalTree
 from geneticpython.core.operators import PrimCrossover, TreeMutation, MutationCompact
 
-from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation, MyNSGAIIEngine, MyMutationCompact
+from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation, MyNSGAIIEngine, MyMutationCompact, EPrimMutation
 from initalization import initialize_pop
 from utils.configurations import *
 from utils import WusnInput, energy_consumption
@@ -55,7 +55,6 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     config = config or {}
     config = update_config(load_config(CONFIG_FILE, model), config)
     check_config(config, filename, model)
-    print(config)
     output_dir = output_dir or gen_output_dir(filename, model)
     basename, _ = os.path.splitext(os.path.basename(filename))
     os.makedirs(os.path.join(
@@ -90,74 +89,33 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     
 
     crossover = MPrimCrossover(pc=0.7)
-    mutation1 = WusnMutation(pm=0.2, potential_edges=problem._idx2edge) 
-    # mutation2 = APrimMutation(pm=1)
-    mutation3 = SPrimMutation(pm=0.5)
+    # mutation1 = WusnMutation(pm=0.2, potential_edges=problem._idx2edge) 
+    mutation2 = EPrimMutation(pm=0.5, max_hop=config['data']['max_hop'])
+    mutation3 = SPrimMutation(pm=0.5, max_hop=config['data']['max_hop'])
     mutations = MyMutationCompact()
     a = config['models']['gens']
-    mutations.add_mutation(mutation1, (2 * a // 3) * config['algorithm']['slt_size'] )
+    mutations.add_mutation(mutation2, (2 * a // 3) * config['algorithm']['slt_size'] )
     # mutations.add_mutation(mutation2, pm=0.5)
     mutations.add_mutation(mutation3, (a - (2 * a // 3)) * config['algorithm']['slt_size'] )
-    # print(problem._idx2edge)
-    # indv_temp.random_init(1421)
-    # edge_list = [(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 21), (0, 22), (0, 23), (0, 24), (0, 25), (0, 26), (0, 27), (0, 28), (0, 29), (0, 30), (0, 31), (0, 32), (0, 33), (0, 34), (0, 35), (0, 36), (0, 37), (0, 38), (0, 39), (0, 40), (21, 78), (14, 52), (25, 44), (20, 77), (18, 54), (35, 60), (3, 59), (25, 75), (3, 61), (30, 65), (24, 73), (10, 41), (27, 68), (39, 64), (1, 69), (35, 47), (30, 57), (19, 50), (26, 55), (24, 79), (36, 58), (2, 70), (14, 53), (11, 46), (19, 67), (3, 42), (20, 74), (78, 62), (2, 71), (34, 63), (41, 72), (4, 66), (39, 80), (68, 56), (18, 43), (66, 49), (34, 51), (36, 48), (11, 76), (69, 45)]
-    # network.from_edge_list(edge_list)
-    # indv_temp.encode(network) 
-    # print(indv_temp.chromosome.genes)
-    # solution = indv_temp.decode()
-    # print(solution._is_valid)
-    # print(solution.num_used_relays)
-    # print(solution.calc_max_energy_consumption())
-    # print(solution.max_depth)
-    # print(solution.edges)
-    # child = mutation.mutate(indv_temp, 1)
-    # print(child.chromosome.genes)
-    # solution2 = child.decode()
-    # print(solution2._is_valid)
-    # print(solution2.num_used_relays)
-    # print(solution2.calc_max_energy_consumption())
     
-    # indv2 = indv_temp.clone()
-    # indv2.random_init(1231)
-    # print(indv2.chromosome.genes)
-    # solution2 = indv2.decode()
-    # print(solution2._is_valid)
-    # print(solution2.calc_max_energy_consumption())
-    # child = crossover.cross(indv_temp, indv2, 1)
-    # print(child[0].chromosome.genes)
-    # solution3 = child[0].decode()
-    # print(solution3._is_valid)
-    # print(solution3.calc_max_energy_consumption())
-
-    # solution4 = child[1].decode()
-    # print(solution4._is_valid)
-    # print(solution4.calc_max_energy_consumption())
+    # indv_temp.random_init(1)
+    # print(indv_temp.chromosome)
+    # sol1 = indv_temp.decode()
+    # sol1.from_edge_list([(0, 1), (0, 2), (0, 3), (0, 4), (1, 5), (2, 6), (5, 7), (6, 8)])
+    # indv_temp.encode(sol1)
+    # print(sol1.is_valid)
+    # print(sol1.calc_max_energy_consumption())
+    # child = mutation2.mutate(indv_temp, 3)
+    # print(child.chromosome)
+    # sol2 = child.decode()
+    # print(sol2.calc_max_energy_consumption())
     # return
-
-    def crowded_comparator(p1, p2):
-        if p1.nondominated_rank < p2.nondominated_rank:
-            if p1.nondominated_rank >= p2.nondominated_rank - 1 and \
-                    p1.crowding_distance == 0 and p2.crowding_distance != 0:
-                return 1
-            return -1
-        elif p1.nondominated_rank > p2.nondominated_rank:
-            if p1.nondominated_rank - 1 <= p2.nondominated_rank and \
-                    p1.crowding_distance != 0 and p2.crowding_distance == 0:
-                return -1
-            return 1
-        else:
-            if p1.crowding_distance > p2.crowding_distance:
-                return -1
-            elif p1.crowding_distance < p2.crowding_distance:
-                return 1
-            else:
-                return 0
 
     engine = NSGAIIEngine(population=population,
                           crossover=crossover,
                           tournament_size=config['algorithm']['tournament_size'],
                           selection_size=config['algorithm']['slt_size'],
-                          mutation=mutations,
+                          mutation=mutation2,
                           random_state=seed)
 
     @engine.minimize_objective
@@ -224,8 +182,8 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 if __name__ == '__main__':
     config = {'data': {'max_hop': 10},
-                  'models': {'gens': 150},
+                  'models': {'gens': 200},
 		  'encoding': {'init_method': 'PrimRST'}}
     solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model = '1.8.8.0', 
-          config=None)
+          config=config)
 

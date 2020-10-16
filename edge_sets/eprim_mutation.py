@@ -20,6 +20,9 @@ from itertools import chain
 import numpy as np
 
 class EPrimMutation(Mutation):
+    def __init__(self, pm, max_hop=None):
+        self.max_hop = max_hop
+        super(EPrimMutation, self).__init__(pm=pm)
 
     def mutate(self, indv: Individual, random_state=None):
         random_state = check_random_state(random_state)
@@ -40,10 +43,9 @@ class EPrimMutation(Mutation):
         
         ep_list = np.array(tree.get_energy_consumption_list())
         max_energy = np.amax(ep_list)
-        most_used_nodes = np.where(ep_list == max_energy)
+        most_used_nodes = np.where(ep_list == max_energy)[0]
         slt_node = random_state.choice(most_used_nodes)
-
-        tree.build_eprim_tree(max_energy, slt_node, random_state)
+        tree.build_eprim_tree(max_energy, slt_node, random_state, max_hop=self.max_hop)
         ret_indv.encode(tree)
 
         return ret_indv

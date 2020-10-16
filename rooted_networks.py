@@ -144,6 +144,8 @@ class MultiHopNetwork(WusnNetwork):
                              self._points[self.parent[index]])
                 e = self.energy_consumption(self.num_childs[index], (index > self.n), d)
                 ret.append(e)
+            else:
+                ret.append(0)
 
         return ret
 
@@ -172,11 +174,11 @@ class MultiHopNetwork(WusnNetwork):
         max_childs[u] = min(x, max_childs[u])
         return max_childs[u]
 
-    def run_algorithm(self, C, A, adj, max_childs, max_energy, random_state, used_max_childs=True, strict_lower=True):
+    def run_algorithm(self, C, A, adj, max_childs, max_energy, random_state, used_max_childs=True, strict_lower=True, max_hop=None):
         while len(C) < self.node_count and len(A) > 0:
             u, v = A.random_choice(random_state)
             A.remove((u, v))
-            if v in C:
+            if v in C or (max_hop is not None and self.depth[u] >= max_hop):
                 continue
             if used_max_childs:
                 self.update_max_childs(u, max_childs)
@@ -191,7 +193,7 @@ class MultiHopNetwork(WusnNetwork):
                     if w not in C:
                         A.add((v, w))
     
-    def build_cprim_tree(self, max_energy, uedges, random_state=None):
+    def build_cprim_tree(self, max_energy, uedges, random_state, max_hop=None):
         max_childs = [0] * self.node_count
         self.initialize()
         C = set()
@@ -209,7 +211,7 @@ class MultiHopNetwork(WusnNetwork):
                 for v in uadj[u]:
                     A.add((u, v))
 
-        self.run_algorithm(C, A, uadj, max_childs, max_energy, random_state, strict_lower=True)
+        self.run_algorithm(C, A, uadj, max_childs, max_energy, random_state, strict_lower=True, max_hop=max_hop)
 
         # print(len(self.edges))
         # phase 2: continue building tree with full edges
@@ -221,7 +223,7 @@ class MultiHopNetwork(WusnNetwork):
                         if v not in C:
                             A.add((u, v))
 
-        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, strict_lower=True)
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, strict_lower=True, max_hop=max_hop)
 
         # print(len(self.edges))
         # phase 3: continue building tree without upper_bound
@@ -233,11 +235,12 @@ class MultiHopNetwork(WusnNetwork):
                     if v not in C:
                         A.add((u, v))
 
-        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False, strict_lower=True)
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False, strict_lower=True, max_hop=None)
         # print(len(self.edges))
         self.repair()
 
-    def build_mprim_tree(self, max_energy, used_relays, edges, random_state):
+
+    def build_mprim_tree(self, max_energy, used_relays, edges, random_state, max_hop=None):
         max_childs = [0] * self.node_count
         self.initialize()
         C = set()
@@ -260,7 +263,7 @@ class MultiHopNetwork(WusnNetwork):
                     for v in adj[u]:
                         A.add((u, v))
 
-        self.run_algorithm(C, A, adj, max_childs, max_energy, random_state, strict_lower=False)
+        self.run_algorithm(C, A, adj, max_childs, max_energy, random_state, strict_lower=False, max_hop=max_hop)
         # print(len(self.edges))
 
         for u in C:
@@ -269,7 +272,7 @@ class MultiHopNetwork(WusnNetwork):
                     if v not in C:
                         A.add((u, v))
 
-        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, strict_lower=False)
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, strict_lower=False, max_hop=max_hop)
         # print(len(self.edges))
 
         # # phase 2: continue building tree with full edges
@@ -282,7 +285,7 @@ class MultiHopNetwork(WusnNetwork):
                             A.add((u, v))
         # print(len(self.edges))
 
-        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False, strict_lower=False)
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False, strict_lower=False, max_hop=max_hop)
         # phase 3: continue building tree without upper_bound
 
         if len(C) < self.node_count:
@@ -291,16 +294,77 @@ class MultiHopNetwork(WusnNetwork):
                     if v not in C:
                         A.add((u, v))
 
-        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False, strict_lower=False)
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False, strict_lower=False, max_hop=None)
         # print(len(self.edges))
         self.repair()
         # print(self.num_used_relays)
 
-    def build_eprim_tree(self, max_energy, slt_node, random_state):
+    def decompose_tree(self, edges, deleted_node, max_energy, strict_lower=True):
+        visited = [False] * self.number_of_vertices
+        used_edges = set()
+        max_childs = [-float('inf')] * self.number_of_vertices
+        max_childs[0] = 1000000
+
+        def dfs(u, deleted_node, adj, max_energy, max_childs, strict_lower):
+            visited[u] = True
+
+            for v in adj[u]:
+                if v != deleted_node and not visited[v]:
+                    if (v, u) not in used_edges:
+                        used_edges.add((u, v))
+                    d = distance(self._points[u], self._points[v])
+                    max_childs[v] = self.max_childs(v, max_energy, d, strict_lower=True)
+                    self.add_child(u, max_childs)
+
+                    dfs(v, deleted_node, adj, max_energy, max_childs, strict_lower)
+
+        adj = self.get_adjacency(edges)
+        dfs(0, deleted_node, adj, max_energy, max_childs, strict_lower)
+        return list(used_edges), max_childs
+
+    def build_eprim_tree(self, max_energy, slt_node, random_state, max_hop=None):
         edges = copy.deepcopy(self.edges)
 
+        used_edges, max_childs = self.decompose_tree(edges, slt_node, max_energy, True)
+
+        self.initialize()
+        C = set()
+        A = rset()
+        C.add(0)
+
+        for i in range(self.number_of_vertices):
+            if max_childs[i] != -float('inf'):
+                C.add(i)
+            else:
+                max_childs[i] = 0
+
+        if slt_node <= self.n:
+            C.add(slt_node)
+            d = distance(self._points[0], self._points[slt_node])
+            max_childs[slt_node] = self.max_childs(slt_node, max_energy, d, strict_lower=True)
+
+        for u in C:
+            if max_childs[u] > 0:
+                for v in self.potential_adj[u]:
+                    if v not in C:
+                        A.add((u, v))
+
+        edge_list = self.sort_by_bfs_order(used_edges)
+        self.initialize()
+        for u, v in edge_list:
+            self.add_edge(u, v)
 
 
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, strict_lower=True, max_hop=max_hop)
 
+        if len(C) < self.node_count:
+            for u in C:
+                for v in self.potential_adj[u]:
+                    if v not in C:
+                        A.add((u, v))
+
+        self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, used_max_childs=False, strict_lower=True, max_hop=None)
+        # print(len(self.edges))
+        self.repair()
         
         
