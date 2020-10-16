@@ -184,6 +184,6 @@ if __name__ == '__main__':
     config = {'data': {'max_hop': 10},
                   'models': {'gens': 200},
 		  'encoding': {'init_method': 'PrimRST'}}
-    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model = '1.8.8.0', 
+    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model = '1.8.8.0.1', 
           config=config)
 
