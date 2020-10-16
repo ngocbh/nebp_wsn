@@ -335,13 +335,12 @@ class MultiHopNetwork(WusnNetwork):
         for i in range(self.number_of_vertices):
             if max_childs[i] != -float('inf'):
                 C.add(i)
+            elif i <= self.n and max_childs[i] == -float('inf'):
+                C.add(i)
+                d = distance(self._points[0], self._points[i])
+                max_childs[i] = self.max_childs(i, max_energy, d, strict_lower=True)
             else:
                 max_childs[i] = 0
-
-        if slt_node <= self.n:
-            C.add(slt_node)
-            d = distance(self._points[0], self._points[slt_node])
-            max_childs[slt_node] = self.max_childs(slt_node, max_energy, d, strict_lower=True)
 
         for u in C:
             if max_childs[u] > 0:
@@ -358,7 +357,7 @@ class MultiHopNetwork(WusnNetwork):
         self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, strict_lower=True, max_hop=max_hop)
 
         if len(C) < self.node_count:
-            print("Bad move")
+            # print("Bad move")
             for u in C:
                 for v in self.potential_adj[u]:
                     if v not in C:

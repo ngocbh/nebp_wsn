@@ -48,15 +48,15 @@ class EPrimMutation(Mutation):
         max_energy = np.amax(ep_list)
         most_used_nodes = np.where(ep_list == max_energy)[0]
         slt_node = random_state.choice(most_used_nodes)
-        print("Running mutation:")
-        print("num_used_relays, max_energy, most_used_nodes, slt_node = ", tree.num_used_relays, max_energy, most_used_nodes, slt_node)
+        # print("Running mutation:")
+        # print("num_used_relays, max_energy, most_used_nodes, slt_node = ", tree.num_used_relays, max_energy, most_used_nodes, slt_node)
 
         tree.build_eprim_tree(max_energy, slt_node, random_state, max_hop=self.max_hop)
 
         if tree.calc_max_energy_consumption() - max_energy < - EPrimMutation.__EPS:
-            print("Good move")
+            # print("Good move")
             EPrimMutation.no_improved += 1
-        print("New used relays, New energy = ", tree. tree.calc_max_energy_consumption())
+        # print("New used relays, New energy = ", tree. tree.calc_max_energy_consumption())
 
         ret_indv.encode(tree)
 

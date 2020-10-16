@@ -113,7 +113,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                           crossover=crossover,
                           tournament_size=config['algorithm']['tournament_size'],
                           selection_size=config['algorithm']['slt_size'],
-                          mutation=mutation2,
+                          mutation=mutations,
                           random_state=seed)
 
     @engine.minimize_objective
