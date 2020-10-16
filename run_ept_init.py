@@ -271,7 +271,7 @@ def run_ept_3(testnames=None):
             out_model_dir = os.path.join(out_dir, smodel)
             os.makedirs(out_model_dir, exist_ok=True)
             config['encoding']['init_method'] = INIT_METHODS[i]
-            config['models']['gens'] = 2 if TESTING else 150
+            config['models']['gens'] = 2 if TESTING else 200
             config['data']['max_hop'] = max_hop
             config['algorithm']['pop_size'] = 20 if TESTING else 100
             print(config)
