@@ -358,6 +358,7 @@ class MultiHopNetwork(WusnNetwork):
         self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, strict_lower=True, max_hop=max_hop)
 
         if len(C) < self.node_count:
+            print("Bad move")
             for u in C:
                 for v in self.potential_adj[u]:
                     if v not in C:

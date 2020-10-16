@@ -164,4 +164,9 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 
 if __name__ == '__main__':
-    solve('data/_tiny/multi_hop/ga-dem1_r25_1_0.json', model = '1.7.1.0')
+    # solve('data/_tiny/multi_hop/ga-dem1_r25_1_0.json', model = '1.7.1.0')
+    config = {'data': {'max_hop': 10},
+                  'models': {'gens': 100},
+		  'encoding': {'init_method': 'PrimRST'}}
+    solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.1.0.0', 
+          config=config)

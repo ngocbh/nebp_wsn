@@ -20,6 +20,9 @@ from itertools import chain
 import numpy as np
 
 class EPrimMutation(Mutation):
+    __EPS = 1e-8
+    no_improved = 0
+
     def __init__(self, pm, max_hop=None):
         self.max_hop = max_hop
         super(EPrimMutation, self).__init__(pm=pm)
@@ -45,7 +48,16 @@ class EPrimMutation(Mutation):
         max_energy = np.amax(ep_list)
         most_used_nodes = np.where(ep_list == max_energy)[0]
         slt_node = random_state.choice(most_used_nodes)
+        print("Running mutation:")
+        print("num_used_relays, max_energy, most_used_nodes, slt_node = ", tree.num_used_relays, max_energy, most_used_nodes, slt_node)
+
         tree.build_eprim_tree(max_energy, slt_node, random_state, max_hop=self.max_hop)
+
+        if tree.calc_max_energy_consumption() - max_energy < - EPrimMutation.__EPS:
+            print("Good move")
+            EPrimMutation.no_improved += 1
+        print("New used relays, New energy = ", tree. tree.calc_max_energy_consumption())
+
         ret_indv.encode(tree)
 
         return ret_indv

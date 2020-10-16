@@ -44,12 +44,12 @@ class MPrimCrossover(Crossover):
 
         energy0 = trees[0].calc_max_energy_consumption()
         trees[0].build_cprim_tree(energy0, edge_union, random_state, max_hop=self.max_hop)
-        if trees[0].calc_max_energy_consumption() - energy0 < 0:
+        if trees[0].calc_max_energy_consumption() - energy0 < -1e-8:
             MPrimCrossover.no_improved += 1
 
         energy1 = trees[1].calc_max_energy_consumption()
         trees[1].build_cprim_tree(energy1, edge_union, random_state, max_hop=self.max_hop)
-        if trees[1].calc_max_energy_consumption() - energy1 < 0:
+        if trees[1].calc_max_energy_consumption() - energy1 < -1e-8:
             MPrimCrossover.no_improved += 1
 
         # print(trees[0].edges)

@@ -1,5 +1,3 @@
-
-
 """
 File: solver_mhn_mprim.py
 Created by ngocjr7 on 2020-09-12 15:36
@@ -149,8 +147,8 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
-
-    print("Number of improved crossover: {}".format(MPrimCrossover.no_improved))
+    print("Number of improved MPrim crossover: {}".format(MPrimCrossover.no_improved))
+    print("Number of improved EPrim mutation: {}".format(EPrimMutation.no_improved))
 
     history.dump(os.path.join(out_dir, 'history.json'))
     with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
@@ -182,8 +180,9 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 if __name__ == '__main__':
     config = {'data': {'max_hop': 10},
-                  'models': {'gens': 200},
+                  'models': {'gens': 100},
 		  'encoding': {'init_method': 'PrimRST'}}
-    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model = '1.8.8.0.1', 
-          config=config)
+    # solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.8.0.1', 
+          # config=config)
+    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model='1.8.8.0', config=config)
 
