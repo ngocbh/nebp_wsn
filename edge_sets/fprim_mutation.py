@@ -1,3 +1,4 @@
+
 """
 File: sprim_mutation.py
 Created by ngocjr7 on 2020-09-15 21:16
@@ -19,13 +20,13 @@ from itertools import chain
 
 import numpy as np
 
-class EPrimMutation(Mutation):
+class FPrimMutation(Mutation):
     __EPS = 1e-8
     no_improved = 0
 
     def __init__(self, pm, max_hop=None):
         self.max_hop = max_hop
-        super(EPrimMutation, self).__init__(pm=pm)
+        super(FPrimMutation, self).__init__(pm=pm)
 
     def mutate(self, indv: Individual, random_state=None):
         random_state = check_random_state(random_state)
@@ -52,10 +53,10 @@ class EPrimMutation(Mutation):
         # print("Running mutation:")
         # print("num_used_relays, max_energy, most_used_nodes, slt_node = ", tree.num_used_relays, max_energy, most_used_nodes, slt_node)
 
-        tree.build_eprim_tree(max_energy, slt_node, random_state, max_hop=self.max_hop)
+        tree.build_fprim_tree(max_energy, slt_node, random_state, max_hop=self.max_hop)
 
-        if tree.calc_max_energy_consumption() - max_energy < - EPrimMutation.__EPS:
-            EPrimMutation.no_improved += 1
+        if tree.calc_max_energy_consumption() - max_energy < - FPrimMutation.__EPS:
+            FPrimMutation.no_improved += 1
         ret_indv.encode(tree)
 
         return ret_indv

@@ -12,8 +12,9 @@ from geneticpython.core.operators import TournamentSelection
 from geneticpython.tools import visualize_fronts, save_history_as_gif
 from geneticpython.models.tree import EdgeSets, KruskalTree
 from geneticpython.core.operators import PrimCrossover, TreeMutation, MutationCompact
+from geneticpython.utils import check_random_state
 
-from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation, MyNSGAIIEngine, MyMutationCompact, EPrimMutation
+from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation, MyNSGAIIEngine, MyMutationCompact, EPrimMutation, FPrimMutation
 from initalization import initialize_pop
 from utils.configurations import *
 from utils import WusnInput, energy_consumption
@@ -88,8 +89,9 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
     crossover = MPrimCrossover(pc=0.7)
     # mutation1 = WusnMutation(pm=0.2, potential_edges=problem._idx2edge) 
-    mutation2 = EPrimMutation(pm=0.5, max_hop=config['data']['max_hop'])
+    mutation2 = EPrimMutation(pm=1, max_hop=config['data']['max_hop'])
     mutation3 = SPrimMutation(pm=0.5, max_hop=config['data']['max_hop'])
+    mutation4 = FPrimMutation(pm=1, max_hop=config['data']['max_hop'])
     mutations = MyMutationCompact()
     a = config['models']['gens']
     mutations.add_mutation(mutation2, (2 * a // 3) * config['algorithm']['slt_size'] )
@@ -97,16 +99,23 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     mutations.add_mutation(mutation3, (a - (2 * a // 3)) * config['algorithm']['slt_size'] )
     
     # indv_temp.random_init(1)
-    # print(indv_temp.chromosome)
+    # # print(indv_temp.chromosome)
     # sol1 = indv_temp.decode()
-    # sol1.from_edge_list([(0, 1), (0, 2), (0, 3), (0, 4), (1, 5), (2, 6), (5, 7), (6, 8)])
-    # indv_temp.encode(sol1)
-    # print(sol1.is_valid)
-    # print(sol1.calc_max_energy_consumption())
-    # child = mutation2.mutate(indv_temp, 3)
-    # print(child.chromosome)
-    # sol2 = child.decode()
-    # print(sol2.calc_max_energy_consumption())
+    # sol2 = sol1 
+    # random_state = check_random_state(1)
+    # for i in range(1000):
+    #     indv_temp.encode(sol2)
+
+    #     sol1 = indv_temp.decode()
+    #     # print(sol1.is_valid)
+    #     # print(sol1.num_used_relays, sol1.calc_max_energy_consumption())
+    #     child = mutation4.mutate(indv_temp, random_state)
+    #     # print(child.chromosome)
+    #     sol2 = child.decode()
+    #     if sol2.is_valid:
+    #         print(sol2.num_used_relays, sol2.calc_max_energy_consumption())
+    #     else:
+    #         print(float('inf'), float('inf'))
     # return
 
     engine = NSGAIIEngine(population=population,
@@ -179,10 +188,9 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     open(os.path.join(out_dir, 'done.flag'), 'a').close()
 
 if __name__ == '__main__':
-    config = {'data': {'max_hop': 10},
+    config = {'data': {'max_hop': 16},
                   'models': {'gens': 100},
 		  'encoding': {'init_method': 'PrimRST'}}
-    # solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.8.0.1', 
-          # config=config)
+    # solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.8.0.1', config=config)
     solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model='1.8.8.0', config=config)
 

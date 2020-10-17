@@ -9,3 +9,4 @@ from .cprim_init import cprim_init
 from .mynsgaii import MyNSGAIIEngine
 from .my_mutation_compact import MyMutationCompact
 from .eprim_mutation import EPrimMutation
+from .fprim_mutation import FPrimMutation
