@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
 import solver_mhn_gprim
+import solver_mhn_gprim3
 import solver_mhn_gprim2
 import solver_mhn_kruskal
 import solver_mhn_nrk
@@ -32,9 +33,9 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 INIT_METHODS = ['PrimRST', 'KruskalRST',
-                'RandWalkRST', 'Mix_1']
+                'RandWalkRST', 'CPrimRST']
 INIT_METHODS_LEGEND = ['Prim', 'Kruskal',
-                       'RandWalk', 'Mix1']
+                       'RandWalk', 'CPrimRST']
 
 RERUN = False
 TESTING = False
@@ -87,7 +88,7 @@ def run_ept_1(testnames=None):
         for i in range(len(INIT_METHODS)):
             n_hop = 10 if TESTING else 37
             n_hop_start = 1 if TESTING else 8
-            n_seed = 1 if TESTING else 30
+            n_seed = 1 if TESTING else 10
             pop_size = 20 if TESTING else 100
             d = []
             for hop in range(n_hop_start, n_hop+1):
@@ -156,7 +157,7 @@ def run_ept_2(testnames=None):
         label_1 = []
         label_2 = []
         for i in range(len(INIT_METHODS)):
-            n_seed = 1 if TESTING else 30
+            n_seed = 1 if TESTING else 10
             pop_size = 20 if TESTING else 100
             x1, x2 = [], []
             nos1 = 0
@@ -296,11 +297,11 @@ def run_ept_3(testnames=None):
 
     out_dir = 'results/ept_init/ept_3'
     g = 0 if TESTING else 1
-    max_hops = [6, 10] if TESTING else [10, 16, 37]
+    max_hops = [6, 10] if TESTING else [10, 20]
     all_model_dict = {}
     for h, max_hop in enumerate(max_hops):
         all_model_dict[max_hop] = {}
-        md = run_solver(solver_mhn_gprim, f'{g}.2.5.0.{h}', max_hop, out_dir)
+        md = run_solver(solver_mhn_gprim3, f'{g}.2.8.0.{h}', max_hop, out_dir)
         all_model_dict[max_hop]['guided prim'] = md 
         md = run_solver(solver_mhn_gprim2, f'{g}.2.7.0.{h}', max_hop, out_dir)
         all_model_dict[max_hop]['guided prim'] = md 
@@ -318,13 +319,13 @@ def run_ept_3(testnames=None):
 
 def run_ept_4(testnames=None):
     out_dir = 'results/ept_init/ept_3'
-    max_hops = [6, 10] if TESTING else [10, 16, 37]
+    max_hops = [6, 10] if TESTING else [10, 20]
     g = 0 if TESTING else 1
 
     for h, max_hops in enumerate(max_hops):
         for i, init_method in enumerate(INIT_METHODS):
             model_dict = {
-                'guided prim': f'{g}.2.5.0.{h}.{i}',
+                'guided prim3': f'{g}.2.8.0.{h}.{i}',
                 'guided prim2': f'{g}.2.7.0.{h}.{i}',
                 'kruskal': f'{g}.2.2.0.{h}.{i}',
                 'netkeys': f'{g}.2.1.0.{h}.{i}',
@@ -336,7 +337,7 @@ def run_ept_4(testnames=None):
 if __name__ == '__main__':
     testname = 'test' if TESTING else 'medium'
     testnames = [testname]
-    # run_ept_1(testnames)
+    run_ept_1(testnames)
     # run_ept_2(testnames)
     # run_ept_3(testnames)
-    run_ept_4(testnames)
+    # run_ept_4(testnames)

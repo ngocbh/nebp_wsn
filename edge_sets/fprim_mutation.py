@@ -55,9 +55,9 @@ class FPrimMutation(Mutation):
 
         tree.build_fprim_tree(max_energy, slt_node, random_state, max_hop=self.max_hop)
 
-        if tree.calc_max_energy_consumption() - max_energy < - FPrimMutation.__EPS:
+        if tree.is_valid and tree.calc_max_energy_consumption() - max_energy < - FPrimMutation.__EPS:
             FPrimMutation.no_improved += 1
-        ret_indv.encode(tree)
+            ret_indv.encode(tree)
 
         return ret_indv
         

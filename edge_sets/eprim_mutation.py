@@ -54,9 +54,9 @@ class EPrimMutation(Mutation):
 
         tree.build_eprim_tree(max_energy, slt_node, random_state, max_hop=self.max_hop)
 
-        if tree.calc_max_energy_consumption() - max_energy < - EPrimMutation.__EPS:
+        if tree.is_valid and tree.calc_max_energy_consumption() - max_energy < - EPrimMutation.__EPS:
             EPrimMutation.no_improved += 1
-        ret_indv.encode(tree)
+            ret_indv.encode(tree)
 
         return ret_indv
         

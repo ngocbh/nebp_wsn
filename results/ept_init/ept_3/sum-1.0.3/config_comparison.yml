@@ -1,0 +1,113 @@
+guided prim:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 10
+    name: ept_init
+  encoding:
+    cro_prob: 0.7
+    init_method: Mix_1
+    mut_prob: 0.5
+    name: mprim
+  model_name: 1.2.5.0.0.3
+  models:
+    gens: 200
+    name: run 1
+guided prim2:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 10
+    name: ept_init
+  encoding:
+    cro_prob: 0.7
+    init_method: Mix_1
+    mut_add_prob: 0.4
+    mut_sub_prob: 0.4
+    name: mprim2
+  model_name: 1.2.7.0.0.3
+  models:
+    gens: 200
+    name: run 1
+kruskal:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 10
+    name: ept_init
+  encoding:
+    cro_prob: 0.7
+    init_method: Mix_1
+    mut_prob: 0.4
+    name: kruskal
+  model_name: 1.2.2.0.0.3
+  models:
+    gens: 200
+    name: run 1
+netkeys:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 10
+    name: ept_init
+  encoding:
+    alpha: 2
+    beta: 6
+    cro_di: 20
+    cro_prob: 0.7
+    init_method: Mix_1
+    mut_di: 5
+    mut_prob: 0.05
+    name: netkeys
+  model_name: 1.2.1.0.0.3
+  models:
+    gens: 200
+    name: run 1
+prim:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 10
+    name: ept_init
+  encoding:
+    cro_prob: 0.7
+    init_method: Mix_1
+    mut_prob: 0.4
+    name: prim
+  model_name: 1.2.4.0.0.3
+  models:
+    gens: 200
+    name: run 1
+prufer:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 10
+    name: ept_init
+  encoding:
+    cro_prob: 0.7
+    init_method: Mix_1
+    mut_prob: 0.1
+    name: prufer
+  model_name: 1.2.6.0.0.3
+  models:
+    gens: 200
+    name: run 1

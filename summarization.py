@@ -97,10 +97,11 @@ def summarize_test(testname, model_dict, working_dir, cname, **kwargs):
         if not os.path.isdir(test_dir) and os.path.isfile(os.path.join(test_dir, 'done.flag')):
             continue
         pareto = read_pareto(os.path.join(test_dir, 'pareto-front.json'))
-        with open(os.path.join(test_dir, 'r.txt')) as f:
-            data = f.read().split()
-            r = tuple([float(e) for e in data])
-            rs.append(r)
+        if os.path.isfile(os.path.join(test_dir, 'r.txt')):
+            with open(os.path.join(test_dir, 'r.txt')) as f:
+                data = f.read().split()
+                r = tuple([float(e) for e in data])
+                rs.append(r)
         pareto_dict[name] = pareto
         config = yaml.load(
             open(os.path.join(test_dir, '_config.yml')), Loader=Loader)
@@ -110,6 +111,8 @@ def summarize_test(testname, model_dict, working_dir, cname, **kwargs):
     for r in rs:
         if r != rs[0]:
             raise ValueError("Catched different r {}".format(testname))
+
+    r = rs[0] if len(rs) > 0 else (200,1)
 
     output_dir = os.path.join(absworking_dir, cname)
     out_test_dir = os.path.join(output_dir, testname)
