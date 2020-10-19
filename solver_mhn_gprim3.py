@@ -89,7 +89,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
     crossover = MPrimCrossover(pc=0.7)
     # mutation1 = WusnMutation(pm=0.2, potential_edges=problem._idx2edge) 
-    mutation2 = EPrimMutation(pm=1, max_hop=config['data']['max_hop'])
+    mutation2 = EPrimMutation(pm=0.5, max_hop=config['data']['max_hop'])
     mutation3 = SPrimMutation(pm=0.5, max_hop=config['data']['max_hop'])
     # mutation4 = FPrimMutation(pm=1, max_hop=config['data']['max_hop'])
     mutations = MyMutationCompact()
