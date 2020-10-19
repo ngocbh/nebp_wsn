@@ -219,6 +219,12 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     with open(os.path.join(out_dir, 'r.txt'), mode='w') as f:
         f.write('{} {}'.format(problem._num_of_relays, energy_consumption(problem._num_of_sensors, 1, problem._radius * 2)))
 
+    P = [[0, 0],[0, 0]]
+    P[0][0], P[0][1] = 1, energy_consumption(problem._num_of_sensors, 1, problem._radius * 2)
+    P[1][0], P[1][1] = problem._num_of_relays, energy_consumption(problem._num_of_sensors/problem._num_of_relays, 0, 0)
+    with open(os.path.join(out_dir, 'P.txt'), mode='w') as f:
+        f.write('{} {}\n{} {}'.format(P[0][0], P[0][1], P[1][0], P[1][1]))
+
     open(os.path.join(out_dir, 'done.flag'), 'a').close()
 
 if __name__ == '__main__':

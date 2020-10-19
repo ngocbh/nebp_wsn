@@ -13,6 +13,7 @@ from collections import OrderedDict
 import solver_mhn_nrk
 import solver_mhn_gprim
 import solver_mhn_gprim2
+import solver_mhn_gprim3
 import solver_mhn_kruskal
 import solver_mhn_prim
 import solver_mhn_prufer
@@ -86,11 +87,13 @@ def run_mhn_experiment(ept,
                        k=10, 
                        overwrite=False, 
                        config=None, 
+                       referenced=False,
+                       referenced_dir=None,
                        **kwargs):
     print("Running guided prim solver...")
     output_dir = output_dir or input_dir.replace('data', 'results')
-    gprim_model = f'{ept}.{testset}.5.0'
-    gprim_model_list = multi_run_solver(solver_mhn_gprim,
+    gprim_model = f'{ept}.{testset}.8.0'
+    gprim_model_list = multi_run_solver(solver_mhn_gprim3,
                                         model=gprim_model,
                                         input_dir=input_dir,
                                         k=k,
@@ -167,10 +170,11 @@ def run_mhn_experiment(ept,
         cname = f'summarization_{i+1}'
         summarization_list.append(cname)
         summarization.summarize_model(
-            model_dict, output_dir, cname, testnames, **kwargs)
+            model_dict, output_dir, cname, testnames,
+            referenced=referenced, referenced_dir=referenced_dir, **kwargs)
 
     summarization.calc_average_metrics(
-        summarization_list, output_dir, f'avarage1-{k}', testnames)
+        summarization_list, output_dir, f'avarage1-{k}', testnames, referenced=referenced)
 
     return summarization_list
 

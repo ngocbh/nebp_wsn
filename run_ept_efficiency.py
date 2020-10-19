@@ -39,6 +39,8 @@ def run_ept():
 
     ept = 0 if TESTING else 1
     input_dir = './data/test' if TESTING else './data/ept_efficiency'
+    referenced_pareto_dir = './results/test/referenced_pareto' if TESTING else './results/ept_efficiency/referenced_pareto'
+
     output_dir = None
     testset = 0 if TESTING else 3
     testnames = 'test' if TESTING else ''
@@ -50,7 +52,10 @@ def run_ept():
         config['algorithm']['pop_size'] = 10
         config['algorithm']['selection_size'] = 10
 
-    sum_list = run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, overwrite=RERUN, config=config)
+    sum_list = run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, \
+                                      overwrite=RERUN, config=config, \
+                                      referenced=True, referenced_dir=referenced_pareto_dir)
+    print(sum_list)
 
 if __name__ == '__main__':
     run_ept()

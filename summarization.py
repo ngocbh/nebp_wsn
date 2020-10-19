@@ -6,12 +6,12 @@ Github: https://github.com/ngocjr7
 Description: 
 """
 from geneticpython.tools.visualization import visualize_fronts
-from geneticpython.tools.analyzers import delta_apostrophe, coverage, \
-    spacing, non_dominated_solutions, hypervolume_2d
+from geneticpython.tools.performance_indicators import delta_apostrophe, C_metric, \
+    SP, ONVG, HV_2d, IGD, delta
 from yaml import Loader
 from os.path import join
 from collections import OrderedDict
-
+from matplotlib.ticker import MaxNLocator
 import json
 import os
 import yaml
@@ -19,6 +19,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import copy
+import itertools
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -28,27 +29,77 @@ def read_pareto(filepath):
     pareto = set()
     for solution in data:
         objectives = (solution['num_used_relays'],
-                      solution['energy_consumption'])
+                      solution['energy_consumption'] * 1000)
         pareto.add(objectives)
     pareto = list(pareto)
     return pareto
 
+def read_pareto_history(filepath):
+    data = json.load(open(filepath, mode='r'))
+    history = []
+    for g in data:
+        pareto = set()
+        for solution in g["pareto_front"]:
+            pareto.add(tuple([solution[0], solution[1] * 1000 ]))
+        history.append(list(pareto))
+    return history
 
 def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
+    def do_axis(ax):
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+
     filepath = os.path.join(output_dir, 'front_comparison.png')
     visualize_fronts(pareto_dict,
                      filepath=filepath,
                      title='pareto fronts comparison',
                      objective_name=['used relays', 'energy'],
-                     save=True, show=show, **kwargs)
+                     save=True, show=show, do_axis=do_axis, **kwargs)
+
+def visualize_igd_over_generations(history_dict, output_dir, P, marker=None,
+                                   linewidth=None, linestyle='--', fillstyle=None, **kwargs):
+    data = {}
+    for name, history in history_dict.items():
+        igds = []
+        for S in history:
+            igds.append(IGD(S, P))
+        data[name] = igds
+    fig, ax = plt.subplots()
+
+    marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
+    iter_marker = itertools.cycle(marker)
+
+    if fillstyle == 'flicker':
+        fillstyle = ['full', 'none']
+    elif fillstyle == 'all':
+        fillstyle = ['none', 'top', 'bottom', 'right', 'left', 'full']
+    else:
+        fillstyle = [fillstyle]
+    iter_fillstyle = itertools.cycle(fillstyle)
+
+    for name, history in data.items():
+        m = next(iter_marker)
+        fs = next(iter_fillstyle)
+        ax.plot(list(range(len(history))), history, label=name,
+                linewidth=linewidth, linestyle=linestyle, marker=m, fillstyle=fs)
+
+    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    filepath = os.path.join(output_dir, 'igd_over_generations.png')
+    plt.ylabel("$IDG$")
+    plt.xlabel("generations")
+    plt.title("IGD over generations")
+    plt.legend()
+    plt.savefig(filepath)
+    plt.close('all')
 
 
-def summarize_metrics(pareto_dict, output_dir, r):
+def summarize_metrics(pareto_dict, output_dir, r, referenced=False, P=None, Pe=None):
     metrics = {}
     metrics['models'] = list(pareto_dict.keys())
+    if referenced:
+        metrics['igd'] = []
     metrics['delta'] = []
     metrics['spacing'] = []
-    metrics['nds'] = []
+    metrics['onvg'] = []
     metrics['hypervolume'] = []
     for key in pareto_dict.keys():
         metrics['c_' + key] = []
@@ -62,13 +113,21 @@ def summarize_metrics(pareto_dict, output_dir, r):
         if name != metrics['models'][i]:
             raise ValueError("Summarize metrics error")
 
-        metrics['delta'].append(delta_apostrophe(pareto))
-        metrics['spacing'].append(spacing(pareto))
-        metrics['nds'].append(non_dominated_solutions(pareto))
-        metrics['hypervolume'].append(hypervolume_2d(pareto, r))
+        if referenced:
+            metrics['igd'].append(IGD(pareto, P))
+
+        if Pe is None:
+            metrics['delta'].append(delta_apostrophe(pareto))
+            raise ValueError()
+        else:
+            metrics['delta'].append(delta(pareto, Pe))
+
+        metrics['spacing'].append(SP(pareto))
+        metrics['onvg'].append(ONVG(pareto))
+        metrics['hypervolume'].append(HV_2d(pareto, r))
 
         for other_name, other_pareto in pareto_dict.items():
-            c = coverage(pareto, other_pareto)
+            c = C_metric(pareto, other_pareto)
             metrics['c_' + other_name].append(c)
             c_matrix[i].append(c)
 
@@ -86,33 +145,50 @@ def summarize_metrics(pareto_dict, output_dir, r):
     df.to_csv(filepath, index=False)
 
 
-def summarize_test(testname, model_dict, working_dir, cname, **kwargs):
+def summarize_test(testname, model_dict, working_dir, cname, referenced=False, referenced_dir=None, **kwargs):
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
     pareto_dict = {}
     config_dict = {}
+    history_dict = {}
     rs = []
+    Ps = []
     for name, model in model_dict.items():
         model_dir = os.path.join(absworking_dir, model)
         test_dir = os.path.join(model_dir, testname)
         if not os.path.isdir(test_dir) and os.path.isfile(os.path.join(test_dir, 'done.flag')):
             continue
         pareto = read_pareto(os.path.join(test_dir, 'pareto-front.json'))
+        pareto_dict[name] = pareto
+
         if os.path.isfile(os.path.join(test_dir, 'r.txt')):
             with open(os.path.join(test_dir, 'r.txt')) as f:
                 data = f.read().split()
                 r = tuple([float(e) for e in data])
                 rs.append(r)
-        pareto_dict[name] = pareto
+
+        if os.path.isfile(os.path.join(test_dir, 'P.txt')):
+            P = np.loadtxt(os.path.join(test_dir, 'P.txt')) 
+            Ps.append(P)
+
         config = yaml.load(
             open(os.path.join(test_dir, '_config.yml')), Loader=Loader)
         config["model_name"] = model
         config_dict[name] = config
 
+        if referenced:
+            history = read_pareto_history(os.path.join(test_dir, 'history.json'))
+            history_dict[name] = history
+
     for r in rs:
         if r != rs[0]:
             raise ValueError("Catched different r {}".format(testname))
 
+    for Pe in Ps:
+        if np.any(Pe != Ps[0]):
+            raise ValueError("Catched different P {}".format(testname))
+
     r = rs[0] if len(rs) > 0 else (200,1)
+    Pe = Ps[0]
 
     output_dir = os.path.join(absworking_dir, cname)
     out_test_dir = os.path.join(output_dir, testname)
@@ -121,12 +197,19 @@ def summarize_test(testname, model_dict, working_dir, cname, **kwargs):
     with open(os.path.join(output_dir, 'config_comparison.yml'), mode='w') as f:
         f.write(yaml.dump(config_dict))
 
-    visualize_test(pareto_dict, output_dir=out_test_dir, show=False, **kwargs)
-    summarize_metrics(pareto_dict, output_dir=out_test_dir, r=r)
+    P = None
+    if referenced:
+        referenced_file = os.path.join(referenced_dir, testname + '.txt')
+        P = np.loadtxt(referenced_file)
 
+    visualize_test(pareto_dict, output_dir=out_test_dir, show=False, **kwargs)
+    summarize_metrics(pareto_dict, output_dir=out_test_dir, r=r, referenced=referenced, P=P, Pe=Pe)
+    if referenced:
+        visualize_igd_over_generations(history_dict, output_dir=out_test_dir, P=P, fillstyle='flicker')
 
 def summarize_model(model_dict, working_dir, cname=None, testnames=None,
-                    marker=None, s=20, plot_line=True, linewidth=0.8, linestyle='dashed', **kwargs):
+                    marker=None, s=20, plot_line=True, linewidth=0.8, linestyle='dashed',
+                    referenced=False, referenced_dir=None, **kwargs):
     print("Summarizing {}: {}".format(cname, model_dict))
     tests = set()
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
@@ -147,7 +230,7 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
     with open(join(output_dir, 'model_dict.json'), mode='w') as f:
         f.write(json.dumps(model_dict, indent=4))
 
-    marker = marker or ['>', (5, 0), (5, 1), (5, 2), '+', 'o'].reverse()
+    marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
     for test in tests:
         summarize_test(test, model_dict, working_dir, cname,
                        s=20,
@@ -155,10 +238,13 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
                        plot_line=True,
                        linewidth=0.8,
                        linestyle='dashed',
+                       fillstyle='flicker',
+                       referenced=referenced,
+                       referenced_dir=referenced_dir,
                        **kwargs)
 
 
-def calc_average_metrics(summarization_list, working_dir, cname, testnames=None):
+def calc_average_metrics(summarization_list, working_dir, cname, testnames=None, referenced=False):
     def make_patch_spines_invisible(ax):
         ax.set_frame_on(True)
         ax.patch.set_visible(False)
@@ -169,11 +255,13 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
         plt.style.use('bmh')
         plt.grid(False)
         palette = plt.get_cmap('Set1')
-        PI_MAP = {'delta': '$\Delta\'$', 'nds': '$NDS$', 'hypervolume': '$HV$', 'spacing': '$spacing$'}
+        PI_MAP = { 'igd': '$IGD$', 'delta': '$\Delta$', 'onvg': '$ONVG$', 'hypervolume': '$HV$', 'spacing': '$spacing$'}
 
         models = data.keys()
         for value in data.values():
             pis = list(value.keys())
+            break
+        pis.remove('igd')
 
         fig, host = plt.subplots()
         par1 = host.twinx()
@@ -200,8 +288,12 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
             pi_std = []
             for model in models:
                 x = np.array(data[model][pi])
-                pi_mean.append(np.mean(x))
-                pi_std.append(np.std(x))
+                x_mean = np.mean(x)
+                x_std = np.std(x)
+                if x_mean - x_std < 0:
+                    axs[idx].set_ylim(bottom=0)
+                pi_mean.append(x_mean)
+                pi_std.append(x_std)
 
             px = axs[idx].bar(ind + (idx + 0.5) * pi_width - model_width/2, pi_mean, pi_width,
                    bottom=0, edgecolor = 'black',color=palette(idx+1), alpha=0.9, yerr=pi_std, capsize=7, label=PI_MAP[pi])
@@ -338,7 +430,10 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None)
         models = None
         barchart_test_data = None
         boxchart_test_data = None
-        bar_metric_temp = OrderedDict({  'nds': [], 'delta': [], 'hypervolume': []})
+        if referenced:
+            bar_metric_temp = OrderedDict({ 'igd': [], 'onvg': [], 'delta': [], 'hypervolume': []})
+        else:
+            bar_metric_temp = OrderedDict({ 'onvg': [], 'delta': [], 'hypervolume': []})
 
         for summ in summarization_list:
             test_dir = join(join(absworking_dir, summ), test)

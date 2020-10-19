@@ -149,7 +149,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                           crossover=crossover,
                           tournament_size=config['algorithm']['tournament_size'],
                           selection_size=config['algorithm']['slt_size'],
-                          mutation=mutation3,
+                          mutation=mutation,
                           random_state=seed)
 
     @engine.minimize_objective
@@ -215,11 +215,17 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                             gen_filter=lambda x: (x % 1 == 0),
                             out_dir=out_dir)
 
-    open(os.path.join(out_dir, 'done.flag'), 'a').close()
     # save config
     with open(os.path.join(out_dir, '_config.yml'), mode='w') as f:
         f.write(yaml.dump(config))
     
+    P = [[0, 0],[0, 0]]
+    P[0][0], P[0][1] = 1, energy_consumption(problem._num_of_sensors, 1, problem._radius * 2)
+    P[1][0], P[1][1] = problem._num_of_relays, energy_consumption(problem._num_of_sensors/problem._num_of_relays, 0, 0)
+    with open(os.path.join(out_dir, 'P.txt'), mode='w') as f:
+        f.write('{} {}\n{} {}'.format(P[0][0], P[0][1], P[1][0], P[1][1]))
+
+    open(os.path.join(out_dir, 'done.flag'), 'a').close()
 
 if __name__ == '__main__':
     solve('data/small/single_hop/ga-dem1_r25_1.json', model='1.0.3.0')
