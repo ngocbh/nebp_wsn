@@ -30,7 +30,7 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 RERUN=False
-TESTING=True
+TESTING=False
 
 
 def run_ept():
@@ -39,7 +39,7 @@ def run_ept():
     output_dir = None
     testset = 0 if TESTING else 3
     testnames = 'test' if TESTING else ''
-    k = 5
+    k = 10
     config = None
     if TESTING:
         config = {'models': {}, 'algorithm': {}}
