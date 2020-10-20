@@ -1,0 +1,20 @@
+algorithm:
+  name: nsgaii
+  pop_size: 100
+  slt_size: 100
+  tournament_size: 2
+data:
+  max_hop: 20
+  name: ept_init
+encoding:
+  alpha: 2
+  beta: 6
+  cro_di: 20
+  cro_prob: 0.7
+  init_method: KruskalRST
+  mut_di: 5
+  mut_prob: 0.05
+  name: netkeys
+models:
+  gens: 200
+  name: run 1
