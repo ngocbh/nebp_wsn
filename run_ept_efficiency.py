@@ -52,6 +52,7 @@ def run_ept():
         config['algorithm']['pop_size'] = 10
         config['algorithm']['selection_size'] = 10
     else:
+        config = {'models': {}}
         config['models']['genes'] = 50
 
     sum_list = run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, \
