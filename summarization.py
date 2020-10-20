@@ -261,7 +261,8 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
         for value in data.values():
             pis = list(value.keys())
             break
-        pis.remove('igd')
+        if 'igd' in pis:
+            pis.remove('igd')
 
         fig, host = plt.subplots()
         par1 = host.twinx()

@@ -1,3 +1,4 @@
+
 from __future__ import absolute_import
 
 from utils.configurations import load_config, gen_output_dir
@@ -30,20 +31,15 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 RERUN=False
-TESTING=False
+TESTING=True
 
 
 def run_ept():
-    def plot():
-        pass
-
     ept = 0 if TESTING else 1
-    input_dir = './data/test' if TESTING else './data/ept_efficiency'
-    referenced_pareto_dir = './results/test/referenced_pareto' if TESTING else './results/ept_efficiency/referenced_pareto'
-
+    input_dir = './data/test' if TESTING else './data/ept_scalability'
     output_dir = None
     testset = 0 if TESTING else 3
-    testnames = ['test'] if TESTING else ['']
+    testnames = 'test' if TESTING else ''
     k = 5
     config = None
     if TESTING:
@@ -51,13 +47,9 @@ def run_ept():
         config['models']['gens'] = 2
         config['algorithm']['pop_size'] = 10
         config['algorithm']['selection_size'] = 10
-    else:
-        config['models']['genes'] = 50
 
-    sum_list = run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, \
-                                      overwrite=RERUN, config=config, \
-                                      referenced=False, referenced_dir=referenced_pareto_dir, summ=True)
-    print(sum_list)
+    run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, overwrite=RERUN, config=config)
 
 if __name__ == '__main__':
     run_ept()
+

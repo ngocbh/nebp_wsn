@@ -23,6 +23,8 @@ def update_max_hop(config, inp):
 def update_gens(config, inp):
     if config['models']['gens'] == -1:
         gens = 100
+        if inp.num_of_relays <= 20:
+            gens = 50
         if inp.num_of_relays <= 40:
             gens = 100
         elif inp.num_of_relays <= 100:
