@@ -58,12 +58,12 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     basename, _ = os.path.splitext(os.path.basename(filename))
     os.makedirs(os.path.join(
         WORKING_DIR, '{}/{}'.format(output_dir, basename)), exist_ok=True)
-    print(basename)
 
     wusnfile = os.path.join(WORKING_DIR, filename)
     inp = WusnInput.from_file(wusnfile)
     update_max_hop(config, inp)
     update_gens(config, inp)
+    print(basename, config)
     problem = MultiHopProblem(inp, config['data']['max_hop'])
     network = MultiHopNetwork(problem)
     node_count = problem._num_of_relays + problem._num_of_sensors + 1

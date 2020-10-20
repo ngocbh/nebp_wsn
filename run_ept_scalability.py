@@ -37,8 +37,8 @@ def run_ept():
     ept = 0 if TESTING else 1
     input_dir = './data/test' if TESTING else './data/ept_scalability'
     output_dir = None
-    testset = 0 if TESTING else 3
-    testnames = 'test' if TESTING else ''
+    testset = 0 if TESTING else 4
+    testnames = ['test'] if TESTING else ['']
     k = 10
     config = None
     if TESTING:
