@@ -338,6 +338,6 @@ if __name__ == '__main__':
     testname = 'test' if TESTING else 'medium'
     testnames = [testname]
     # run_ept_1(testnames)
-    # run_ept_2(testnames)
-    run_ept_3(testnames)
+    run_ept_2(testnames)
+    # run_ept_3(testnames)
     # run_ept_4(testnames)

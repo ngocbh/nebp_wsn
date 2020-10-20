@@ -1,0 +1,16 @@
+algorithm:
+  name: nsgaii
+  pop_size: 100
+  slt_size: 100
+  tournament_size: 2
+data:
+  max_hop: 20
+  name: ept_init
+encoding:
+  cro_prob: 0.7
+  init_method: RandWalkRST
+  mut_prob: 0.4
+  name: kruskal
+models:
+  gens: 200
+  name: run 1
