@@ -43,7 +43,7 @@ def run_ept():
 
     output_dir = None
     testset = 0 if TESTING else 3
-    testnames = 'test' if TESTING else ''
+    testnames = ['test'] if TESTING else ['']
     k = 5
     config = None
     if TESTING:
