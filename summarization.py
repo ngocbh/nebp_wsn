@@ -188,7 +188,7 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
             raise ValueError("Catched different P {}".format(testname))
 
     r = rs[0] if len(rs) > 0 else (200,1)
-    Pe = Ps[0]
+    Pe = Ps[0] if len(Ps) > 0 else np.array([[1, 0.02], [100, 0.0001]]) 
 
     output_dir = os.path.join(absworking_dir, cname)
     out_test_dir = os.path.join(output_dir, testname)

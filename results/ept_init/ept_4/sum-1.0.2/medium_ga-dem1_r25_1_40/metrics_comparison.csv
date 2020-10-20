@@ -1,6 +1,7 @@
-models,delta,spacing,nds,c_guided prim,c_kruskal,c_netkeys,c_prim,c_prufer,score
-guided prim,inf,inf,1,0.0,1.0,1.0,1.0,1.0,4
-kruskal,inf,inf,1,0.0,0.0,0.0,0.0,0.0,0
-netkeys,inf,inf,1,0.0,0.0,0.0,0.0,0.0,0
-prim,inf,inf,1,0.0,0.0,0.0,0.0,0.0,0
-prufer,inf,inf,1,0.0,0.0,0.0,0.0,0.0,0
+models,delta,spacing,onvg,hypervolume,c_guided prim3,c_guided prim2,c_kruskal,c_netkeys,c_prim,c_prufer,score
+guided prim3,0.9808469375709102,5.601891634697445,12,1715.5817749385358,0.0,1.0,1.0,1.0,1.0,1.0,5
+guided prim2,0.9237962630529094,1.220052567972652,9,469.2556657200096,0.0,0.0,1.0,1.0,1.0,1.0,4
+kruskal,1.0,inf,1,,0.0,0.0,0.0,0.0,0.0,0.0,0
+netkeys,1.0,inf,1,,0.0,0.0,0.0,0.0,0.0,0.0,0
+prim,1.0,inf,1,0.0,0.0,0.0,1.0,1.0,0.0,1.0,3
+prufer,1.0,inf,1,,0.0,0.0,0.0,0.0,0.0,0.0,0
