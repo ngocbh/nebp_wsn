@@ -89,6 +89,7 @@ def run_mhn_experiment(ept,
                        config=None, 
                        referenced=False,
                        referenced_dir=None,
+                       summ=True,
                        **kwargs):
     print("Running guided prim solver...")
     output_dir = output_dir or input_dir.replace('data', 'results')
@@ -157,6 +158,9 @@ def run_mhn_experiment(ept,
                                          save_history=False,
                                          overwrite=overwrite,
                                          config=config)
+
+    if not summ:
+        return 
 
     print("Summarizing...")
     summarization_list = []

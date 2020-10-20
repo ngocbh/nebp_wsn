@@ -30,7 +30,7 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 RERUN=False
-TESTING=True
+TESTING=False
 
 
 def run_ept():
@@ -54,7 +54,7 @@ def run_ept():
 
     sum_list = run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, \
                                       overwrite=RERUN, config=config, \
-                                      referenced=True, referenced_dir=referenced_pareto_dir)
+                                      referenced=True, referenced_dir=referenced_pareto_dir, summ=False)
     print(sum_list)
 
 if __name__ == '__main__':
