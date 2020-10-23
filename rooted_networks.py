@@ -163,6 +163,9 @@ class MultiHopNetwork(WusnNetwork):
             return float('inf')
 
     def max_childs(self, i, max_energy, d, strict_lower=True):
+        if max_energy > 10000000:
+            return 10000000
+
         y = (i > self.n) 
         nmc = (max_energy - self.transmission_energy(wc.k_bit, d) - y * wc.k_bit * wc.e_da) \
                    / (wc.k_bit * wc.e_elec + wc.k_bit * wc.e_da)
@@ -178,7 +181,7 @@ class MultiHopNetwork(WusnNetwork):
 
     def update_max_childs(self, u, max_childs, _print=False):
         if u == self.root:
-            return 1000000
+            return 100000000
         x = self.update_max_childs(self.parent[u], max_childs, _print)
         # if _print:
             # print("update_max_childs: {}: {} {}".format(u, max_childs[u], x))
