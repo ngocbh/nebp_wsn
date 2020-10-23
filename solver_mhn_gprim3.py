@@ -14,7 +14,7 @@ from geneticpython.models.tree import EdgeSets, KruskalTree
 from geneticpython.core.operators import PrimCrossover, TreeMutation, MutationCompact
 from geneticpython.utils import check_random_state
 
-from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation, MyNSGAIIEngine, MyMutationCompact, EPrimMutation, FPrimMutation
+from edge_sets import WusnMutation, XPrimCrossover, ROPrimMutation, APrimMutation, MyNSGAIIEngine, MyMutationCompact, EPrimMutation, FPrimMutation
 from initalization import initialize_pop
 from utils.configurations import *
 from utils import WusnInput, energy_consumption
@@ -87,10 +87,10 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                               random_state=random_state)
     
 
-    crossover = MPrimCrossover(pc=0.7)
+    crossover = XPrimCrossover(pc=0.7)
     # mutation1 = WusnMutation(pm=0.2, potential_edges=problem._idx2edge) 
     mutation2 = EPrimMutation(pm=0.5, max_hop=config['data']['max_hop'])
-    mutation3 = SPrimMutation(pm=0.5, max_hop=config['data']['max_hop'])
+    mutation3 = ROPrimMutation(pm=0.5, max_hop=config['data']['max_hop'])
     # mutation4 = FPrimMutation(pm=1, max_hop=config['data']['max_hop'])
     mutations = MyMutationCompact()
     a = config['models']['gens']
@@ -156,7 +156,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
-    print("Number of improved MPrim crossover: {}".format(MPrimCrossover.no_improved))
+    print("Number of improved MPrim crossover: {}".format(XPrimCrossover.no_improved))
     print("Number of improved EPrim mutation: {}".format(EPrimMutation.no_improved))
 
     history.dump(os.path.join(out_dir, 'history.json'))

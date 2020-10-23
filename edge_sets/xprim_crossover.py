@@ -12,12 +12,12 @@ from geneticpython.utils.validation import check_random_state
 from geneticpython.models.tree import Tree
 
 
-class MPrimCrossover(Crossover):
+class XPrimCrossover(Crossover):
     __EPS = 1e-8
     no_improved = 0
     def __init__(self, pc, max_hop=None):
         self.max_hop = max_hop
-        super(MPrimCrossover, self).__init__(pc=pc)
+        super(XPrimCrossover, self).__init__(pc=pc)
 
     def cross(self, father: Individual, mother: Individual, random_state=None):
         random_state = check_random_state(random_state)
@@ -43,14 +43,14 @@ class MPrimCrossover(Crossover):
                     potential_adj[v].append(u)
 
         energy0 = trees[0].calc_max_energy_consumption()
-        trees[0].build_cprim_tree(energy0, edge_union, random_state, max_hop=self.max_hop)
+        trees[0].build_xprim_tree(energy0, edge_union, random_state, max_hop=self.max_hop)
         if trees[0].calc_max_energy_consumption() - energy0 < -1e-8:
-            MPrimCrossover.no_improved += 1
+            XPrimCrossover.no_improved += 1
 
         energy1 = trees[1].calc_max_energy_consumption()
-        trees[1].build_cprim_tree(energy1, edge_union, random_state, max_hop=self.max_hop)
+        trees[1].build_xprim_tree(energy1, edge_union, random_state, max_hop=self.max_hop)
         if trees[1].calc_max_energy_consumption() - energy1 < -1e-8:
-            MPrimCrossover.no_improved += 1
+            XPrimCrossover.no_improved += 1
 
         # print(trees[0].edges)
         children[0].encode(trees[0])

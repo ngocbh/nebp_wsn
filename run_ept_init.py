@@ -33,9 +33,9 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 INIT_METHODS = ['PrimRST', 'KruskalRST',
-                'RandWalkRST', 'CPrimRST']
+                'RandWalkRST', 'DCPrimRST']
 INIT_METHODS_LEGEND = ['Prim', 'Kruskal',
-                       'RandWalk', 'CPrimRST']
+                       'RandWalk', 'DCPrimRST']
 
 RERUN = False
 TESTING = False

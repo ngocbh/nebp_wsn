@@ -287,18 +287,21 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
         for pi in pis:
             pi_mean = []
             pi_std = []
+            lower=False
             for model in models:
                 x = np.array(data[model][pi])
                 x_mean = np.mean(x)
                 x_std = np.std(x)
                 if x_mean - x_std < 0:
-                    axs[idx].set_ylim(bottom=0)
+                    lower=True
                 pi_mean.append(x_mean)
                 pi_std.append(x_std)
 
             px = axs[idx].bar(ind + (idx + 0.5) * pi_width - model_width/2, pi_mean, pi_width,
                    bottom=0, edgecolor = 'black',color=palette(idx+1), alpha=0.9, yerr=pi_std, capsize=7, label=PI_MAP[pi])
             bars.append(px)
+            if lower:
+                axs[idx].set_ylim((0, None))
             idx += 1
 
         for i, ax in enumerate(axs):
@@ -425,6 +428,8 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
 
     boxchart_data = []
     barchart_data = {}
+    feasible_tests = list(feasible_tests)
+    feasible_tests.sort()
 
     for test in feasible_tests:
         metric_sum = None

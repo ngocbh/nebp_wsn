@@ -1,7 +1,7 @@
 from geneticpython.utils.validation import check_random_state
 from networks import WusnKruskalNetwork
 from edge_sets import cprim_init 
-from rooted_networks import WusnNetwork
+from rooted_networks import MultiHopNetwork
 
 def kruskal_rst(network, problem, indv_temp, size, max_hop, random_state):
     kruskal_solution = WusnKruskalNetwork(problem)
@@ -18,7 +18,7 @@ def kruskal_rst(network, problem, indv_temp, size, max_hop, random_state):
     return ret
 
 def random_walk_rst(network, problem, indv_temp, size, max_hop, random_state):
-    network_tmp = WusnNetwork(problem)
+    network_tmp = MultiHopNetwork(problem)
     network_tmp.set_initialization_method('RandWalkRST')
     for i in range(1, problem._num_of_relays+1):
         network_tmp.potential_edges.append((0,i))
@@ -37,7 +37,7 @@ def random_walk_rst(network, problem, indv_temp, size, max_hop, random_state):
     return ret
 
 def prim_rst(network, problem, indv_temp, size, max_hop, random_state):
-    network_tmp = WusnNetwork(problem)
+    network_tmp = MultiHopNetwork(problem)
     network_tmp.set_initialization_method('PrimRST')
 
     ret = []
@@ -53,13 +53,13 @@ def prim_rst(network, problem, indv_temp, size, max_hop, random_state):
     return ret
 
 def cprim_rst(network, problem, indv_temp, size, max_hop, random_state):
-    network_tmp = WusnNetwork(problem)
+    network_tmp = MultiHopNetwork(problem)
     ret = []
     for _ in range(size):
-        tmp_network = cprim_init(network_tmp, problem._idx2edge, max_hop, random_state)
+        network_tmp.build_depth_constraint_prim_tree(random_state, max_hop)
 
         network_tmp2 = network.clone()
-        network_tmp2.from_edge_list(tmp_network.edges)
+        network_tmp2.from_edge_list(network_tmp.edges)
 
         indv = indv_temp.clone()
         indv.encode(network_tmp2)
@@ -76,7 +76,7 @@ def initialize_pop(init_method, network, problem, indv_temp, size, max_hop, rand
         return random_walk_rst(network, problem, indv_temp, size, max_hop, random_state)
     elif init_method == 'PrimRST':
         return prim_rst(network, problem, indv_temp, size, max_hop, random_state)
-    elif init_method == 'CPrimRST':
+    elif init_method == 'DCPrimRST':
         return cprim_rst(network, problem, indv_temp, size, max_hop, random_state)
     elif init_method == 'Mix_1':
         ret = []
@@ -90,4 +90,6 @@ def initialize_pop(init_method, network, problem, indv_temp, size, max_hop, rand
         ret = kruskal_rst(network, problem, indv_temp, int(size/2), max_hop, random_state)
         ret.extend(prim_rst(network, problem, indv_temp, int(size/2), max_hop, random_state))
         return ret
+    else:
+        raise ValueError("Invalid Initialization method")
         

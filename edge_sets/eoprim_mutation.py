@@ -17,12 +17,15 @@ from geneticpython.models import Tree, RootedTree
 from copy import deepcopy
 from itertools import chain
 
+import numpy as np
 
-class SPrimMutation(Mutation):
+class EOPrimMutation(Mutation):
+    __EPS = 1e-8
+    no_improved = 0
 
     def __init__(self, pm, max_hop=None):
         self.max_hop = max_hop
-        super(SPrimMutation, self).__init__(pm=pm)
+        super(EOPrimMutation, self).__init__(pm=pm)
 
     def mutate(self, indv: Individual, random_state=None):
         random_state = check_random_state(random_state)
@@ -41,25 +44,23 @@ class SPrimMutation(Mutation):
                              that decode to an instance of Tree,\
                              got {type(tree)}")
         
-        used_relays = []
-        unused_relays = []
-        for i in range(1, tree.n+1):
-            if tree.num_childs[i] == 0:
-                unused_relays.append(i)
-            else:
-                used_relays.append(i)
-        slt_relay = random_state.choice(used_relays)
-        used_relays.remove(slt_relay)
-
-        used_relays_mask = [False] * tree.number_of_vertices
-        for e in used_relays:
-            used_relays_mask[e] = True
-
+        ep_list = np.array(tree.get_energy_consumption_list())
+        args = np.argsort(ep_list)
         max_energy = tree.calc_max_energy_consumption()
-        edges = deepcopy(tree.edges)
-        tree.build_mprim_tree(max_energy, used_relays_mask, edges, random_state, max_hop=self.max_hop)
+        if max_energy == float('inf'):
+            tree.build_depth_constraint_prim_tree(random_state, self.max_hop)
+            ret_indv.encode(tree)
+        else:
+            most_used_nodes, = np.where( np.abs(ep_list - max_energy) < 1e-10)
+            slt_node = random_state.choice(most_used_nodes)
+            # print("Running mutation:")
+            # print("num_used_relays, max_energy, most_used_nodes, slt_node = ", tree.num_used_relays, max_energy, most_used_nodes, slt_node)
 
-        ret_indv.encode(tree)
+            improved = tree.build_energy_oriented_prim_tree(max_energy, slt_node, random_state, max_hop=self.max_hop)
+
+            if tree.calc_max_energy_consumption() < max_energy:
+                EOPrimMutation.no_improved += 1
+                ret_indv.encode(tree)
 
         return ret_indv
         

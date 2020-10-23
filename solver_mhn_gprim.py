@@ -13,7 +13,7 @@ from geneticpython.tools import visualize_fronts, save_history_as_gif
 from geneticpython.models.tree import EdgeSets, KruskalTree
 from geneticpython.core.operators import PrimCrossover, TreeMutation, MutationCompact
 
-from edge_sets import WusnMutation, MPrimCrossover, SPrimMutation, APrimMutation
+from edge_sets import WusnMutation, XPrimCrossover, ROPrimMutation, APrimMutation
 from initalization import initialize_pop
 from utils.configurations import *
 from utils import WusnInput, energy_consumption
@@ -86,10 +86,10 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                               random_state=random_state)
     
 
-    crossover = MPrimCrossover(pc=config['encoding']['cro_prob'])
+    crossover = XPrimCrossover(pc=config['encoding']['cro_prob'])
     # mutation1 = WusnMutation(pm=1, potential_edges=problem._idx2edge) 
     # mutation2 = APrimMutation(pm=1)
-    mutation3 = SPrimMutation(pm=config['encoding']['mut_prob'])
+    mutation3 = ROPrimMutation(pm=config['encoding']['mut_prob'])
     # mutations = MutationCompact()
     # mutations.add_mutation(mutation1, pm=0.1)
     # mutations.add_mutation(mutation2, pm=0.1)

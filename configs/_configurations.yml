@@ -46,7 +46,7 @@ data:
 
 encoding:
   - name: "netkeys"  # 0
-    init_method: "CPrimRST"
+    init_method: "DCPrimRST"
     cro_prob: 0.7
     cro_di: 5
     mut_prob: 0.05
@@ -55,7 +55,7 @@ encoding:
     beta: 6
 
   - name: "netkeys"  # 1
-    init_method: "CPrimRST"
+    init_method: "DCPrimRST"
     cro_prob: 0.7
     cro_di: 20
     mut_prob: 0.05
@@ -64,39 +64,45 @@ encoding:
     beta: 6
 
   - name: "kruskal"  # 2
-    init_method: "CPrimRST"
+    init_method: "DCPrimRST"
     cro_prob: 0.7
     mut_prob: 0.4
 
   - name: "binary" # 3
-    init_method: "CPrimRST"
+    init_method: "DCPrimRST"
     cro_prob: 0.9
     cro_pe: 0.5
     mut_prob: 0.1
 
   - name: "prim"  # 4
-    init_method: "CPrimRST"
+    init_method: "DCPrimRST"
     cro_prob: 0.7
     mut_prob: 0.4
     
   - name: "mprim"  # 5
-    init_method: "CPrimRST"
+    init_method: "DCPrimRST"
     cro_prob: 0.7
     mut_prob: 0.5
 
   - name: "prufer"  # 6
-    init_method: "CPrimRST"
+    init_method: "DCPrimRST"
     cro_prob: 0.7
     mut_prob: 0.1
 
   - name: "mprim2"
-    init_method: "CPrimRST"
+    init_method: "DCPrimRST"
     cro_prob: 0.7
     mut_sub_prob: 0.4
     mut_add_prob: 0.4
 
   - name: "mprim3"
-    init_method: "CPrimRST"
+    init_method: "DCPrimRST"
+    cro_prob: 0.7
+    mut_sub_prob: 0.5
+    mut_add_prob: 0.5
+
+  - name: "mprim4"
+    init_method: "DCPrimRST"
     cro_prob: 0.7
     mut_sub_prob: 0.5
     mut_add_prob: 0.5
