@@ -44,7 +44,7 @@ def run_ept():
     output_dir = None
     testset = 0 if TESTING else 3
     testnames = ['test'] if TESTING else ['']
-    k = 5
+    k = 10
     config = None
     if TESTING:
         config = {'models': {}, 'algorithm': {}}
@@ -53,7 +53,7 @@ def run_ept():
         config['algorithm']['selection_size'] = 10
     else:
         config = {'models': {}}
-        config['models']['gens'] = 50
+        config['models']['gens'] = 100
 
     sum_list = run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, \
                                       overwrite=RERUN, config=config, \
