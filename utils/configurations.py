@@ -28,11 +28,11 @@ def update_gens(config, inp):
         if inp.num_of_relays <= 40:
             gens = 100
         elif inp.num_of_relays <= 100:
-            gens = 200
+            gens = 150
         elif inp.num_of_relays <= 200:
-            gens = 300
+            gens = 200
         else:
-            gens = 400
+            gens = 200
         config['models']['gens'] = gens
 
 def update_config(config, new_config):
