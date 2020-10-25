@@ -16,5 +16,5 @@ encoding:
   mut_prob: 0.05
   name: netkeys
 models:
-  gens: 100
+  gens: 50
   name: run 1

@@ -12,5 +12,5 @@ encoding:
   mut_prob: 0.4
   name: prim
 models:
-  gens: 100
+  gens: 50
   name: run 1

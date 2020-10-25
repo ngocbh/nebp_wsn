@@ -12,5 +12,5 @@ encoding:
   mut_prob: 0.4
   name: kruskal
 models:
-  gens: 100
+  gens: 50
   name: run 1

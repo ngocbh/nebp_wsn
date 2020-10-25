@@ -12,5 +12,5 @@ encoding:
   mut_prob: 0.1
   name: prufer
 models:
-  gens: 100
+  gens: 50
   name: run 1
