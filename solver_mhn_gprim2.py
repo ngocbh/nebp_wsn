@@ -228,9 +228,10 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     open(os.path.join(out_dir, 'done.flag'), 'a').close()
 
 if __name__ == '__main__':
-    config = {'data': {'max_hop': 10},
+    config = {'data': {'max_hop': 6},
                   'models': {'gens': 100},
-		  'encoding': {'init_method': 'PrimRST'}}
-    solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.7.0.0', 
-          config=config)
+		  'encoding': {'init_method': 'DCPrimRST'}}
+    solve('data/_tiny/multi_hop/tiny_uu-dem2_r25_1_0.json', model = '1.7.7.0.1', config=config)
+    # solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.7.0.0', 
+          # config=config)
 

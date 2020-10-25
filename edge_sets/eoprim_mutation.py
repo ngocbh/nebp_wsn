@@ -23,8 +23,9 @@ class EOPrimMutation(Mutation):
     __EPS = 1e-8
     no_improved = 0
 
-    def __init__(self, pm, max_hop=None):
+    def __init__(self, pm, max_hop=None, backup_mutation=lambda indv, random_state: None):
         self.max_hop = max_hop
+        self.backup_mutation = backup_mutation
         super(EOPrimMutation, self).__init__(pm=pm)
 
     def mutate(self, indv: Individual, random_state=None):
@@ -44,12 +45,14 @@ class EOPrimMutation(Mutation):
                              that decode to an instance of Tree,\
                              got {type(tree)}")
         
+        # print("begin" + "="*10)
         ep_list = np.array(tree.get_energy_consumption_list())
         args = np.argsort(ep_list)
         max_energy = tree.calc_max_energy_consumption()
         if max_energy == float('inf'):
             tree.build_depth_constraint_prim_tree(random_state, self.max_hop)
             ret_indv.encode(tree)
+            # print("===> Conclusion: Invalid tree, random another one")
         else:
             most_used_nodes, = np.where( np.abs(ep_list - max_energy) < 1e-10)
             slt_node = random_state.choice(most_used_nodes)
@@ -61,6 +64,12 @@ class EOPrimMutation(Mutation):
             if tree.calc_max_energy_consumption() < max_energy:
                 EOPrimMutation.no_improved += 1
                 ret_indv.encode(tree)
+                # print("===> Conclusion: Improved {} {} -> {}".format(tree.get_number_of_used_relays(), max_energy, tree.calc_max_energy_consumption()))
+            else:
 
+                ret_indv = self.backup_mutation.mutate(indv, random_state)
+                # print("===> Conclusion: Not improved, use backup_mutation")
+
+        # print("end: number of improved = {}".format(EOPrimMutation.no_improved) + "="*10)
         return ret_indv
         

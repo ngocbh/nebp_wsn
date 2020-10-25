@@ -212,8 +212,8 @@ class MultiHopNetwork(WusnNetwork):
                     if w not in C:
                         A.add((v, w))
             # else:
-                # if used_max_childs:
-                    # print("max_child bound {}-{}: {}".format(u, v, max_childs[u]))
+            #     if used_max_childs:
+            #         print("max_child bound {}-{}: {}".format(u, v, max_childs[u]))
 
     def build_depth_constraint_prim_tree(self, random_state, max_hop=None):
         self.initialize()
@@ -457,6 +457,8 @@ class MultiHopNetwork(WusnNetwork):
         
         # print(potential_added_edges)
         if len(potential_added_edges) == 0:
+            # print("len(potential_added_edges) == 0")
+            # self.build_eprim_tree(max_energy, slt_node, random_state, max_hop)
             return False
 
         idx = random_state.randint(0, len(potential_added_edges))
@@ -533,7 +535,11 @@ class MultiHopNetwork(WusnNetwork):
         self.run_algorithm(C, A, self.potential_adj, max_childs, max_energy, random_state, strict_lower=True, max_hop=max_hop)
 
         # print(free_vertices.difference(C))
-        # print(len(self.edges))
+        # print(""len(self.edges))
+        # if len(self.edges) == self.number_of_vertices - 1:
+        #     print(" -> Built get better energy tree. Selected node: {} | Selected edge: {}".format(slt_node, slt_edge))
+        # else:
+        #     print(" -> Bad tree, rebuild. Selected node: {} | Selected edge: {}".format(slt_node, slt_edge))
 
         if len(C) < self.node_count:
             for u in C:

@@ -29,7 +29,7 @@ def read_pareto(filepath):
     pareto = set()
     for solution in data:
         objectives = (solution['num_used_relays'],
-                      solution['energy_consumption'] * 1000)
+                      solution['energy_consumption'] )
         pareto.add(objectives)
     pareto = list(pareto)
     return pareto
@@ -40,13 +40,14 @@ def read_pareto_history(filepath):
     for g in data:
         pareto = set()
         for solution in g["pareto_front"]:
-            pareto.add(tuple([solution[0], solution[1] * 1000 ]))
+            pareto.add(tuple([solution[0], solution[1] ]))
         history.append(list(pareto))
     return history
 
 def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
     def do_axis(ax):
         ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+        # ax.set_yscale('logit')
 
     filepath = os.path.join(output_dir, 'front_comparison.png')
     visualize_fronts(pareto_dict,
