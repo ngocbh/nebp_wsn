@@ -86,6 +86,6 @@ class SingleHopProblem(WusnProblem):
         super(SingleHopProblem, self).__init__(inp, multi_hop=False)
 
 class MultiHopProblem(WusnProblem):
-    def __init__(self, inp : WusnInput, max_hop : int):
+    def __init__(self, inp : WusnInput, max_hop : int=None):
         super(MultiHopProblem, self).__init__(inp, multi_hop=True)
         self.max_hop = max_hop or inp.default_max_hop

@@ -31,7 +31,7 @@ data:
   - name: "ept_sparsity" # 5
     max_hop: 0
 
-  - name: "ept_entropy" # 6
+  - name: "params_selection" # 6
     max_hop: 0
 
   - name: "tiny" # 7

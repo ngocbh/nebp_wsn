@@ -34,8 +34,8 @@ DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 INIT_METHODS = ['PrimRST', 'KruskalRST',
                 'RandWalkRST', 'DCPrimRST']
-INIT_METHODS_LEGEND = ['Prim', 'Kruskal',
-                       'RandWalk', 'DCPrimRST']
+INIT_METHODS_LEGEND = ['PrimRST', 'KruskalRST',
+                       'RandWalkRST', 'DCPrimRST']
 
 RERUN = False
 TESTING = False
@@ -109,7 +109,9 @@ def run_ept_1(testnames=None):
             pickle.dump(ds, f)
         open(os.path.join(out_test_dir, 'done_ept_1.flag'), 'a').close()
 
-    def plot(out_test_dir):
+    def plot(out_test_dir, cname=''):
+        if 'NIn' in cname:
+            cname = cname.split('_')[0]
         ds = None
         with open(join(out_test_dir, 'ept_1.data'), 'rb') as f:
             ds = pickle.load(f)
@@ -121,9 +123,9 @@ def run_ept_1(testnames=None):
             plt.plot(h, p)
 
         ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-        plt.ylabel("feasible ratio")
+        plt.ylabel("Feasible ratio (%)")
         plt.xlabel("H")
-        plt.title("feasible ratio comparison")
+        # plt.title("Feasible ratio comparison on {}".format(cname))
         plt.legend(INIT_METHODS_LEGEND)
         out_filepath = join(out_test_dir, 'feasible_ratio.png')
         plt.savefig(out_filepath)
@@ -143,7 +145,7 @@ def run_ept_1(testnames=None):
         if not os.path.isfile(os.path.join(out_test_dir, 'done_ept_1.flag')) or RERUN:
             run(filepath, out_test_dir)
 
-        plot(out_test_dir)
+        plot(out_test_dir, testname)
 
 
 def run_ept_2(testnames=None):
@@ -338,6 +340,6 @@ if __name__ == '__main__':
     testname = 'test' if TESTING else 'medium'
     testnames = [testname]
     # run_ept_1(testnames)
-    # run_ept_2(testnames)
+    run_ept_2(testnames)
     # run_ept_3(testnames)
-    run_ept_4(testnames)
+    # run_ept_4(testnames)

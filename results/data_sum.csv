@@ -1,0 +1,16 @@
+set,instance,type,distribution,terrain,S,N,M,density
+eff,NIn1,tiny,Gaussian,T1,$200 \times 200$,20,20,0.53
+,NIn2,tiny,Gaussian,T2,$200 \times 200$,20,40,0.47
+,NIn3,tiny,Gamma,T1,$200 \times 200$,20,20,0.61
+,NIn4,tiny,Gamma,T2,$200 \times 200$,20,40,0.41
+,NIn5,tiny,Uniform,T1,$200 \times 200$,20,40,0.43
+,NIn6,tiny,Uniform,T2,$200 \times 200$,20,20,0.53
+scal,NIn7,small,Gaussian,T1,$200 \times 200$,40,40,0.28
+,NIn8,small,Gamma,T2,$200 \times 200$,40,80,0.13
+,NIn9,small,Uniform,T3,$200 \times 200$,40,80,0.18
+,NIn10,medium,Gaussian,T1,$500 \times 500$,100,200,0.11
+,NIn11,medium,Gamma,T2,$500 \times 500$,100,200,0.10
+,NIn12,medium,Uniform,T4,$500 \times 500$,100,100,0.18
+,NIn13,large,Gaussian,T3,$1000 \times 1000$,200,200,0.52
+,NIn14,large,Gamma,T1,$1000 \times 1000$,200,400,0.31
+,NIn15,large,Uniform,T4,$1000 \times 1000$,200,200,0.50
