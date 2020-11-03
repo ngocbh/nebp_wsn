@@ -103,9 +103,9 @@ encoding:
 
   - name: "mprim4"
     init_method: "DCPrimRST"
-    cro_prob: 0.7
-    mut_sub_prob: 0.5
-    mut_add_prob: 0.5
+    cro_prob: 0.5
+    mut_prob_a: 0.9
+    mut_prob_b: 0.1
 
 algorithm:
   - name: "nsgaii"  # 0

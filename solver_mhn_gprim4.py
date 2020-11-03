@@ -89,7 +89,7 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                               random_state=random_state)
     
 
-    crossover = XPrimCrossover(pc=0.5)
+    crossover = XPrimCrossover(pc= config['encoding']['cro_prob'])
     mutation1 = WusnMutation(pm=0.4, potential_edges=problem._idx2edge) 
     # mutation2 = EPrimMutation(pm=0.5, max_hop=config['data']['max_hop'])
     mutation3 = ROPrimMutation(pm=1, max_hop=config['data']['max_hop'])
@@ -101,8 +101,8 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     # mutations.add_mutation(mutation3, (a - (2 * a // 3)) * config['algorithm']['slt_size'] )
 
     mutations = MutationCompact()
-    mutations.add_mutation(mutation4, 0.9)
-    mutations.add_mutation(mutation3, 0.1)
+    mutations.add_mutation(mutation4, config['encoding']['mut_prob_a'])
+    mutations.add_mutation(mutation3, config['encoding']['mut_prob_b'])
     
     # indv_temp.random_init(1)
     # indv_temp.update_genes([0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 15, 0, 16, 0, 17, 0, 18, 0, 19, 0, 20, 14, 36, 14, 25, 16, 37, 16, 30, 10, 29, 15, 27, 18, 35, 18, 40, 5, 26, 1, 33, 1, 31, 13, 32, 13, 38, 6, 23, 29, 39, 27, 22, 23, 34, 26, 28, 2, 21, 2, 24])
