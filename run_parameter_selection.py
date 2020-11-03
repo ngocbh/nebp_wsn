@@ -87,7 +87,7 @@ def choose_parameters(solver, model, tests, gprim=False):
 if __name__ == '__main__':
     # tests = random_tests() 
     tests = ['']
-    choose_parameters(solver_mhn_gprim4, "1.6.9.0", tests)
+    choose_parameters(solver_mhn_gprim4, "1.6.9.0", tests, gprim=True)
     choose_parameters(solver_mhn_kruskal, "1.6.2.0", tests)
     choose_parameters(solver_mhn_prim, "1.6.4.0", tests)
     choose_parameters(solver_mhn_prufer, "1.6.6.0", tests)
