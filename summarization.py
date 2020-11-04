@@ -515,12 +515,12 @@ def average_tests_score(working_dir):
 if __name__ == "__main__":
     marker = ['>', (5, 0), (5, 1), (5, 2), '+', 'o']
     marker.reverse()
-    summarize_model({"netkeys": "1.0.1.0",
-                     "prufer": "1.0.6.0",
-                     "kruskal": "1.0.2.0",
-                     "prim": "1.0.4.0",
-                     "guided prim": "1.0.5.0"},
-                    working_dir="results/_small/multi_hop",
+    summarize_model({"netkeys": "1.7.1.0.0",
+                     # "prufer": "1.0.6.0",
+                     "gprim4": "1.7.9.0.1",
+                     "gprim": "1.7.7.0.0",
+                     "gprim2": "1.7.8.0.1"},
+                    working_dir="results/_tiny/multi_hop",
                     s=20,
                     marker=marker,
                     plot_line=True,

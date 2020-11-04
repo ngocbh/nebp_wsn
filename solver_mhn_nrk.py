@@ -12,6 +12,7 @@ from geneticpython.engines import NSGAIIEngine
 from geneticpython.models.tree import NetworkRandomKeys
 from geneticpython import Population
 from geneticpython.core.operators import TournamentSelection, SBXCrossover, PolynomialMutation
+from geneticpython.core.operators import UniformCrossover, SwapMutation
 
 from utils.configurations import *
 from utils import WusnInput, energy_consumption
@@ -91,10 +92,13 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                               max_hop=problem.max_hop,
                               random_state=random_state)
 
-    crossover = SBXCrossover(pc=config['encoding']['cro_prob'], 
-                             distribution_index=config['encoding']['cro_di'])
-    mutation = PolynomialMutation(pm=config['encoding']['mut_prob'], 
-                                  distribution_index=config['encoding']['mut_di'])
+    # crossover = SBXCrossover(pc=config['encoding']['cro_prob'], 
+    #                          distribution_index=config['encoding']['cro_di'])
+    # mutation = PolynomialMutation(pm=config['encoding']['mut_prob'], 
+    #                               distribution_index=config['encoding']['mut_di'])
+
+    crossover = UniformCrossover(pc=config['encoding']['cro_prob'], pe=0.5)
+    mutation = SwapMutation(pm=config['encoding']['cro_prob'])
 
     engine = NSGAIIEngine(population=population,
                           crossover=crossover,

@@ -74,6 +74,8 @@ def multi_run_solver(solver, model, input_dir, k, output_dir=None, testnames=Non
     model_list = []
     for seed in range(1, k+1):
         smodel = '{}.{}'.format(model, seed)
+        if output_dir is not None:
+            output_dir = os.path.join(output_dir, smodel)
         model_list.append(smodel)
         run_solver(solver, smodel, input_dir=input_dir,
                    output_dir=output_dir, testnames=testnames, seed=seed, **kwargs)
@@ -180,7 +182,7 @@ def run_mhn_experiment(ept,
             referenced=referenced, referenced_dir=referenced_dir, **kwargs)
 
     summarization.calc_average_metrics(
-        summarization_list, output_dir, f'avarage1-{k}', testnames, referenced=referenced)
+        summarization_list, output_dir, f'average1-{k}', testnames, referenced=referenced)
 
     return summarization_list
 
