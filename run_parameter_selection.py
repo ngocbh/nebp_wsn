@@ -32,7 +32,7 @@ def random_tests():
 def choose_pc(solver, model, tests, pc_list, default_pm=0.1, gprim=False):
     pm = default_pm
     config = load_config(CONFIG_FILE, model)
-    out_dir = None
+    out_dir = './results/params_selection'
 
     test_path = './data/params_selection'
     data = [[] for _ in range(len(pc_list))]
@@ -48,7 +48,7 @@ def choose_pc(solver, model, tests, pc_list, default_pm=0.1, gprim=False):
             config['encoding']['cro_prob'] = pc_list[i]
             config['encoding']['mut_prob_a'] = pm[0]
             config['encoding']['mut_prob_b'] = pm[1]
-        data[i] = run.multi_run_solver(solver, smodel, test_path, 10, out_dir, tests, save_history=False, config=config)
+        data[i] = run.multi_run_solver(solver, smodel, test_path, 10, None, tests, save_history=False, config=config)
         model_name.append('{}_{}'.format(smodel, pc_list[i]))
 
     summ_list = []
@@ -66,7 +66,7 @@ def choose_pc(solver, model, tests, pc_list, default_pm=0.1, gprim=False):
 def choose_pm(solver, model, tests, pm_list, default_pc=0.7, gprim=False):
     pc = default_pc
     config = load_config(CONFIG_FILE, model)
-    out_dir = None
+    out_dir = './results/params_selection'
 
     model_dict = {}
     test_path = './data/params_selection'
@@ -75,7 +75,7 @@ def choose_pm(solver, model, tests, pm_list, default_pc=0.7, gprim=False):
 
     for i in range(len(pm_list)):
         smodel = '{}.{}.{}'.format(model, 4, i) 
-        out_model_dir = os.path.join(out_dir, smodel)
+        # out_model_dir = os.path.join(out_dir, smodel)
         if not gprim:
             config['encoding']['cro_prob'] = pc
             config['encoding']['mut_prob'] = pm_list[i]
@@ -83,7 +83,7 @@ def choose_pm(solver, model, tests, pm_list, default_pc=0.7, gprim=False):
             config['encoding']['cro_prob'] = pc
             config['encoding']['mut_prob_a'] = pm_list[i][0]
             config['encoding']['mut_prob_b'] = pm_list[i][1]
-        data[i] = run.multi_run_solver(solver, smodel, test_path, 10, out_model_dir, tests, save_history=False, config=config)
+        data[i] = run.multi_run_solver(solver, smodel, test_path, 10, None, tests, save_history=False, config=config)
         model_name.append('{}_{}'.format(smodel, pm_list[i]))
 
     summ_list = []
