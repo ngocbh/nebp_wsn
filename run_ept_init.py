@@ -110,6 +110,8 @@ def run_ept_1(testnames=None):
         open(os.path.join(out_test_dir, 'done_ept_1.flag'), 'a').close()
 
     def plot(out_test_dir, cname=''):
+        plt.style.use('seaborn-white')
+        plt.grid(True)
         if 'NIn' in cname:
             cname = cname.split('_')[0]
         ds = None
@@ -122,13 +124,15 @@ def run_ept_1(testnames=None):
             p = [e[1] for e in d]
             plt.plot(h, p)
 
+        ax.grid(b=True, axis='y')
+        ax.grid(b=False, axis='x')
         ax.xaxis.set_major_locator(MaxNLocator(integer=True))
         plt.ylabel("Feasible ratio (%)")
         plt.xlabel("H")
         # plt.title("Feasible ratio comparison on {}".format(cname))
-        plt.legend(INIT_METHODS_LEGEND)
+        plt.legend(INIT_METHODS_LEGEND, frameon=True)
         out_filepath = join(out_test_dir, 'feasible_ratio.png')
-        plt.savefig(out_filepath)
+        plt.savefig(out_filepath, dpi=400)
         plt.close('all')
 
     out_dir = 'results/ept_init/ept_1_2'
@@ -197,6 +201,8 @@ def run_ept_2(testnames=None):
         with open(join(out_test_dir, 'ept_2.data'), 'rb') as f:
             data_1, data_2, label_1, label_2 = pickle.load(f)
 
+        plt.style.use('seaborn-white')
+        plt.grid(True)
         fig, ax = plt.subplots()
         ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
                        alpha=0.5)
@@ -243,10 +249,13 @@ def run_ept_2(testnames=None):
         # draw temporary red and blue lines and use them to create a legend
         plt.plot([], c='blue', label=f'H = {max_hop1}')
         plt.plot([], c='red', label=f'H = {max_hop2}')
-        plt.legend(loc=3)
+        ax.legend(loc=3, frameon=True)
+
+        ax.grid(b=True, axis='y')
+        ax.grid(b=False, axis='x')
 
         out_filepath = join(out_test_dir, outname)
-        plt.savefig(out_filepath)
+        plt.savefig(out_filepath, dpi=400)
         plt.close('all')
 
     for testname in os.listdir(test_path):
@@ -339,7 +348,7 @@ def run_ept_4(testnames=None):
 if __name__ == '__main__':
     testname = 'test' if TESTING else 'medium'
     testnames = [testname]
-    # run_ept_1(testnames)
-    run_ept_2(testnames)
+    run_ept_1(testnames)
+    # run_ept_2(testnames)
     # run_ept_3(testnames)
     # run_ept_4(testnames)

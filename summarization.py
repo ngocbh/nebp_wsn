@@ -7,7 +7,7 @@ Description:
 """
 from geneticpython.tools.visualization import visualize_fronts
 from geneticpython.tools.performance_indicators import delta_apostrophe, C_metric, \
-    SP, ONVG, HV_2d, IGD, delta
+    SP, ONVG, HV_2d, IGD, delta, GD
 from yaml import Loader
 from os.path import join
 from collections import OrderedDict
@@ -67,25 +67,48 @@ def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
     def do_axis(ax):
         ax.xaxis.set_major_locator(MaxNLocator(integer=True))
         # ax.set_yscale('logit')
+        ax.grid(b=True, axis='y')
+        ax.grid(b=False, axis='x')
+
+    def do_plt(plt):
+        plt.style.use('seaborn-white')
+        plt.grid(False)
 
     filepath = os.path.join(output_dir, 'front_comparison.png')
     visualize_fronts(pareto_dict,
                      filepath=filepath,
                      title='pareto fronts comparison',
                      objective_name=['used relays', 'energy'],
-                     save=True, show=show, do_axis=do_axis, **kwargs)
+                     save=True, show=show, do_axis=do_axis, do_plt=do_plt, dpi=400, frameon=True, **kwargs)
 
 def visualize_igd_over_generations(history_dict, output_dir, P, marker=None,
-                                   linewidth=None, linestyle='--', fillstyle=None, **kwargs):
+                                   linewidth=0.8, markersize=5, linestyle='--', fillstyle=None, **kwargs):
+    def normalize_pareto_front(S, P):
+        S.sort()
+        ret = [S[0]]
+        for i in range(1, len(S)):
+            while ret[-1][0] < S[i][0] - 1:
+                x = ret[-1]
+                ret.append((x[0] + 1, x[1]))
+            ret.append(S[i])
+        while ret[-1][0] < np.max(P[:, 0]):
+            ret.append((ret[-1][0] + 1, ret[-1][1]))
+
+        return ret
+
     data = {}
     for name, history in history_dict.items():
         igds = []
         for i, S in enumerate(history):
+            # S = normalize_pareto_front(S, P)
             igds.append(IGD(S, P))
         # print(name)
         # print(igds)
         data[name] = igds
+    plt.style.use('seaborn-white')
+    plt.grid(True)
     fig, ax = plt.subplots()
+
 
     marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
     iter_marker = itertools.cycle(marker)
@@ -98,19 +121,26 @@ def visualize_igd_over_generations(history_dict, output_dir, P, marker=None,
         fillstyle = [fillstyle]
     iter_fillstyle = itertools.cycle(fillstyle)
 
+    num = 0
+    palette = plt.get_cmap('Set1')
+
     for name, history in data.items():
+        num += 1
         m = next(iter_marker)
         fs = next(iter_fillstyle)
         ax.plot(list(range(len(history))), history, label=name,
-                linewidth=linewidth, linestyle=linestyle, marker=m, fillstyle=fs)
+                linewidth=2, linestyle='-', color=None, alpha=0.9, fillstyle=fs)
 
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    ax.grid(b=True, axis='y')
+    ax.grid(b=False, axis='x')
+    # ax.set_yscale('log')
     filepath = os.path.join(output_dir, 'igd_over_generations.png')
     plt.ylabel("$IDG$")
     plt.xlabel("generations")
     plt.title("IGD over generations")
-    plt.legend()
-    plt.savefig(filepath)
+    plt.legend(frameon=True)
+    plt.savefig(filepath, dpi=400)
     plt.close('all')
 
 
@@ -224,13 +254,15 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
         referenced_file = os.path.join(referenced_dir, testname + '.txt')
         P = np.loadtxt(referenced_file)
 
-    visualize_test(pareto_dict, output_dir=out_test_dir, show=False, **kwargs)
     summarize_metrics(pareto_dict, output_dir=out_test_dir, r=r, referenced=referenced, P=P, Pe=Pe)
     if referenced:
+        visualize_test(pareto_dict, output_dir=out_test_dir, show=False, referenced_points=P, **kwargs)
         visualize_igd_over_generations(history_dict, output_dir=out_test_dir, P=P, fillstyle='flicker')
+    else:
+        visualize_test(pareto_dict, output_dir=out_test_dir, show=False, **kwargs)
 
 def summarize_model(model_dict, working_dir, cname=None, testnames=None,
-                    marker=None, s=20, plot_line=True, linewidth=0.8, linestyle='dashed',
+                    marker=None, markersize=20, plot_line=True, linewidth=0.8, linestyle='dashed',
                     referenced=False, referenced_dir=None, **kwargs):
     print("Summarizing {}: {}".format(cname, model_dict))
     tests = set()
@@ -255,7 +287,7 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
     marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
     for test in tests:
         summarize_test(test, model_dict, working_dir, cname,
-                       s=20,
+                       markersize=5,
                        marker=marker,
                        plot_line=True,
                        linewidth=0.8,
@@ -274,7 +306,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
             sp.set_visible(False)
 
     def plot_bar_chart(test_dir, data):
-        plt.style.use('bmh')
+        plt.style.use('seaborn-white')
         plt.grid(False)
         palette = plt.get_cmap('Set1')
         PI_MAP = { 'igd': '$IGD$', 'delta': '$\Delta$', 'onvg': '$ONVG$', 'hypervolume': '$HV$', 'spacing': '$spacing$'}
@@ -341,11 +373,11 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
         axs[-1].legend(bars, [PI_MAP[pi] for pi in pis], frameon=True)
         fig.tight_layout()
         filepath = os.path.join(test_dir, 'bar_plot.png')
-        plt.savefig(filepath)
+        plt.savefig(filepath, dpi=400)
         plt.close('all')
 
-    def plot_box_chart(out_dir, data):
-        # plt.style.use('seaborn-whitegrid')
+    def plot_box_chart(out_dir, data, brief_name=None):
+        plt.style.use('seaborn-white')
         def box_plot(ax, data):
             n = len(data)
             width= 1.1 / (n + (n+1)/2)
@@ -387,8 +419,8 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
 
         fig.tight_layout(pad=1)
 
-        filepath = os.path.join(out_dir, 'box_plot.png')
-        plt.savefig(filepath)
+        filepath = os.path.join(out_dir, '{}_c_metric.png'.format(brief_name))
+        plt.savefig(filepath, dpi=400)
         # plt.show()
         plt.close('all')
 
@@ -533,7 +565,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
         boxchart_data.append(boxchart_test_data)
         barchart_data[test] = barchart_test_data
 
-    plot_box_chart(output_dir, boxchart_data)
+    plot_box_chart(output_dir, boxchart_data, brief_name=brief_name)
     compact_data_to_csv(output_dir, barchart_data, brief_name=brief_name, bold=bold)
 
 def average_tests_score(working_dir):

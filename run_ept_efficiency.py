@@ -57,7 +57,7 @@ def run_ept():
 
     sum_list = run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, \
                                       overwrite=RERUN, config=config, \
-                                      referenced=REFERENCED, referenced_dir=referenced_pareto_dir, summ=True, brief_name='eff')
+                                      referenced=REFERENCED, referenced_dir=referenced_pareto_dir, summ=True, brief_name='t1')
     print(sum_list)
 
 if __name__ == '__main__':

@@ -47,7 +47,7 @@ def run_ept():
         config['algorithm']['pop_size'] = 10
         config['algorithm']['selection_size'] = 10
 
-    run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, overwrite=RERUN, config=config)
+    run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, overwrite=RERUN, config=config, brief_name='t2')
 
 if __name__ == '__main__':
     run_ept()
