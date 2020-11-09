@@ -39,8 +39,8 @@ def get_data_summarization():
     df = pd.DataFrame(data)
     df = df.sort_values(by='instance', key=lambda col : col.apply(lambda x : int(x.replace('NIn', ''))))
     df = df.reset_index(drop=True)
-    df.at[0, 'set'] = 'eff'
-    df.at[6, 'set'] = 'scal'
+    df.at[0, 'set'] = '$T1$'
+    df.at[9, 'set'] = '$T2$'
     df.to_csv('results/data_sum.csv', index=False)
             
 

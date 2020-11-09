@@ -210,7 +210,8 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
         if not os.path.isdir(test_dir) and os.path.isfile(os.path.join(test_dir, 'done.flag')):
             continue
         pareto = read_pareto(os.path.join(test_dir, 'pareto-front.json'))
-        pareto_dict[name] = pareto
+        history = read_pareto_history(os.path.join(test_dir, 'history.json'))
+        pareto_dict[name] = history[25]
 
         if os.path.isfile(os.path.join(test_dir, 'r.txt')):
             with open(os.path.join(test_dir, 'r.txt')) as f:

@@ -6,7 +6,7 @@ models:
     gens: 5
 
   - name: "run 1"
-    gens: -1
+    gens: 100
 
   - name: "run 2"
     gens: 200
