@@ -102,7 +102,7 @@ def choose_parameters(solver, model, tests, gprim=False):
     if not gprim:
         pc_list = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
         choose_pc(solver, model, tests, pc_list)
-        pm_list = [0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5, 0.6]
+        pm_list = [0.05, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5]
         choose_pm(solver, model, tests, pm_list)
     else:
         pc_list = [0.5, 0.6, 0.7, 0.8, 0.9, 1.0]

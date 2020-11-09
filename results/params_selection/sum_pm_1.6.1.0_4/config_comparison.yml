@@ -152,25 +152,3 @@
   models:
     gens: 100
     name: run 1
-1.6.1.0.4.7_0.6:
-  algorithm:
-    name: nsgaii
-    pop_size: 100
-    slt_size: 100
-    tournament_size: 2
-  data:
-    max_hop: 8
-    name: params_selection
-  encoding:
-    alpha: 2
-    beta: 6
-    cro_di: 20
-    cro_prob: 0.7
-    init_method: DCPrimRST
-    mut_di: 5
-    mut_prob: 0.6
-    name: netkeys
-  model_name: 1.6.1.0.4.7.5
-  models:
-    gens: 100
-    name: run 1

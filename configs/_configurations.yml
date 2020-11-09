@@ -56,17 +56,17 @@ encoding:
 
   - name: "netkeys"  # 1
     init_method: "DCPrimRST"
-    cro_prob: 0.7
+    cro_prob: 0.9
     cro_di: 20
-    mut_prob: 0.05
+    mut_prob: 0.1
     mut_di: 5
     alpha: 2
     beta: 6
 
   - name: "kruskal"  # 2
     init_method: "DCPrimRST"
-    cro_prob: 0.7
-    mut_prob: 0.4
+    cro_prob: 0.9
+    mut_prob: 0.5
 
   - name: "binary" # 3
     init_method: "DCPrimRST"
@@ -76,18 +76,18 @@ encoding:
 
   - name: "prim"  # 4
     init_method: "DCPrimRST"
-    cro_prob: 0.7
-    mut_prob: 0.4
+    cro_prob: 0.9
+    mut_prob: 0.5
     
   - name: "mprim"  # 5
     init_method: "DCPrimRST"
-    cro_prob: 0.7
+    cro_prob: 0.9
     mut_prob: 0.5
 
   - name: "prufer"  # 6
     init_method: "DCPrimRST"
-    cro_prob: 0.7
-    mut_prob: 0.1
+    cro_prob: 0.9
+    mut_prob: 0.5
 
   - name: "mprim2"
     init_method: "DCPrimRST"
@@ -104,8 +104,8 @@ encoding:
   - name: "mprim4"
     init_method: "DCPrimRST"
     cro_prob: 0.5
-    mut_prob_a: 0.9
-    mut_prob_b: 0.1
+    mut_prob_a: 0.7
+    mut_prob_b: 0.2
 
 algorithm:
   - name: "nsgaii"  # 0

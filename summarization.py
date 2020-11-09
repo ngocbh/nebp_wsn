@@ -542,7 +542,7 @@ def average_tests_score(working_dir):
     for test in os.listdir(working_dir):
         if 'dem' in test:
             test_dir = os.path.join(working_dir, test)
-            test_df = pd.read_csv(join(test_dir, 'metrics_comparison.csv'))
+            test_df = pd.read_csv(join(test_dir, 'metrics_average_comparison.csv'))
             models = test_df['models']
             test_df = test_df.drop(columns='models')
             if metric_sum is None:

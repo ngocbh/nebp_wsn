@@ -1,2 +1,2 @@
-Feasible_tests: {'small_no-dem3_r25_1_0', 'small_ga-dem4_r25_1_40', 'small_no-dem2_r25_1_40', 'small_ga-dem1_r25_1_0', 'small_uu-dem4_r25_1_0'}
+Feasible_tests: {'small_uu-dem4_r25_1_0', 'small_ga-dem1_r25_1_0', 'small_ga-dem4_r25_1_40', 'small_no-dem2_r25_1_40', 'small_no-dem3_r25_1_0'}
 Unsolved_tests: set()
