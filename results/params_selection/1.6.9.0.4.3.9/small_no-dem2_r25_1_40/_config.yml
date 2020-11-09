@@ -1,0 +1,17 @@
+algorithm:
+  name: nsgaii
+  pop_size: 100
+  slt_size: 100
+  tournament_size: 2
+data:
+  max_hop: 8
+  name: params_selection
+encoding:
+  cro_prob: 0.5
+  init_method: DCPrimRST
+  mut_prob_a: 0.7
+  mut_prob_b: 0.2
+  name: mprim4
+models:
+  gens: 100
+  name: run 1

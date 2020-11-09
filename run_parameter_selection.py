@@ -70,7 +70,7 @@ def choose_pm(solver, model, tests, pm_list, default_pc=0.7, gprim=False):
 
     model_dict = {}
     test_path = './data/params_selection'
-    data = [[] for _ in range(pm_list)]
+    data = [[] for _ in range(len(pm_list))]
     model_name = []
 
     for i in range(len(pm_list)):
