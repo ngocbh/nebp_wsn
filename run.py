@@ -93,18 +93,19 @@ def run_mhn_experiment(ept,
                        referenced=False,
                        referenced_dir=None,
                        summ=True,
+                       brief_name=None,
                        **kwargs):
-    print("Running guided prim solver...")
-    output_dir = output_dir or input_dir.replace('data', 'results')
-    gprim_model = f'{ept}.{testset}.8.0'
-    gprim_model_list = multi_run_solver(solver_mhn_gprim3,
-                                        model=gprim_model,
-                                        input_dir=input_dir,
-                                        k=k,
-                                        testnames=testnames,
-                                        save_history=False,
-                                        overwrite=overwrite,
-                                        config=config)
+    # print("Running guided prim solver...")
+    # output_dir = output_dir or input_dir.replace('data', 'results')
+    # gprim_model = f'{ept}.{testset}.8.0'
+    # gprim_model_list = multi_run_solver(solver_mhn_gprim3,
+    #                                     model=gprim_model,
+    #                                     input_dir=input_dir,
+    #                                     k=k,
+    #                                     testnames=testnames,
+    #                                     save_history=False,
+    #                                     overwrite=overwrite,
+    #                                     config=config)
 
     print("Running guided prim 4 solver...")
     output_dir = input_dir.replace('data', 'results')
@@ -173,8 +174,8 @@ def run_mhn_experiment(ept,
         model_dict['B'] = netkeys_model_list[i]
         model_dict['C'] = prim_model_list[i]
         model_dict['D'] = kruskal_model_list[i]
-        model_dict['E'] = gprim_model_list[i]
-        model_dict['F'] = gprim4_model_list[i]
+        # model_dict['E'] = gprim_model_list[i]
+        model_dict['E'] = gprim4_model_list[i]
         cname = f'summarization_{i+1}'
         summarization_list.append(cname)
         summarization.summarize_model(
@@ -182,7 +183,7 @@ def run_mhn_experiment(ept,
             referenced=referenced, referenced_dir=referenced_dir, **kwargs)
 
     summarization.calc_average_metrics(
-        summarization_list, output_dir, f'average1-{k}', testnames, referenced=referenced)
+        summarization_list, output_dir, f'average1-{k}', testnames, referenced=referenced, brief_name=brief_name)
 
     return summarization_list
 

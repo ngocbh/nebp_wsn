@@ -1,0 +1,102 @@
+[
+  {
+    "chromosome": [0, 1, 0, 2, 0, 3, 0, 4, 1, 6, 2, 7, 4, 8, 3, 5],
+    "crowding_distance": Infinity,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [8, 1, 1, 1, 1, 0, 0, 0, 0],
+    "num_used_relays": 4.0,
+    "parent": [0, 0, 0, 0, 0, 3, 1, 2, 4]
+  },
+  {
+    "chromosome": [0, 1, 0, 2, 0, 3, 0, 4, 3, 7, 4, 8, 1, 6, 2, 5],
+    "crowding_distance": Infinity,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [8, 1, 1, 1, 1, 0, 0, 0, 0],
+    "num_used_relays": 4.0,
+    "parent": [0, 0, 0, 0, 0, 2, 1, 3, 4]
+  },
+  {
+    "chromosome": [0, 1, 0, 2, 0, 3, 0, 4, 1, 6, 1, 5, 6, 7, 6, 8],
+    "crowding_distance": Infinity,
+    "energy_consumption": 0.00102508,
+    "hop": 3,
+    "nondominated_rank": 0,
+    "num_childs": [5, 4, 0, 0, 0, 0, 2, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [0, 0, -1, -1, -1, 1, 1, 6, 6]
+  },
+  {
+    "chromosome": [0, 1, 0, 2, 0, 3, 0, 4, 1, 5, 1, 6, 5, 7, 6, 8],
+    "crowding_distance": Infinity,
+    "energy_consumption": 0.00102508,
+    "hop": 3,
+    "nondominated_rank": 0,
+    "num_childs": [5, 4, 0, 0, 0, 1, 1, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [0, 0, -1, -1, -1, 1, 1, 5, 6]
+  },
+  {
+    "chromosome": [0, 1, 0, 2, 0, 3, 0, 4, 1, 6, 2, 7, 7, 8, 1, 5],
+    "crowding_distance": 1.0777276175552488,
+    "energy_consumption": 0.00062604,
+    "hop": 3,
+    "nondominated_rank": 0,
+    "num_childs": [6, 2, 2, 0, 0, 0, 0, 1, 0],
+    "num_used_relays": 2.0,
+    "parent": [0, 0, 0, -1, -1, 1, 1, 2, 7]
+  },
+  {
+    "chromosome": [0, 1, 0, 2, 0, 3, 0, 4, 1, 5, 1, 6, 2, 7, 4, 8],
+    "crowding_distance": 0.587073586290092,
+    "energy_consumption": 0.0006250400000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [7, 2, 1, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 3.0,
+    "parent": [0, 0, 0, -1, 0, 1, 1, 2, 4]
+  },
+  {
+    "chromosome": [0, 1, 0, 2, 0, 3, 0, 4, 2, 7, 1, 5, 1, 6, 4, 8],
+    "crowding_distance": 0.33519879615465914,
+    "energy_consumption": 0.0006250400000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [7, 2, 1, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 3.0,
+    "parent": [0, 0, 0, -1, 0, 1, 1, 2, 4]
+  },
+  {
+    "chromosome": [0, 1, 0, 2, 0, 3, 0, 4, 1, 6, 2, 7, 7, 8, 1, 5],
+    "crowding_distance": 0.33519879615465914,
+    "energy_consumption": 0.00062604,
+    "hop": 3,
+    "nondominated_rank": 0,
+    "num_childs": [6, 2, 2, 0, 0, 0, 0, 1, 0],
+    "num_used_relays": 2.0,
+    "parent": [0, 0, 0, -1, -1, 1, 1, 2, 7]
+  },
+  {
+    "chromosome": [0, 1, 0, 2, 0, 3, 0, 4, 1, 6, 3, 7, 4, 8, 2, 5],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [8, 1, 1, 1, 1, 0, 0, 0, 0],
+    "num_used_relays": 4.0,
+    "parent": [0, 0, 0, 0, 0, 2, 1, 3, 4]
+  },
+  {
+    "chromosome": [0, 1, 0, 2, 0, 3, 0, 4, 4, 8, 2, 7, 1, 6, 3, 5],
+    "crowding_distance": 0.0,
+    "energy_consumption": 0.0004890200000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [8, 1, 1, 1, 1, 0, 0, 0, 0],
+    "num_used_relays": 4.0,
+    "parent": [0, 0, 0, 0, 0, 3, 1, 2, 4]
+  }
+]

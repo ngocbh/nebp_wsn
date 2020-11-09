@@ -20,9 +20,26 @@ import matplotlib.pyplot as plt
 import numpy as np
 import copy
 import itertools
+from decimal import Decimal
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 
+def num2tex(n, p, mean=True):
+    if mean:
+        if pow(10, - p) < n and n < pow(10, p):
+            r = '{:.3g}'.format(n)
+        elif -pow(10, p) < n and n < -pow(10, -p):
+            r = '{:.3g}'.format(n)
+        else:
+            r = '{:.2e}'.format(n)
+    else:
+        if pow(10, - p) < n and n < pow(10, p):
+            r = '{:.2g}'.format(n)
+        elif -pow(10, p) < n and n < -pow(10, -p):
+            r = '{:.2g}'.format(n)
+        else:
+            r = '{:.1e}'.format(n)
+    return r
 
 def read_pareto(filepath):
     data = json.load(open(filepath, mode='r'))
@@ -41,7 +58,9 @@ def read_pareto_history(filepath):
         pareto = set()
         for solution in g["pareto_front"]:
             pareto.add(tuple([solution[0], solution[1] ]))
-        history.append(list(pareto))
+        pareto = list(pareto)
+        pareto.sort()
+        history.append(pareto)
     return history
 
 def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
@@ -61,8 +80,10 @@ def visualize_igd_over_generations(history_dict, output_dir, P, marker=None,
     data = {}
     for name, history in history_dict.items():
         igds = []
-        for S in history:
+        for i, S in enumerate(history):
             igds.append(IGD(S, P))
+        # print(name)
+        # print(igds)
         data[name] = igds
     fig, ax = plt.subplots()
 
@@ -245,7 +266,7 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
                        **kwargs)
 
 
-def calc_average_metrics(summarization_list, working_dir, cname, testnames=None, referenced=False):
+def calc_average_metrics(summarization_list, working_dir, cname, testnames=None, referenced=False, bold=True, brief_name='average'):
     def make_patch_spines_invisible(ax):
         ax.set_frame_on(True)
         ax.patch.set_visible(False)
@@ -371,31 +392,57 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
         # plt.show()
         plt.close('all')
 
-    def compact_data_to_csv(output_dir, data):
+    def compact_data_to_csv(output_dir, data, brief_name=None, bold=True):
         def normalize_name(name):
             return name.split('_')[0] if 'NIn' in name else name
         models = list(next(iter(data.values())).keys())
         pis = list(next(iter(next(iter(data.values())).values())).keys())
-        normalized_data = {}
-        normalized_data['Instance'] = []
-        for pi in pis:
-            for model in models:
-                normalized_data[f'{pi}_{model}'] = []
+        bold_pis = {'hypervolume': 1, 'igd': -1, 'delta': -1, 'onvg': 1}
+        brief_name = brief_name or 'results'
 
-        for testname, test_data in data.items():
-            normalized_data['Instance'].append(normalize_name(testname))
-            for model, model_data in test_data.items():
-                for pi, d in model_data.items():
-                    d = np.array(d)
+
+        for pi in pis:
+            normalized_data = {}
+            normalized_data['Instance'] = []
+            raw_data = {}
+            raw_data['Instance'] = []
+
+            for model in models:
+                normalized_data[f'{model}-mean'] = []
+                normalized_data[f'{model}-std'] = []
+                raw_data[f'{model}-mean'] = []
+                raw_data[f'{model}-std'] = []
+
+
+            for testname, test_data in data.items():
+                normalized_data['Instance'].append(normalize_name(testname))
+                raw_data['Instance'].append(normalize_name(testname))
+                best = np.max(np.array([ np.mean(np.array(x[pi]) * bold_pis[pi]) for x in test_data.values() ]))
+
+                for model, model_data in test_data.items():
+                    d = np.array(model_data[pi])
                     d_mean = np.mean(d)
                     d_std = np.std(d)
-                    res = "${:.3g} \pm {:.3g}$".format(d_mean, d_std)
-                    normalized_data[f'{pi}_{model}'].append(res)
+                    if np.abs(d_mean*bold_pis[pi] - best) < 1e-10 and bold:
+                        d_mean_str = '\\textbf{' + str(num2tex(d_mean, 2)) + '}'
+                        d_std_str = str(num2tex(d_std, 2, mean=False))
+                    else:
+                        d_mean_str = str(num2tex(d_mean, 2))
+                        d_std_str =  str(num2tex(d_std, 2, mean=False))
+                    normalized_data[f'{model}-mean'].append(d_mean_str)
+                    normalized_data[f'{model}-std'].append(d_std_str)
+                    raw_data[f'{model}-mean'].append(d_mean)
+                    raw_data[f'{model}-std'].append(d_std)
 
-        filepath = os.path.join(output_dir, 'compacted_results.csv')
-        df = pd.DataFrame(data=normalized_data)
-        df = df.sort_values(by='Instance')
-        df.to_csv(filepath, index=False)
+            filepath = os.path.join(output_dir, '{}_{}.csv'.format(brief_name, pi))
+            df = pd.DataFrame(data=normalized_data)
+            df = df.sort_values(by='Instance')
+            df.to_csv(filepath, index=False)
+
+            filepath = os.path.join(output_dir, 'raw_{}_{}.csv'.format(brief_name, pi))
+            df = pd.DataFrame(data=raw_data)
+            df = df.sort_values(by='Instance')
+            df.to_csv(filepath, index=False)
 
     all_tests = set()
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
@@ -487,7 +534,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
         barchart_data[test] = barchart_test_data
 
     plot_box_chart(output_dir, boxchart_data)
-    compact_data_to_csv(output_dir, barchart_data)
+    compact_data_to_csv(output_dir, barchart_data, brief_name=brief_name, bold=bold)
 
 def average_tests_score(working_dir):
     metric_sum = None

@@ -31,7 +31,7 @@ DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 RERUN=False
 TESTING=False
-
+REFERENCED=True
 
 def run_ept():
     def plot():
@@ -43,7 +43,7 @@ def run_ept():
 
     output_dir = None
     testset = 0 if TESTING else 3
-    testnames = ['test'] if TESTING else ['']
+    testnames = ['dem'] if TESTING else ['']
     k = 10
     config = None
     if TESTING:
@@ -57,7 +57,7 @@ def run_ept():
 
     sum_list = run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, \
                                       overwrite=RERUN, config=config, \
-                                      referenced=False, referenced_dir=referenced_pareto_dir, summ=True)
+                                      referenced=REFERENCED, referenced_dir=referenced_pareto_dir, summ=True, brief_name='eff')
     print(sum_list)
 
 if __name__ == '__main__':
