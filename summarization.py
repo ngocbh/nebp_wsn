@@ -100,7 +100,7 @@ def visualize_igd_over_generations(history_dict, output_dir, P, marker=None,
     for name, history in history_dict.items():
         igds = []
         for i, S in enumerate(history):
-            # S = normalize_pareto_front(S, P)
+            S = normalize_pareto_front(S, P)
             igds.append(IGD(S, P))
         # print(name)
         # print(igds)

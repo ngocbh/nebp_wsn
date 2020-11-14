@@ -122,7 +122,7 @@ def run_ept_1(testnames=None):
         for d in ds:
             h = [e[0] for e in d]
             p = [e[1] for e in d]
-            plt.plot(h, p)
+            plt.plot(h, p, alpha=0.9)
 
         ax.grid(b=True, axis='y')
         ax.grid(b=False, axis='x')

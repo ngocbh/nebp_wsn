@@ -1,2 +1,2 @@
-Feasible_tests: {'NIn8_tiny_uu-dem2_r25_1_0', 'NIn7_tiny_uu-dem1_r25_1_0', 'NIn5_tiny_no-dem2_r25_1_0', 'NIn1_tiny_ga-dem1_r25_1_0', 'NIn9_tiny_uu-dem3_r25_1_0', 'NIn6_tiny_no-dem3_r25_1_0', 'NIn2_tiny_ga-dem2_r25_1_0', 'NIn4_tiny_no-dem1_r25_1_0', 'NIn3_tiny_ga-dem3_r25_1_0'}
+Feasible_tests: {'NIn1_tiny_ga-dem1_r25_1_0', 'NIn5_tiny_no-dem2_r25_1_0', 'NIn7_tiny_uu-dem1_r25_1_0', 'NIn8_tiny_uu-dem2_r25_1_0', 'NIn6_tiny_no-dem3_r25_1_0', 'NIn2_tiny_ga-dem2_r25_1_0', 'NIn9_tiny_uu-dem3_r25_1_0', 'NIn3_tiny_ga-dem3_r25_1_0', 'NIn4_tiny_no-dem1_r25_1_0'}
 Unsolved_tests: set()
