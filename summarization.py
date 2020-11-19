@@ -49,6 +49,7 @@ def read_pareto(filepath):
                       solution['energy_consumption'] )
         pareto.add(objectives)
     pareto = list(pareto)
+    # pareto = read_pareto_history(filepath)
     return pareto
 
 def read_pareto_history(filepath):
@@ -211,7 +212,7 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
             continue
         pareto = read_pareto(os.path.join(test_dir, 'pareto-front.json'))
         history = read_pareto_history(os.path.join(test_dir, 'history.json'))
-        pareto_dict[name] = history[25]
+        pareto_dict[name] = pareto
 
         if os.path.isfile(os.path.join(test_dir, 'r.txt')):
             with open(os.path.join(test_dir, 'r.txt')) as f:
