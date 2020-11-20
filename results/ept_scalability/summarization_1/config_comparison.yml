@@ -5,7 +5,7 @@ A:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 12
+    max_hop: 16
     name: ept_scalability
   encoding:
     cro_prob: 0.9
@@ -23,7 +23,7 @@ B:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 12
+    max_hop: 16
     name: ept_scalability
   encoding:
     alpha: 2
@@ -45,7 +45,7 @@ C:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 12
+    max_hop: 16
     name: ept_scalability
   encoding:
     cro_prob: 0.9
@@ -63,7 +63,7 @@ D:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 12
+    max_hop: 16
     name: ept_scalability
   encoding:
     cro_prob: 0.9
@@ -81,13 +81,13 @@ E:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 12
+    max_hop: 16
     name: ept_scalability
   encoding:
     cro_prob: 0.5
     init_method: DCPrimRST
-    mut_prob_a: 0.7
-    mut_prob_b: 0.2
+    mut_prob_a: 0.6
+    mut_prob_b: 0.4
     name: mprim4
   model_name: 1.4.9.0.1
   models:
