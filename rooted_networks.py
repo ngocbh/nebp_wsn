@@ -10,6 +10,7 @@ import sys
 import os
 import math
 import copy
+import numpy as np
 
 
 class WusnNetwork(RootedTree):
@@ -348,38 +349,10 @@ class MultiHopNetwork(WusnNetwork):
         self.repair()
         # print(self.num_used_relays)
 
-    def decompose_tree(self, edges, deleted_node, max_energy, strict_lower=True):
-        visited = [False] * self.number_of_vertices
-        used_edges = set()
-        max_childs = [-float('inf')] * self.number_of_vertices
-        max_childs[0] = 1000000
-
-        def dfs(u, deleted_node, adj, max_energy, max_childs, strict_lower):
-            visited[u] = True
-
-            for v in adj[u]:
-                if v != deleted_node and not visited[v]:
-                    if (v, u) not in used_edges:
-                        used_edges.add((u, v))
-                    d = distance(self._points[u], self._points[v])
-                    max_childs[v] = self.max_childs(v, max_energy, d, strict_lower=True)
-                    self.add_child(u, max_childs)
-
-                    dfs(v, deleted_node, adj, max_energy, max_childs, strict_lower)
-
-        adj = self.get_adjacency(edges)
-        dfs(0, deleted_node, adj, max_energy, max_childs, strict_lower)
-        depths = [0] * self.number_of_vertices
-        for i in range(self.number_of_vertices):
-            if max_childs[i] != -float('inf'):
-                depths[i] = self.depth[i]
-
-        return list(used_edges), max_childs, depths
-
     def build_energy_oriented_prim_tree(self, max_energy, slt_node, random_state, max_hop=None):
         edges = copy.deepcopy(self.edges)
 
-        used_edges, max_childs, depths = self.decompose_tree(edges, slt_node, max_energy, True)
+        used_edges, max_childs, depths, _ = self.decompose_tree(edges, slt_node, max_energy, True)
         # print(used_edges)
         # print(max_childs)
         # print(depths)
@@ -555,7 +528,138 @@ class MultiHopNetwork(WusnNetwork):
 
         return True
         
-    # False, Unused functions
+    def decompose_tree(self, edges, deleted_node, max_energy, strict_lower=True):
+        visited = [False] * self.number_of_vertices
+        hop = [0] * self.number_of_vertices
+        used_edges = set()
+        max_childs = [-float('inf')] * self.number_of_vertices
+        max_childs[0] = 1000000
+
+        def dfs(u, deleted_node, adj, max_energy, max_childs, strict_lower):
+            visited[u] = True
+
+            for v in adj[u]:
+                if v != deleted_node and not visited[v]:
+                    if (v, u) not in used_edges:
+                        used_edges.add((u, v))
+                    d = distance(self._points[u], self._points[v])
+                    max_childs[v] = self.max_childs(v, max_energy, d, strict_lower=strict_lower)
+                    self.add_child(u, max_childs)
+
+                    hop[u] = max(hop[u], dfs(v, deleted_node, adj, max_energy, max_childs, strict_lower) + 1)
+
+            return hop[u]
+
+        adj = self.get_adjacency(edges)
+        dfs(0, deleted_node, adj, max_energy, max_childs, strict_lower)
+        depths = [0] * self.number_of_vertices
+        for i in range(self.number_of_vertices):
+            if self.parent[i] != - 1:
+                self.update_max_childs(i, max_childs)
+            if max_childs[i] != -float('inf'):
+                depths[i] = self.depth[i]
+
+        return list(used_edges), max_childs, depths, hop
+
+    def build_energy_oriented_prim_tree_1(self, max_energy, slt_node, random_state, max_hop):
+        edges = copy.deepcopy(self.edges)
+
+        visited = [False] * self.number_of_vertices
+        hop = [0] * self.number_of_vertices
+        used_edges = set()
+        max_childs = [0] * self.number_of_vertices
+        max_childs[0] = 1000000
+        free_vertices = set()
+        trigger = False
+
+        def dfs(u, adj, max_energy, max_childs, strict_lower):
+            nonlocal trigger, slt_node
+            nonlocal free_vertices
+
+            visited[u] = True
+            if u == slt_node:
+                trigger = True
+
+            if trigger:
+                free_vertices.add(u)
+
+            for v in adj[u]:
+                if not visited[v]:
+                    if (v, u) not in used_edges:
+                        used_edges.add((u, v))
+                    d = distance(self._points[u], self._points[v])
+                    max_childs[v] = self.max_childs(v, max_energy, d, strict_lower=strict_lower)
+                    self.add_child(u, max_childs)
+
+                    hop[u] = max(hop[u], dfs(v, adj, max_energy, max_childs, strict_lower) + 1)
+
+            if u == slt_node:
+                trigger = False
+
+            return hop[u]
+
+        adj = self.get_adjacency(edges)
+        dfs(0, adj, max_energy, max_childs, True)
+
+        depths = [0] * self.number_of_vertices
+        for i in range(self.number_of_vertices):
+            if self.parent[i] != - 1:
+                self.update_max_childs(i, max_childs)
+            depths[i] = self.depth[i]
+
+        used_relays = [False] * (self.n + 1) 
+        for i in range(1, self.n+1):
+            used_relays[i] = (self.num_childs[i] != 0)
+
+        H1 = []
+        H2 = []
+
+        # print(self.num_childs)
+        for u, v in self.potential_edges:
+            if u in free_vertices and v not in free_vertices \
+                    and self.num_childs[u] < max_childs[v] and depths[v] + hop[u] + 1 <= max_hop:
+                if v <= self.n and not used_relays[v]:
+                    H2.append((u, v))
+                else:
+                    H1.append((u, v))
+            if v in free_vertices and u not in free_vertices \
+                    and self.num_childs[v] < max_childs[u] and depths[u] + hop[v] + 1 <= max_hop:
+                if u <= self.n and not used_relays[u]:
+                    H2.append((v, u))
+                else:
+                    H1.append((v, u))
+
+        slt_edge = None
+        if len(H1) > 0:
+            idx = random_state.randint(0, len(H1))
+            slt_edge = H1[idx]
+        elif len(H2) > 0:
+            idx = random_state.randint(0, len(H2))
+            slt_edge = H2[idx]
+        else:
+            print("False :(", end=' - ')
+            return False
+        # print(H1)
+        # print(H2)
+        # print(slt_edge)
+
+        u, v = slt_edge
+        if (self.parent[u], u) in edges:
+            edges.remove((self.parent[u], u))
+        else:
+            edges.remove((u, self.parent[u]))
+
+        edges.append(slt_edge)
+        sorted_edges = self.sort_by_bfs_order(edges)
+        self.initialize()
+        for u, v in sorted_edges:
+            self.add_edge(u, v)
+        self.repair()
+        # if not self.is_valid:
+        #     print(self.max_depth, depths[v], hop[u], max_hop)
+
+        return True
+
     def build_eprim_tree(self, max_energy, slt_node, random_state, max_hop=None):
         edges = copy.deepcopy(self.edges)
 

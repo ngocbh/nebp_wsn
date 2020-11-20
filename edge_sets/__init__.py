@@ -11,3 +11,4 @@ from .my_mutation_compact import MyMutationCompact
 from .eprim_mutation import EPrimMutation
 from .fprim_mutation import FPrimMutation
 from .eoprim_mutation import EOPrimMutation
+from .eoprim_mutation_1 import EOPrimMutation1
