@@ -97,9 +97,9 @@ encoding:
 
   - name: "mprim3"
     init_method: "DCPrimRST"
-    cro_prob: 0.7
-    mut_prob_a: 0.7
-    mut_prob_b: 0.3
+    cro_prob: 0.5
+    mut_prob_a: 0.5
+    mut_prob_b: 0.5
 
   - name: "mprim4"
     init_method: "DCPrimRST"
