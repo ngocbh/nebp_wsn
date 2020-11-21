@@ -637,7 +637,6 @@ class MultiHopNetwork(WusnNetwork):
             idx = random_state.randint(0, len(H2))
             slt_edge = H2[idx]
         else:
-            print("False :(", end=' - ')
             return False
         # print(H1)
         # print(H2)
