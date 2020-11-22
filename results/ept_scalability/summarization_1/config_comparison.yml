@@ -86,25 +86,6 @@ E:
   encoding:
     cro_prob: 0.5
     init_method: DCPrimRST
-    mut_prob_a: 0.6
-    mut_prob_b: 0.4
-    name: mprim4
-  model_name: 1.4.9.0.1
-  models:
-    gens: 100
-    name: run 1
-F:
-  algorithm:
-    name: nsgaii
-    pop_size: 100
-    slt_size: 100
-    tournament_size: 2
-  data:
-    max_hop: 8
-    name: ept_scalability
-  encoding:
-    cro_prob: 0.5
-    init_method: DCPrimRST
     mut_prob_a: 0.5
     mut_prob_b: 0.5
     name: mprim3

@@ -107,17 +107,17 @@ def run_mhn_experiment(ept,
                                         overwrite=overwrite,
                                         config=config)
 
-    print("Running guided prim 4 solver...")
-    output_dir = input_dir.replace('data', 'results')
-    gprim4_model = f'{ept}.{testset}.9.0'
-    gprim4_model_list = multi_run_solver(solver_mhn_gprim4,
-                                        model=gprim4_model,
-                                        input_dir=input_dir,
-                                        k=k,
-                                        testnames=testnames,
-                                        save_history=False,
-                                        overwrite=overwrite,
-                                        config=config)
+    # print("Running guided prim 4 solver...")
+    # output_dir = input_dir.replace('data', 'results')
+    # gprim4_model = f'{ept}.{testset}.9.0'
+    # gprim4_model_list = multi_run_solver(solver_mhn_gprim4,
+    #                                     model=gprim4_model,
+    #                                     input_dir=input_dir,
+    #                                     k=k,
+    #                                     testnames=testnames,
+    #                                     save_history=False,
+    #                                     overwrite=overwrite,
+    #                                     config=config)
 
     print("Running kruskal solver...")
     kruskal_model = f'{ept}.{testset}.2.0'
@@ -174,8 +174,8 @@ def run_mhn_experiment(ept,
         model_dict['B'] = netkeys_model_list[i]
         model_dict['C'] = prim_model_list[i]
         model_dict['D'] = kruskal_model_list[i]
-        model_dict['E'] = gprim4_model_list[i]
-        model_dict['F'] = gprim3_model_list[i]
+        # model_dict['E'] = gprim4_model_list[i]
+        model_dict['E'] = gprim3_model_list[i]
         cname = f'summarization_{i+1}'
         summarization_list.append(cname)
         summarization.summarize_model(

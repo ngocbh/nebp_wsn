@@ -86,8 +86,8 @@ def run_ept_1(testnames=None):
         print(f"Running: {filepath}")
         ds = []
         for i in range(len(INIT_METHODS)):
-            n_hop = 10 if TESTING else 37
-            n_hop_start = 1 if TESTING else 8
+            n_hop = 10 if TESTING else 40
+            n_hop_start = 1 if TESTING else 0
             n_seed = 1 if TESTING else 10
             pop_size = 20 if TESTING else 100
             d = []
@@ -117,6 +117,7 @@ def run_ept_1(testnames=None):
         ds = None
         with open(join(out_test_dir, 'ept_1.data'), 'rb') as f:
             ds = pickle.load(f)
+        ds = ds[0:41]
         plt.figure()
         ax = plt.figure().gca()
         for d in ds:

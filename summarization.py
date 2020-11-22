@@ -41,6 +41,17 @@ def num2tex(n, p, mean=True):
             r = '{:.1e}'.format(n)
     return r
 
+def normalize_pareto_front(pareto, P):
+    ret = []
+    for s1, s2 in pareto:
+        n1 = (s1 - P[0][0] + 1) / (P[1][0] - P[0][0] + 1)
+        n2 = (s2 - P[1][1]) / (P[0][1] - P[1][1])
+        ret.append((n1, n2))
+    # print(pareto)
+    # print(P)
+    # print(ret)
+    return ret
+
 def read_pareto(filepath):
     data = json.load(open(filepath, mode='r'))
     pareto = set()
@@ -49,6 +60,7 @@ def read_pareto(filepath):
                       solution['energy_consumption'] )
         pareto.add(objectives)
     pareto = list(pareto)
+    # pareto = normalize_pareto_front(pareto, P)
     # pareto = read_pareto_history(filepath)
     return pareto
 
@@ -82,9 +94,9 @@ def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
                      objective_name=['used relays', 'energy'],
                      save=True, show=show, do_axis=do_axis, do_plt=do_plt, dpi=400, frameon=True, **kwargs)
 
-def visualize_igd_over_generations(history_dict, output_dir, P, marker=None,
+def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, marker=None,
                                    linewidth=0.8, markersize=5, linestyle='--', fillstyle=None, **kwargs):
-    def normalize_pareto_front(S, P):
+    def normalize_pareto_front_1(S, P):
         S.sort()
         ret = [S[0]]
         for i in range(1, len(S)):
@@ -97,12 +109,14 @@ def visualize_igd_over_generations(history_dict, output_dir, P, marker=None,
 
         return ret
 
+    normalized_optimal_pareto = normalize_pareto_front(P, extreme_points)
     data = {}
     for name, history in history_dict.items():
         igds = []
         for i, S in enumerate(history):
-            S = normalize_pareto_front(S, P)
-            igds.append(IGD(S, P))
+            # S = normalize_pareto_front_1(S, P)
+            normalized_S = normalize_pareto_front(S, extreme_points)
+            igds.append(IGD(normalized_S, normalized_optimal_pareto))
         # print(name)
         # print(igds)
         data[name] = igds
@@ -165,19 +179,24 @@ def summarize_metrics(pareto_dict, output_dir, r, referenced=False, P=None, Pe=N
     for name, pareto in pareto_dict.items():
         if name != metrics['models'][i]:
             raise ValueError("Summarize metrics error")
+        # print(Pe)
+        # print(pareto)
+        normalized_pareto = normalize_pareto_front(pareto, Pe)
+        # print(pareto)
 
         if referenced:
-            metrics['igd'].append(IGD(pareto, P))
+            metrics['igd'].append(IGD(normalized_pareto, normalize_pareto_front(P, Pe)))
 
+        # print(name)
         if Pe is None:
-            metrics['delta'].append(delta_apostrophe(pareto))
+            metrics['delta'].append(delta_apostrophe(normalized_pareto))
             raise ValueError()
         else:
-            metrics['delta'].append(delta(pareto, Pe))
+            metrics['delta'].append(delta(normalized_pareto, [(0, 1), (1, 0)]))
 
-        metrics['spacing'].append(SP(pareto))
-        metrics['onvg'].append(ONVG(pareto))
-        metrics['hypervolume'].append(HV_2d(pareto, r))
+        metrics['spacing'].append(SP(normalized_pareto))
+        metrics['onvg'].append(ONVG(normalized_pareto))
+        metrics['hypervolume'].append(HV_2d(normalized_pareto, (1,1)))
 
         for other_name, other_pareto in pareto_dict.items():
             c = C_metric(pareto, other_pareto)
@@ -210,6 +229,11 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
         test_dir = os.path.join(model_dir, testname)
         if not os.path.isdir(test_dir) and os.path.isfile(os.path.join(test_dir, 'done.flag')):
             continue
+
+        if os.path.isfile(os.path.join(test_dir, 'P.txt')):
+            P = np.loadtxt(os.path.join(test_dir, 'P.txt')) 
+            Ps.append(P)
+
         pareto = read_pareto(os.path.join(test_dir, 'pareto-front.json'))
         history = read_pareto_history(os.path.join(test_dir, 'history.json'))
         pareto_dict[name] = pareto
@@ -219,10 +243,6 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
                 data = f.read().split()
                 r = tuple([float(e) for e in data])
                 rs.append(r)
-
-        if os.path.isfile(os.path.join(test_dir, 'P.txt')):
-            P = np.loadtxt(os.path.join(test_dir, 'P.txt')) 
-            Ps.append(P)
 
         config = yaml.load(
             open(os.path.join(test_dir, '_config.yml')), Loader=Loader)
@@ -259,7 +279,7 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
     summarize_metrics(pareto_dict, output_dir=out_test_dir, r=r, referenced=referenced, P=P, Pe=Pe)
     if referenced:
         visualize_test(pareto_dict, output_dir=out_test_dir, show=False, referenced_points=P, **kwargs)
-        visualize_igd_over_generations(history_dict, output_dir=out_test_dir, P=P, fillstyle='flicker')
+        visualize_igd_over_generations(history_dict, output_dir=out_test_dir, P=P, fillstyle='flicker', extreme_points=Pe)
     else:
         visualize_test(pareto_dict, output_dir=out_test_dir, show=False, **kwargs)
 
