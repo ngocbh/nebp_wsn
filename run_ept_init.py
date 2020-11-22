@@ -87,7 +87,7 @@ def run_ept_1(testnames=None):
         ds = []
         for i in range(len(INIT_METHODS)):
             n_hop = 10 if TESTING else 40
-            n_hop_start = 1 if TESTING else 0
+            n_hop_start = 1 if TESTING else 1
             n_seed = 1 if TESTING else 10
             pop_size = 20 if TESTING else 100
             d = []
