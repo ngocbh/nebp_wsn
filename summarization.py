@@ -114,7 +114,7 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
     for name, history in history_dict.items():
         igds = []
         for i, S in enumerate(history):
-            # S = normalize_pareto_front_1(S, P)
+            S = normalize_pareto_front_1(S, P)
             normalized_S = normalize_pareto_front(S, extreme_points)
             igds.append(IGD(normalized_S, normalized_optimal_pareto))
         # print(name)
