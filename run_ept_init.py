@@ -117,7 +117,7 @@ def run_ept_1(testnames=None):
         ds = None
         with open(join(out_test_dir, 'ept_1.data'), 'rb') as f:
             ds = pickle.load(f)
-        ds = ds[0:41]
+        ds = ds[0:]
         plt.figure()
         ax = plt.figure().gca()
         for d in ds:
@@ -347,9 +347,9 @@ def run_ept_4(testnames=None):
             summarization.summarize_model( model_dict, working_dir=out_dir, cname=f'sum-{g}.{h}.{i}')
 
 if __name__ == '__main__':
-    testname = 'test' if TESTING else 'medium'
+    testname = 'test' if TESTING else 'NIn'
     testnames = [testname]
     run_ept_1(testnames)
-    # run_ept_2(testnames)
+    run_ept_2(testnames)
     # run_ept_3(testnames)
     # run_ept_4(testnames)
