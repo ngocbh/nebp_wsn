@@ -17,7 +17,7 @@ from geneticpython.utils import check_random_state
 
 from edge_sets import WusnMutation, XPrimCrossover, ROPrimMutation, \
     APrimMutation, MyNSGAIIEngine, MyMutationCompact,\
-    EPrimMutation, FPrimMutation, EOPrimMutation1, EOPrimMutation
+    EPrimMutation, FPrimMutation, EOPrimMutation1, EOPrimMutation, MyEdgeSets
 from initalization import initialize_pop
 from utils.configurations import *
 from utils import WusnInput, energy_consumption

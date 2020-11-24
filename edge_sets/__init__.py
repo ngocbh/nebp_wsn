@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+from .edge_sets import MyEdgeSets
 from .kruskal_crossover import *
 from .wusn_mutation import *
 from .xprim_crossover import XPrimCrossover

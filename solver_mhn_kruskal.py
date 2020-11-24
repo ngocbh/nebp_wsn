@@ -13,7 +13,7 @@ from geneticpython.tools import visualize_fronts, save_history_as_gif
 from geneticpython.models.tree import EdgeSets
 from geneticpython.core.operators import KruskalCrossover, TreeMutation
 
-from edge_sets import WusnMutation
+from edge_sets import WusnMutation, MyEdgeSets
 from utils.configurations import *
 from utils import WusnInput, energy_consumption
 from utils import save_results
@@ -174,9 +174,9 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 
 if __name__ == '__main__':
-    config = {'data': {'max_hop': 6},
+    config = {'data': {'max_hop': 12},
                   'models': {'gens': 100},
           'encoding': {'init_method': 'DCPrimRST'}}
-    solve('data/_tiny/multi_hop/tiny_uu-dem2_r25_1_0.json', model = '1.7.2.0', config=config)
-    # solve('data/small/multi_hop/ga-dem1_r25_1_40.json', model = '0.0.2.0')
+    # solve('data/_tiny/multi_hop/tiny_uu-dem2_r25_1_0.json', model = '1.7.2.0', config=config)
+    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model='1.8.2.0', config=config)
 

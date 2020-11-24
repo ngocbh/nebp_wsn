@@ -15,6 +15,7 @@ import numpy as np
 
 class WusnNetwork(RootedTree):
     def __init__(self, problem: MultiHopProblem):
+        self.problem = problem
         self.m = problem._num_of_sensors
         self.n = problem._num_of_relays
         self.node_count = 1 + self.m + self.n
@@ -25,9 +26,20 @@ class WusnNetwork(RootedTree):
         self._points = problem._points
         self.max_hop = problem.max_hop
         self.num_encoded_edges = problem._num_encoded_edges
-        super(WusnNetwork, self).__init__(number_of_vertices=self.node_count, root=0, potential_edges=problem._idx2edge)
+        # super(WusnNetwork, self).__init__(number_of_vertices=self.node_count, root=0, potential_edges=problem._idx2edge)
+
+        self.number_of_vertices = self.node_count
+        self.root = 0
+
+        self.potential_edges = problem._idx2edge
+        self.potential_adj = problem.potential_adj
 
         self.initialize()
+
+    # def clone(self):
+    #     # ret = WusnNetwork(self.problem)
+    #     return depth
+        
 
     def initialize(self):
         super(WusnNetwork, self).initialize()
@@ -123,6 +135,10 @@ class SingleHopNetwork(WusnNetwork):
 
 
 class MultiHopNetwork(WusnNetwork):
+
+    def clone(self):
+        ret = MultiHopNetwork(self.problem)
+        return ret
 
     def transmission_energy(self, k, d):
         d0 = math.sqrt(wc.e_fs / wc.e_mp)
