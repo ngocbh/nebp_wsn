@@ -23,6 +23,7 @@ from initalization import initialize_pop
 
 from random import Random
 from collections import defaultdict
+from copy import deepcopy
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -38,18 +39,25 @@ WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 
 class MultiHopIndividual(NetworkRandomKeys):
-    def __init__(self, problem: MultiHopProblem, network: MultiHopNetwork):
+    def __init__(self, problem: MultiHopProblem, network: MultiHopNetwork, chromosome=None, use_encode=True):
         self.problem = problem
         node_count = problem._num_of_relays + problem._num_of_sensors + 1
-        edge_list = list(problem._idx2edge)
-        for i in range(1, problem._num_of_relays + 1):
-            edge_list.append((0, i))
         
         super(MultiHopIndividual, self).__init__(
             number_of_vertices=node_count, 
-            potential_edges=edge_list, 
+            potential_edges=problem.edge_list, 
             network=network, 
-            use_encode=True)
+            chromosome=chromosome,
+            use_encode=use_encode)
+
+    def clone(self):
+        network = self.network.clone()
+        chromosome = deepcopy(self.chromosome)
+
+        ret = MultiHopIndividual(self.problem, network, chromosome=chromosome, use_encode=False) 
+        ret.edge_dict = self.edge_dict
+        ret.use_encode = True
+        return ret
 
 def check_config(config, filename, model):
     if config['data']['name'] not in filename:
@@ -174,9 +182,9 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
 
 if __name__ == '__main__':
-    # solve('data/_tiny/multi_hop/ga-dem1_r25_1_0.json', model = '1.7.1.0')
-    config = {'data': {'max_hop': 10},
+    config = {'data': {'max_hop': 12},
                   'models': {'gens': 100},
-		  'encoding': {'init_method': 'PrimRST'}}
-    solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.1.0.0', 
-          config=config)
+		  'encoding': {'init_method': 'DCPrimRST'}}
+    # solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.8.0', config=config)
+    # solve('data/_medium/multi_hop/medium_ga-dem2_r25_1_0.json', model='1.8.1.0', config=config)
+    solve('data/_large/multi_hop/large_ga-dem1_r25_1_40.json', model='1.9.1.0', config=config)

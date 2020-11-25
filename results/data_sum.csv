@@ -1,19 +1,19 @@
 set,instance,type,distribution,terrain,S,N,M,density
-$T1$,NIn1,tiny,Gaussian,T1,$200 \times 200$,20,20,0.53
-,NIn2,tiny,Gaussian,T2,$200 \times 200$,20,20,0.61
-,NIn3,tiny,Gaussian,T3,$200 \times 200$,20,20,0.53
-,NIn4,tiny,Gamma,T1,$200 \times 200$,20,20,0.61
-,NIn5,tiny,Gamma,T2,$200 \times 200$,20,20,0.56
-,NIn6,tiny,Gamma,T3,$200 \times 200$,20,20,0.52
-,NIn7,tiny,Uniform,T1,$200 \times 200$,20,20,0.53
-,NIn8,tiny,Uniform,T2,$200 \times 200$,20,20,0.53
-,NIn9,tiny,Uniform,T3,$200 \times 200$,20,20,0.48
-$T2$,NIn10,small,Gaussian,T1,$200 \times 200$,40,40,0.28
-,NIn11,small,Gamma,T2,$200 \times 200$,40,40,0.14
-,NIn12,small,Uniform,T3,$200 \times 200$,40,40,0.12
-,NIn13,medium,Gaussian,T2,$500 \times 500$,100,100,0.19
-,NIn14,medium,Gamma,T3,$500 \times 500$,100,100,0.18
-,NIn15,medium,Uniform,T1,$500 \times 500$,100,100,0.18
-,NIn16,large,Gaussian,T3,$1000 \times 1000$,200,200,0.52
-,NIn17,large,Gamma,T1,$1000 \times 1000$,200,200,0.54
-,NIn18,large,Uniform,T2,$1000 \times 1000$,200,200,0.51
+$T1$,NIn1,Type 1,Gaussian,T1,$200 \times 200$,20,20,0.53
+,NIn2,Type 1,Gaussian,T2,$200 \times 200$,20,20,0.61
+,NIn3,Type 1,Gaussian,T3,$200 \times 200$,20,20,0.53
+,NIn4,Type 1,Uniform,T1,$200 \times 200$,20,20,0.53
+,NIn5,Type 1,Uniform,T2,$200 \times 200$,20,20,0.53
+,NIn6,Type 1,Uniform,T3,$200 \times 200$,20,20,0.48
+$T2$,NIn7,Type 2,Gaussian,T1,$200 \times 200$,40,40,0.28
+,NIn8,Type 2,Gaussian,T1,$200 \times 200$,40,80,0.20
+,NIn9,Type 2,Uniform,T2,$200 \times 200$,40,40,0.10
+,NIn10,Type 2,Uniform,T2,$200 \times 200$,40,80,0.18
+,NIn11,Type 3,Gaussian,T2,$500 \times 500$,100,100,0.19
+,NIn12,Type 3,Gaussian,T2,$500 \times 500$,100,200,0.10
+,NIn13,Type 3,Uniform,T3,$500 \times 500$,100,100,0.17
+,NIn14,Type 3,Uniform,T3,$500 \times 500$,100,200,0.09
+,NIn15,Type 4,Gaussian,T3,$1000 \times 1000$,200,200,0.52
+,NIn16,Type 4,Gaussian,T3,$1000 \times 1000$,200,400,0.28
+,NIn17,Type 4,Uniform,T1,$1000 \times 1000$,200,200,0.52
+,NIn18,Type 4,Uniform,T1,$1000 \times 1000$,200,400,0.28

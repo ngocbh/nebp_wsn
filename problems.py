@@ -83,6 +83,12 @@ class WusnProblem():
                         self.potential_adj[v].append(u)
                         self._num_encoded_edges += 1
 
+
+        edge_list = list(self._idx2edge)
+        for i in range(1, self._num_of_relays + 1):
+            edge_list.append((0, i))
+
+        self.edge_list = edge_list
         self._points = points
         self._point2idx = point2idx
         self._edges = edges

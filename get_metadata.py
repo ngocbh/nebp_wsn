@@ -6,6 +6,7 @@ from utils import WusnInput
 from problems import MultiHopProblem
 
 distribution = {'ga': 'Gaussian', 'no': "Gamma", 'uu': "Uniform"}
+type_map = {'tiny': 'Type 1', 'small': 'Type 2', 'medium': 'Type 3', 'large': 'Type 4'}
 
 def get_graph_dense(inp, problem):
     a = len(problem._idx2edge)
@@ -28,7 +29,7 @@ def get_data_summarization():
             problem = MultiHopProblem(inp)
             data['set'].append('')
             data['instance'].append(x[0])
-            data['type'].append(x[1])
+            data['type'].append(type_map[x[1]])
             data['distribution'].append(distribution[x[2]])
             data['terrain'].append(x[3].replace('dem', 'T'))
             data['S'].append('${} \\times {}$'.format(inp.W, inp.H))
@@ -40,7 +41,7 @@ def get_data_summarization():
     df = df.sort_values(by='instance', key=lambda col : col.apply(lambda x : int(x.replace('NIn', ''))))
     df = df.reset_index(drop=True)
     df.at[0, 'set'] = '$T1$'
-    df.at[9, 'set'] = '$T2$'
+    df.at[6, 'set'] = '$T2$'
     df.to_csv('results/data_sum.csv', index=False)
             
 

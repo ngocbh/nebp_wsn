@@ -1,0 +1,20 @@
+algorithm:
+  name: nsgaii
+  pop_size: 100
+  slt_size: 100
+  tournament_size: 2
+data:
+  max_hop: 12
+  name: medium
+encoding:
+  alpha: 2
+  beta: 6
+  cro_di: 20
+  cro_prob: 0.9
+  init_method: DCPrimRST
+  mut_di: 5
+  mut_prob: 0.1
+  name: netkeys
+models:
+  gens: 100
+  name: run 1
