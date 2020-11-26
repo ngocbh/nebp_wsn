@@ -10,8 +10,10 @@ from geneticpython.engines import NSGAIIEngine
 from geneticpython import Population
 from geneticpython.core.operators import TournamentSelection
 from geneticpython.tools import visualize_fronts, save_history_as_gif
-from geneticpython.models.tree import PruferCode, KruskalTree
+from geneticpython.models.tree import PruferCode, KruskalTree, Tree
 from geneticpython.core.operators import UniformCrossover, SwapMutation
+from geneticpython.core.individual import IntChromosome
+from geneticpython.utils.validation import check_random_state
 
 from initalization import initialize_pop
 from utils.configurations import *
@@ -33,6 +35,7 @@ import yaml
 
 import sys
 import os
+import copy
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
@@ -45,10 +48,82 @@ def check_config(config, filename, model):
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
+
+class MyPruferCode(PruferCode):
+    """PruferCode.
+        the implementation follows tutorial: https://cp-algorithms.com/graph/pruefer_code.html
+    """
+
+    def __init__(self, number_of_vertices: int, chromosome: IntChromosome = None, solution: Tree = None, 
+                 potential_edges = None, potential_edges_set = None):
+        self.potential_edges = potential_edges
+        self.potential_edges_set = potential_edges_set
+        super(MyPruferCode, self).__init__(number_of_vertices, chromosome, solution)
+
+    def clone(self):
+        number_of_vertices = self.number_of_vertices
+        solution = self.solution.clone()
+        chromosome = copy.deepcopy(self.chromosome)
+        
+        return MyPruferCode(number_of_vertices, chromosome=chromosome, 
+                            solution=solution, potential_edges=self.potential_edges, 
+                            potential_edges_set=self.potential_edges_set)
+
+    def decode(self):
+        """decode.
+            Decode prufer code to Tree in linear time O(n)
+        """
+        n = self.number_of_vertices
+        code = self.chromosome.genes
+        degree = [1] * n
+        for i in code:
+            degree[i] += 1
+
+        ptr = 0
+        while degree[ptr] != 1:
+            ptr += 1
+
+        leaf = ptr
+        edges = []
+        for v in code:
+            edges.append((leaf, v))
+            degree[v] -= 1
+            if degree[v] == 1 and v < ptr:
+                leaf = v
+            else:
+                ptr += 1
+                while degree[ptr] != 1:
+                    ptr += 1
+                leaf = ptr
+
+        edges.append((leaf, n-1))
+
+        valid_edges = []
+        for u, v in edges:
+            if (u, v) in self.potential_edges_set or (v, u) in self.potential_edges_set:
+                valid_edges.append((u, v))
+
+        self.solution.initialize()
+        
+        _is_valid = True
+        for u, v in valid_edges:
+            _is_valid &= self.solution.add_edge(u, v)
+
+        random_state = check_random_state(None)
+        order = random_state.permutation(list(range(len(self.potential_edges))))
+        for i in order:
+            if len(self.solution.edges) < self.solution.number_of_vertices - 1:
+                u, v = self.potential_edges[i]
+                self.solution.add_edge(u, v)
+
+        self.solution._is_valid = _is_valid
+        self.solution.repair()
+        return self.solution
+
 def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True, seed=None):
     start_time = time.time()
 
-    seed = seed or 42
+    seed = seed or 1
     config = config or {}
     config = update_config(load_config(CONFIG_FILE, model), config)
     check_config(config, filename, model)
@@ -66,8 +141,11 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     network = MultiHopNetwork(problem)
     node_count = problem._num_of_relays + problem._num_of_sensors + 1
     edge_count = problem._num_of_sensors
+    potential_edges = problem._idx2edge
+    potential_edges_set = set(problem._idx2edge)
 
-    indv_temp = PruferCode(number_of_vertices=node_count, solution=network)
+    indv_temp = MyPruferCode(number_of_vertices=node_count, solution=network, 
+                             potential_edges=potential_edges, potential_edges_set=potential_edges_set)
 
     # indv_temp.update_genes([0, 0, 0, 0, 0, 3, 4])
     # solution = indv_temp.decode()
@@ -170,5 +248,5 @@ if __name__ == '__main__':
                   'models': {'gens': 100},
           'encoding': {'init_method': 'DCPrimRST'}}
     # solve('data/_tiny/multi_hop/tiny_uu-dem2_r25_1_0.json', model = '1.7.2.0', config=config)
-    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model='1.8.6.0', config=config)
+    solve('data/_medium/multi_hop/medium_ga-dem2_r25_1_40.json', model='1.8.6.0', config=config)
 
