@@ -31,16 +31,16 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 RERUN=False
-TESTING=True
+TESTING=False
 
 
 def run_ept():
     ept = 0 if TESTING else 1
-    input_dir = './data/test' if TESTING else './data/ept_scalability'
+    input_dir = './data/test' if TESTING else './data/ept_sparsity'
     output_dir = None
-    testset = 0 if TESTING else 3
-    testnames = 'test' if TESTING else ''
-    k = 5
+    testset = 0 if TESTING else 5
+    testnames = ['test'] if TESTING else ['']
+    k = 10
     config = None
     if TESTING:
         config = {'models': {}, 'algorithm': {}}
@@ -48,7 +48,7 @@ def run_ept():
         config['algorithm']['pop_size'] = 10
         config['algorithm']['selection_size'] = 10
 
-    run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, overwrite=RERUN, config=config)
+    run.run_mhn_experiment(ept, input_dir, output_dir, testset, testnames, k, overwrite=RERUN, config=config, brief_name='t3')
 
 if __name__ == '__main__':
     run_ept()

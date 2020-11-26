@@ -43,6 +43,8 @@ def num2tex(n, p, mean=True):
     return r
 
 def normalize_pareto_front(pareto, P):
+    if pareto is None:
+        return None
     ret = []
     for s1, s2 in pareto:
         n1 = (s1 - P[0][0] + 1) / (P[1][0] - P[0][0] + 1)

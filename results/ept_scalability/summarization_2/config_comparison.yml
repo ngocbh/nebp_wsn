@@ -5,7 +5,7 @@ A:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 16
+    max_hop: 8
     name: ept_scalability
   encoding:
     cro_prob: 0.9
@@ -23,7 +23,7 @@ B:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 16
+    max_hop: 8
     name: ept_scalability
   encoding:
     alpha: 2
@@ -45,7 +45,7 @@ C:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 16
+    max_hop: 8
     name: ept_scalability
   encoding:
     cro_prob: 0.9
@@ -63,7 +63,7 @@ D:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 16
+    max_hop: 8
     name: ept_scalability
   encoding:
     cro_prob: 0.9
@@ -81,7 +81,7 @@ E:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 16
+    max_hop: 8
     name: ept_scalability
   encoding:
     cro_prob: 0.5
