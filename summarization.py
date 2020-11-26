@@ -23,6 +23,7 @@ import itertools
 from decimal import Decimal
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
+NORMALIZE = True
 
 def num2tex(n, p, mean=True):
     if mean:
@@ -76,6 +77,13 @@ def read_pareto_history(filepath):
         history.append(pareto)
     return history
 
+def read_time(filepath):
+    t = None 
+    with open(filepath, mode='r') as f:
+        data = f.read()
+        t = float(data[14:])
+    return t
+
 def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
     def do_axis(ax):
         ax.xaxis.set_major_locator(MaxNLocator(integer=True))
@@ -109,13 +117,19 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
 
         return ret
 
-    normalized_optimal_pareto = normalize_pareto_front(P, extreme_points)
+    if NORMALIZE:
+        normalized_optimal_pareto = normalize_pareto_front(P, extreme_points)
+    else:
+        normalized_optimal_pareto = P
     data = {}
     for name, history in history_dict.items():
         igds = []
         for i, S in enumerate(history):
-            S = normalize_pareto_front_1(S, P)
-            normalized_S = normalize_pareto_front(S, extreme_points)
+            if NORMALIZE:
+                S = normalize_pareto_front_1(S, P)
+                normalized_S = normalize_pareto_front(S, extreme_points)
+            else:
+                normalized_S = S
             igds.append(IGD(normalized_S, normalized_optimal_pareto))
         # print(name)
         # print(igds)
@@ -159,7 +173,7 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
     plt.close('all')
 
 
-def summarize_metrics(pareto_dict, output_dir, r, referenced=False, P=None, Pe=None):
+def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P=None, Pe=None):
     metrics = {}
     metrics['models'] = list(pareto_dict.keys())
     if referenced:
@@ -168,6 +182,7 @@ def summarize_metrics(pareto_dict, output_dir, r, referenced=False, P=None, Pe=N
     metrics['spacing'] = []
     metrics['onvg'] = []
     metrics['hypervolume'] = []
+    metrics['time'] = []
     for key in pareto_dict.keys():
         metrics['c_' + key] = []
     metrics['score'] = []
@@ -181,22 +196,32 @@ def summarize_metrics(pareto_dict, output_dir, r, referenced=False, P=None, Pe=N
             raise ValueError("Summarize metrics error")
         # print(Pe)
         # print(pareto)
-        normalized_pareto = normalize_pareto_front(pareto, Pe)
+        if NORMALIZE:
+            normalized_pareto = normalize_pareto_front(pareto, Pe)
+            normalized_P = normalize_pareto_front(P, Pe)
+            delta_P = [(0, 1), (1, 0)]
+            hyper_r = (1,1)
+        else:
+            normalized_pareto = pareto
+            normalized_P = P
+            delta_P = Pe
+            hyper_r = r
         # print(pareto)
 
         if referenced:
-            metrics['igd'].append(IGD(normalized_pareto, normalize_pareto_front(P, Pe)))
+            metrics['igd'].append(IGD(normalized_pareto, normalized_P))
 
         # print(name)
         if Pe is None:
             metrics['delta'].append(delta_apostrophe(normalized_pareto))
             raise ValueError()
         else:
-            metrics['delta'].append(delta(normalized_pareto, [(0, 1), (1, 0)]))
+            metrics['delta'].append(delta(normalized_pareto, delta_P))
 
+        metrics['time'].append(time_dict[name])
         metrics['spacing'].append(SP(normalized_pareto))
         metrics['onvg'].append(ONVG(normalized_pareto))
-        metrics['hypervolume'].append(HV_2d(normalized_pareto, (1,1)))
+        metrics['hypervolume'].append(HV_2d(normalized_pareto, hyper_r))
 
         for other_name, other_pareto in pareto_dict.items():
             c = C_metric(pareto, other_pareto)
@@ -222,6 +247,7 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
     pareto_dict = {}
     config_dict = {}
     history_dict = {}
+    time_dict = {}
     rs = []
     Ps = []
     for name, model in model_dict.items():
@@ -237,6 +263,7 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
         pareto = read_pareto(os.path.join(test_dir, 'pareto-front.json'))
         history = read_pareto_history(os.path.join(test_dir, 'history.json'))
         pareto_dict[name] = pareto
+        time_dict[name] = read_time(os.path.join(test_dir, 'time.txt'))
 
         if os.path.isfile(os.path.join(test_dir, 'r.txt')):
             with open(os.path.join(test_dir, 'r.txt')) as f:
@@ -276,7 +303,7 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
         referenced_file = os.path.join(referenced_dir, testname + '.txt')
         P = np.loadtxt(referenced_file)
 
-    summarize_metrics(pareto_dict, output_dir=out_test_dir, r=r, referenced=referenced, P=P, Pe=Pe)
+    summarize_metrics(pareto_dict, time_dict, output_dir=out_test_dir, r=r, referenced=referenced, P=P, Pe=Pe)
     if referenced:
         visualize_test(pareto_dict, output_dir=out_test_dir, show=False, referenced_points=P, **kwargs)
         visualize_igd_over_generations(history_dict, output_dir=out_test_dir, P=P, fillstyle='flicker', extreme_points=Pe)
@@ -339,6 +366,9 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
             break
         if 'igd' in pis:
             pis.remove('igd')
+
+        if 'time' in pis:
+            pis.remove('time')
 
         fig, host = plt.subplots()
         par1 = host.twinx()
@@ -451,7 +481,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
             return name.split('_')[0] if 'NIn' in name else name
         models = list(next(iter(data.values())).keys())
         pis = list(next(iter(next(iter(data.values())).values())).keys())
-        bold_pis = {'hypervolume': 1, 'igd': -1, 'delta': -1, 'onvg': 1}
+        bold_pis = {'hypervolume': 1, 'igd': -1, 'delta': -1, 'onvg': 1, 'time': -1}
         brief_name = brief_name or 'results'
 
 
@@ -478,11 +508,19 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
                     d_mean = np.mean(d)
                     d_std = np.std(d)
                     if np.abs(d_mean*bold_pis[pi] - best) < 1e-10 and bold:
-                        d_mean_str = '\\textbf{' + str(num2tex(d_mean, 2)) + '}'
-                        d_std_str = str(num2tex(d_std, 2, mean=False))
+                        if pi == 'time':
+                            d_mean_str = '\\textbf{' + '{:.1f}'.format(d_mean) + '}'
+                            d_std_str = '{:.1f}'.format(d_std)
+                        else:
+                            d_mean_str = '\\textbf{' + str(num2tex(d_mean, 2)) + '}'
+                            d_std_str = str(num2tex(d_std, 2, mean=False))
                     else:
-                        d_mean_str = str(num2tex(d_mean, 2))
-                        d_std_str =  str(num2tex(d_std, 2, mean=False))
+                        if pi == 'time':
+                            d_mean_str = '{:.1f}'.format(d_mean)
+                            d_std_str = '{:.1f}'.format(d_std)
+                        else:
+                            d_mean_str = str(num2tex(d_mean, 2))
+                            d_std_str =  str(num2tex(d_std, 2, mean=False))
                     normalized_data[f'{model}-mean'].append(d_mean_str)
                     normalized_data[f'{model}-std'].append(d_std_str)
                     raw_data[f'{model}-mean'].append(d_mean)
@@ -490,12 +528,12 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
 
             filepath = os.path.join(output_dir, '{}_{}.csv'.format(brief_name, pi))
             df = pd.DataFrame(data=normalized_data)
-            df = df.sort_values(by='Instance')
+            df = df.sort_values(by='Instance', key= lambda col : col.apply(lambda x : int(x[3:])) )
             df.to_csv(filepath, index=False)
 
             filepath = os.path.join(output_dir, 'raw_{}_{}.csv'.format(brief_name, pi))
             df = pd.DataFrame(data=raw_data)
-            df = df.sort_values(by='Instance')
+            df = df.sort_values(by='Instance', key= lambda col: col.apply(lambda x : int(x[3:])) )
             df.to_csv(filepath, index=False)
 
     all_tests = set()
@@ -531,7 +569,8 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
     boxchart_data = []
     barchart_data = {}
     feasible_tests = list(feasible_tests)
-    feasible_tests.sort()
+    feasible_tests.sort(key=lambda x: int(x.split('_')[0][3:]))
+    # print(feasible_tests)
 
     for test in feasible_tests:
         metric_sum = None
@@ -539,9 +578,9 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
         barchart_test_data = None
         boxchart_test_data = None
         if referenced:
-            bar_metric_temp = OrderedDict({ 'igd': [], 'onvg': [], 'delta': [], 'hypervolume': []})
+            bar_metric_temp = OrderedDict({ 'igd': [], 'onvg': [], 'delta': [], 'hypervolume': [], 'time': []})
         else:
-            bar_metric_temp = OrderedDict({ 'onvg': [], 'delta': [], 'hypervolume': []})
+            bar_metric_temp = OrderedDict({ 'onvg': [], 'delta': [], 'hypervolume': [], 'time': []})
 
         for summ in summarization_list:
             test_dir = join(join(absworking_dir, summ), test)

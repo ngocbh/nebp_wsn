@@ -76,7 +76,7 @@ class WusnInput:
             max_hop = d['max_hop']
         else:
             if num_of_relays == 20: 
-                max_hop = 6
+                max_hop = 3
             elif num_of_relays == 40:
                 max_hop = 8
             elif num_of_relays == 100:
