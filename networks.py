@@ -107,12 +107,12 @@ class WusnKruskalNetwork(KruskalTree):
                 raise ValueError('Network is not valid but is_valid is true')
 
         self._is_valid = is_valid
-        if self.num_childs[0] - self.n != self.num_used_relays:
+        if self.num_childs[0] - self.m != self.num_used_relays:
             print(self.edges)
             print(self.num_childs)
             print(self.parent)
             print(self.num_used_relays)
-            raise ValueError()
+            raise ValueError('oasfdjo')
 
     @property
     def is_valid(self):
