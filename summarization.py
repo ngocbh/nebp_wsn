@@ -194,8 +194,8 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
     i = 0
 
     for name, pareto in pareto_dict.items():
-        print(name)
-        print(len(pareto))
+        # print(name)
+        # print(len(pareto))
         if name != metrics['models'][i]:
             raise ValueError("Summarize metrics error")
         # print(Pe)
@@ -212,7 +212,7 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
             hyper_r = r
         # print(pareto)
 
-        print(pareto, normalized_pareto)
+        # print(pareto, normalized_pareto)
         if referenced:
             metrics['igd'].append(IGD(normalized_pareto, normalized_P))
 
@@ -249,7 +249,7 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
 
 
 def summarize_test(testname, model_dict, working_dir, cname, referenced=False, referenced_dir=None, **kwargs):
-    print(testname)
+    # print(testname)
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
     pareto_dict = {}
     config_dict = {}
