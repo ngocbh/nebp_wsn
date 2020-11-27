@@ -194,6 +194,8 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
     i = 0
 
     for name, pareto in pareto_dict.items():
+        print(name)
+        print(len(pareto))
         if name != metrics['models'][i]:
             raise ValueError("Summarize metrics error")
         # print(Pe)
@@ -210,6 +212,7 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
             hyper_r = r
         # print(pareto)
 
+        print(pareto, normalized_pareto)
         if referenced:
             metrics['igd'].append(IGD(normalized_pareto, normalized_P))
 
@@ -231,6 +234,7 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
             c_matrix[i].append(c)
 
         i += 1
+        print('Done')
 
     for i in range(n):
         score = 0
@@ -245,6 +249,7 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
 
 
 def summarize_test(testname, model_dict, working_dir, cname, referenced=False, referenced_dir=None, **kwargs):
+    print(testname)
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
     pareto_dict = {}
     config_dict = {}
@@ -336,7 +341,9 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
         f.write(json.dumps(model_dict, indent=4))
 
     marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
-    for test in tests:
+    test_list = list(tests)
+    test_list.sort()
+    for test in test_list:
         summarize_test(test, model_dict, working_dir, cname,
                        markersize=5,
                        marker=marker,

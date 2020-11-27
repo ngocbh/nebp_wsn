@@ -36,6 +36,7 @@ import yaml
 import sys
 import os
 import copy
+import numpy as np
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
@@ -109,12 +110,15 @@ class MyPruferCode(PruferCode):
         for u, v in valid_edges:
             _is_valid &= self.solution.add_edge(u, v)
 
-        random_state = check_random_state(None)
+        seed = np.sum(self.chromosome.genes) 
+        random_state = check_random_state(int(seed))
         order = random_state.permutation(list(range(len(self.potential_edges))))
         for i in order:
             if len(self.solution.edges) < self.solution.number_of_vertices - 1:
                 u, v = self.potential_edges[i]
                 self.solution.add_edge(u, v)
+            else:
+                break
 
         self.solution._is_valid = _is_valid
         self.solution.repair()
@@ -123,7 +127,7 @@ class MyPruferCode(PruferCode):
 def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True, seed=None):
     start_time = time.time()
 
-    seed = seed or 1
+    seed = seed or 5
     config = config or {}
     config = update_config(load_config(CONFIG_FILE, model), config)
     check_config(config, filename, model)
@@ -147,10 +151,16 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     indv_temp = MyPruferCode(number_of_vertices=node_count, solution=network, 
                              potential_edges=potential_edges, potential_edges_set=potential_edges_set)
 
-    # indv_temp.update_genes([0, 0, 0, 0, 0, 3, 4])
+    # genes = [4, 0, 0, 10, 0, 10, 0, 25, 0, 0, 36, 29, 0, 0, 0, 0, 3, 7, 40, 31, 40, 13, 7, 7, 0, 7, 8, 4, 0, 9, 4, 0, 0, 0, 17, 0, 3, 0, 4] 
+    # indv_temp.update_genes(genes)
+    # indv_temp.random_init(random_state)
     # solution = indv_temp.decode()
     # print(solution.edges)
     # print(solution.is_valid)
+    # print(solution.calc_max_energy_consumption())
+    # print(solution.num_childs)
+    # print(solution.num_used_relays)
+    # print(solution.parent)
     # return
 
     population = Population(indv_temp, config['algorithm']['pop_size'])
@@ -244,9 +254,9 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     open(os.path.join(out_dir, 'done.flag'), 'a').close()
 
 if __name__ == '__main__':
-    config = {'data': {'max_hop': 12},
+    config = {'data': {'max_hop': 3},
                   'models': {'gens': 100},
           'encoding': {'init_method': 'DCPrimRST'}}
-    # solve('data/_tiny/multi_hop/tiny_uu-dem2_r25_1_0.json', model = '1.7.2.0', config=config)
-    solve('data/_medium/multi_hop/medium_ga-dem2_r25_1_40.json', model='1.8.6.0', config=config)
+    solve('data/_tiny/multi_hop/tiny_ga-dem2_r25_1_0.json', model = '1.7.6.0', config=config)
+    # solve('data/_medium/multi_hop/medium_ga-dem2_r25_1_40.json', model='1.8.6.0', config=config)
 

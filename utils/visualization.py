@@ -139,6 +139,12 @@ def save_results(pareto_front, solutions, best_mr, out_dir, visualization=False,
         solution_dict["hop"] = max_depth
         solution_dict["nondominated_rank"] = solution.nondominated_rank
         solution_dict["crowding_distance"] = solution.crowding_distance
+        if num_childs[0] - 20 != solution.objectives[0] and solution.objectives[0] != float('inf'):
+            print(solution.objectives[0])
+            print(num_childs)
+            print(parent)
+            print(solution.chromosome.genes)
+            raise ValueError()
 
         pareto_dict.append(solution_dict)
 
