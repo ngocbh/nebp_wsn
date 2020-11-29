@@ -35,7 +35,7 @@ DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 INIT_METHODS = ['PrimRST', 'KruskalRST',
                 'RandWalkRST', 'DCPrimRST']
 INIT_METHODS_LEGEND = ['PrimRST', 'KruskalRST',
-                       'RandWalkRST', 'DCPrimRST']
+                       'RandWalkRST', 'HCPrimRST']
 
 RERUN = False
 TESTING = True
@@ -346,10 +346,86 @@ def run_ept_4(testnames=None):
             }
             summarization.summarize_model( model_dict, working_dir=out_dir, cname=f'sum-{g}.{h}.{i}')
 
+def run_ept_5(testnames=None):
+    out_dir = 'results/ept_init/ept_1_2'
+    test_path = './data/ept_init'
+
+    def run(filepath, out_test_dir, max_hop1):
+        print(f"Running: {filepath}")
+        data_1 = []
+        for i in range(len(INIT_METHODS)):
+            n_seed = 1 if TESTING else 10
+            pop_size = 20 if TESTING else 1000
+            x1 = []
+            nos1 = 0
+            for seed in range(1, n_seed+1):
+                sol1 = init_population(
+                    filepath, INIT_METHODS[i], pop_size, max_hop1, seed)
+                x1.extend([e[0] for e in sol1 if e[0] != float('inf')])
+            data_1.append(x1)
+
+        with open(join(out_test_dir, 'ept_5.data'), 'wb') as f:
+            pickle.dump(data_1, f)
+        open(os.path.join(out_test_dir, 'done_ept_5.flag'), 'a').close()
+
+    def plot(out_test_dir, max_hop1, outname):
+
+        data = None
+        with open(join(out_test_dir, 'ept_5.data'), 'rb') as f:
+            data = pickle.load(f)
+
+        plt.style.use('seaborn-white')
+        plt.grid(True)
+        fig, ax = plt.subplots()
+        ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
+                       alpha=0.5)
+        
+        bp = plt.boxplot(data, vert=True, notch=True, patch_artist=True, labels=INIT_METHODS_LEGEND)
+
+        colors = ['lightskyblue', 'navajowhite', 'palegreen', 'salmon']
+
+        for patch, color in zip(bp['boxes'], colors):
+            patch.set_facecolor(color)
+            patch.set_alpha(0.9)
+
+        ax.set(
+            axisbelow=True,  # Hide the grid behind plot objects
+            # title='',
+            xlabel='Initializations',
+            ylabel='Number of used relays',
+        )
+
+        # plt.title(outname)
+
+        # draw temporary red and blue lines and use them to create a legend
+
+        ax.grid(b=True, axis='y')
+        ax.grid(b=False, axis='x')
+
+        out_filepath = join(out_test_dir, outname)
+        plt.savefig(out_filepath, dpi=400)
+        plt.close('all')
+
+    print(testnames)
+    for testname in os.listdir(test_path):
+        if 'dem' not in testname or (testnames is not None and all(e not in testname for e in testnames)):
+            continue
+        print(testname)
+        basename = os.path.splitext(testname)[0]
+        out_test_dir = join(out_dir, basename)
+        os.makedirs(out_test_dir, exist_ok=True)
+        filepath = join(test_path, testname)
+        max_hop1, max_hop2 = (6, 10) if TESTING else (16, 30)
+        outname = 'relays\' distribution'
+        if not os.path.isfile(os.path.join(out_test_dir, 'done_ept_5.flag')) or RERUN:
+            run(filepath, out_test_dir, max_hop1)
+        plot(out_test_dir, max_hop1, outname)
+
 if __name__ == '__main__':
     testname = 'test' if TESTING else 'NIn'
     testnames = [testname]
-    run_ept_1(testnames)
+    # run_ept_1(testnames)
     # run_ept_2(testnames)
     # run_ept_3(testnames)
     # run_ept_4(testnames)
+    run_ept_5(testnames)
