@@ -1,4 +1,4 @@
-Instance,A-mean,A-std,B-mean,B-std,C-mean,C-std,D-mean,D-std,E-mean,E-std
+Instance,Prufer-mean,Prufer-std,NetKeys-mean,NetKeys-std,Prim-mean,Prim-std,Kruskal-mean,Kruskal-std,GPrim-mean,GPrim-std
 NIn7,0.856,0.024,0.861,0.039,0.844,0.018,0.808,0.026,\textbf{0.794},5.6e-03
 NIn8,0.967,0.044,0.96,0.064,0.94,0.074,0.937,0.068,\textbf{0.859},2.1e-03
 NIn9,0.9,0.023,0.87,0.026,0.883,0.018,0.871,0.023,\textbf{0.809},0.067

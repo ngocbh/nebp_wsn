@@ -234,7 +234,6 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
             c_matrix[i].append(c)
 
         i += 1
-        print('Done')
 
     for i in range(n):
         score = 0
@@ -452,7 +451,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
                        flierprops=flierprops)
 
         def name_plot(ax, name):
-            ax.text(0.5, 0.5, name.upper(), ha='center', va='center', weight="bold", size=35)
+            ax.text(0.5, 0.5, name.upper(), ha='center', va='center', weight="bold", size=14)
             ax.grid(False)
 
         models = list(data[0].keys())

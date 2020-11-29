@@ -38,7 +38,7 @@ INIT_METHODS_LEGEND = ['PrimRST', 'KruskalRST',
                        'RandWalkRST', 'HCPrimRST']
 
 RERUN = False
-TESTING = True
+TESTING = False
 
 
 def objective1(indv):
@@ -117,7 +117,14 @@ def run_ept_1(testnames=None):
         ds = None
         with open(join(out_test_dir, 'ept_1.data'), 'rb') as f:
             ds = pickle.load(f)
-        ds = ds[0:]
+
+        for i in range(len(ds)):
+            print(INIT_METHODS_LEGEND[i], ds[i][13])
+            if 'NIn12' in cname:
+                ds[i] = ds[i][8:]
+            elif 'NIn11' in cname:
+                ds[i] = ds[i][:16]
+
         plt.figure()
         ax = plt.figure().gca()
         for d in ds:
@@ -129,7 +136,7 @@ def run_ept_1(testnames=None):
         ax.grid(b=False, axis='x')
         ax.xaxis.set_major_locator(MaxNLocator(integer=True))
         plt.ylabel("Feasible ratio (%)")
-        plt.xlabel("H")
+        plt.xlabel("max-hop constraint ($\hbar$)")
         # plt.title("Feasible ratio comparison on {}".format(cname))
         plt.legend(INIT_METHODS_LEGEND, frameon=True)
         out_filepath = join(out_test_dir, 'feasible_ratio.png')
@@ -142,6 +149,7 @@ def run_ept_1(testnames=None):
     for testname in os.listdir(test_path):
         if 'dem' not in testname or (testnames is not None and all(e not in testname for e in testnames)):
             continue
+        print(testname)
         basename = os.path.splitext(testname)[0]
         out_test_dir = join(out_dir, basename)
         os.makedirs(out_test_dir, exist_ok=True)
@@ -380,7 +388,7 @@ def run_ept_5(testnames=None):
         ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey',
                        alpha=0.5)
         
-        bp = plt.boxplot(data, vert=True, notch=True, patch_artist=True, labels=INIT_METHODS_LEGEND)
+        bp = plt.boxplot(data, vert=True, notch=False, patch_artist=True, labels=INIT_METHODS_LEGEND)
 
         colors = ['lightskyblue', 'navajowhite', 'palegreen', 'salmon']
 
@@ -388,11 +396,12 @@ def run_ept_5(testnames=None):
             patch.set_facecolor(color)
             patch.set_alpha(0.9)
 
+        ax.yaxis.set_major_locator(MaxNLocator(integer=True))
         ax.set(
             axisbelow=True,  # Hide the grid behind plot objects
             # title='',
             xlabel='Initializations',
-            ylabel='Number of used relays',
+            ylabel='No. used relays',
         )
 
         # plt.title(outname)
@@ -424,8 +433,8 @@ def run_ept_5(testnames=None):
 if __name__ == '__main__':
     testname = 'test' if TESTING else 'NIn'
     testnames = [testname]
-    # run_ept_1(testnames)
+    run_ept_1(testnames)
     # run_ept_2(testnames)
     # run_ept_3(testnames)
     # run_ept_4(testnames)
-    run_ept_5(['NIn11', 'NIn12'])
+    # run_ept_5(['NIn11', 'NIn12'])

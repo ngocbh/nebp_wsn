@@ -1,4 +1,23 @@
-A:
+GPrim:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 3
+    name: ept_efficiency
+  encoding:
+    cro_prob: 0.5
+    init_method: DCPrimRST
+    mut_prob_a: 0.5
+    mut_prob_b: 0.5
+    name: mprim3
+  model_name: 1.3.8.0.7
+  models:
+    gens: 100
+    name: run 1
+Kruskal:
   algorithm:
     name: nsgaii
     pop_size: 100
@@ -11,12 +30,12 @@ A:
     cro_prob: 0.9
     init_method: DCPrimRST
     mut_prob: 0.5
-    name: prufer
-  model_name: 1.3.6.0.7
+    name: kruskal
+  model_name: 1.3.2.0.7
   models:
     gens: 100
     name: run 1
-B:
+NetKeys:
   algorithm:
     name: nsgaii
     pop_size: 100
@@ -38,7 +57,7 @@ B:
   models:
     gens: 100
     name: run 1
-C:
+Prim:
   algorithm:
     name: nsgaii
     pop_size: 100
@@ -56,7 +75,7 @@ C:
   models:
     gens: 100
     name: run 1
-D:
+Prufer:
   algorithm:
     name: nsgaii
     pop_size: 100
@@ -69,27 +88,8 @@ D:
     cro_prob: 0.9
     init_method: DCPrimRST
     mut_prob: 0.5
-    name: kruskal
-  model_name: 1.3.2.0.7
-  models:
-    gens: 100
-    name: run 1
-E:
-  algorithm:
-    name: nsgaii
-    pop_size: 100
-    slt_size: 100
-    tournament_size: 2
-  data:
-    max_hop: 3
-    name: ept_efficiency
-  encoding:
-    cro_prob: 0.5
-    init_method: DCPrimRST
-    mut_prob_a: 0.5
-    mut_prob_b: 0.5
-    name: mprim3
-  model_name: 1.3.8.0.7
+    name: prufer
+  model_name: 1.3.6.0.7
   models:
     gens: 100
     name: run 1

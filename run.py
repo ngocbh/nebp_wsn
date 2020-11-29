@@ -170,12 +170,12 @@ def run_mhn_experiment(ept,
     summarization_list = []
     for i in range(k):
         model_dict = OrderedDict()
-        model_dict['A'] = prufer_model_list[i]
-        model_dict['B'] = netkeys_model_list[i]
-        model_dict['C'] = prim_model_list[i]
-        model_dict['D'] = kruskal_model_list[i]
+        model_dict['Prufer'] = prufer_model_list[i]
+        model_dict['NetKeys'] = netkeys_model_list[i]
+        model_dict['Prim'] = prim_model_list[i]
+        model_dict['Kruskal'] = kruskal_model_list[i]
         # model_dict['E'] = gprim4_model_list[i]
-        model_dict['E'] = gprim3_model_list[i]
+        model_dict['GPrim'] = gprim3_model_list[i]
         cname = f'summarization_{i+1}'
         summarization_list.append(cname)
         summarization.summarize_model(
