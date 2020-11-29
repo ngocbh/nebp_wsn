@@ -38,7 +38,7 @@ INIT_METHODS_LEGEND = ['PrimRST', 'KruskalRST',
                        'RandWalkRST', 'DCPrimRST']
 
 RERUN = False
-TESTING = False
+TESTING = True
 
 
 def objective1(indv):
@@ -350,6 +350,6 @@ if __name__ == '__main__':
     testname = 'test' if TESTING else 'NIn'
     testnames = [testname]
     run_ept_1(testnames)
-    run_ept_2(testnames)
+    # run_ept_2(testnames)
     # run_ept_3(testnames)
     # run_ept_4(testnames)

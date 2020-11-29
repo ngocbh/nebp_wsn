@@ -15,6 +15,7 @@ import math
 
 
 class WusnKruskalNetwork(KruskalTree):
+
     def __init__(self, problem: MultiHopProblem):
         self.problem = problem
         self.m = problem._num_of_sensors
@@ -35,7 +36,7 @@ class WusnKruskalNetwork(KruskalTree):
 
         self.potential_edges = problem._idx2edge
         self.potential_adj = problem.potential_adj
-
+        self.set_initialization_method('KruskalRST')
         self.initialize()
 
     def initialize(self):
