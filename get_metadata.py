@@ -42,6 +42,7 @@ def get_data_summarization():
     df = df.reset_index(drop=True)
     df.at[0, 'set'] = '$T1$'
     df.at[6, 'set'] = '$T2$'
+    df.at[12, 'set'] = '$T3$'
     df.to_csv('results/data_sum.csv', index=False)
             
 

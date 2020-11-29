@@ -5,7 +5,7 @@ GPrim:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 8
+    max_hop: 16
     name: ept_scalability
   encoding:
     cro_prob: 0.5
@@ -24,7 +24,7 @@ Kruskal:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 8
+    max_hop: 16
     name: ept_scalability
   encoding:
     cro_prob: 0.9
@@ -42,7 +42,7 @@ NetKeys:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 8
+    max_hop: 16
     name: ept_scalability
   encoding:
     alpha: 2
@@ -64,7 +64,7 @@ Prim:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 8
+    max_hop: 16
     name: ept_scalability
   encoding:
     cro_prob: 0.9
@@ -82,7 +82,7 @@ Prufer:
     slt_size: 100
     tournament_size: 2
   data:
-    max_hop: 8
+    max_hop: 16
     name: ept_scalability
   encoding:
     cro_prob: 0.9

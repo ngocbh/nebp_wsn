@@ -316,9 +316,71 @@ def summarize_test(testname, model_dict, working_dir, cname, referenced=False, r
     else:
         visualize_test(pareto_dict, output_dir=out_test_dir, show=False, **kwargs)
 
+def combine_figure(outfile, working_dir, test_list, model_dict):
+    test_pattern = ['NIn']
+    used_tests = [e for e in test_list if any(x in e for x in test_pattern)]
+    print(used_tests)
+    plt.style.use('seaborn-white')
+    
+    def plot_test(ax, working_dir, testname, model_dict):
+        pareto_dict = {}
+        marker = ['+', 'o', (5, 2), (5, 1), (5, 0)]
+        iter_marker = itertools.cycle(marker)
+        fillstyle = ['full', 'none']
+        iter_fillstyle = itertools.cycle(fillstyle)
+        for name, model in model_dict.items():
+            model_dir = os.path.join(working_dir, model)
+            test_dir = os.path.join(model_dir, testname)
+            if not os.path.isdir(test_dir) and os.path.isfile(os.path.join(test_dir, 'done.flag')):
+                continue
+
+            pareto = read_pareto(os.path.join(test_dir, 'pareto-front.json'))
+            pareto.sort()
+            pareto_dict[name] = pareto
+            obj1 = [e[0] for e in pareto]
+            obj2 = [e[1] for e in pareto]
+            ax.plot(obj1, obj2, marker=next(iter_marker), linestyle='--', linewidth=1, 
+                    markersize=3, fillstyle=next(iter_fillstyle))
+        ax.set_title(testname.split('_')[0])
+
+    no_col = 3
+    no_tests = len(used_tests)
+    no_row = (no_tests + no_col - 1)//no_col
+
+    fig, axs = plt.subplots(no_row, no_col, figsize=(7, 7), dpi=400)
+    plt.grid(False)
+
+    for i, testname in enumerate(used_tests):
+        print(i, testname)
+        idx, idy = i // no_col, i % no_col
+        plot_test(axs[idx, idy], working_dir, testname, model_dict)
+
+
+    ax = fig.add_subplot(111, frameon=False)
+    # hide tick and tick label of the big axis
+    plt.tick_params(labelcolor='none', top=False, bottom=False, left=False, right=False)
+    plt.xlabel("No. used relays")
+    plt.ylabel("Energy consumption")
+
+    marker = ['+', 'o', (5, 2), (5, 1), (5, 0)]
+    iter_marker = itertools.cycle(marker)
+    fillstyle = ['full', 'none']
+    iter_fillstyle = itertools.cycle(fillstyle)
+    names = ['Prufer', 'NetKeys', 'Prim', 'Kruskal', 'GPrim']
+    for name in names:
+        ax.plot([], linestyle='--', marker=next(iter_marker), fillstyle=next(iter_fillstyle), label=name)
+
+    ax.legend(loc='upper center', bbox_to_anchor=(0., 1.02, 1., .102),
+              ncol=5, fancybox=True, shadow=True, frameon=True)
+    fig.tight_layout()
+    plt.savefig(outfile, dpi=400, bbox_inches='tight')
+    # plt.show()
+    plt.close('all')
+
 def summarize_model(model_dict, working_dir, cname=None, testnames=None,
                     marker=None, markersize=20, plot_line=True, linewidth=0.8, linestyle='dashed',
-                    referenced=False, referenced_dir=None, **kwargs):
+                    referenced=False, referenced_dir=None, combined=False, **kwargs):
+
     print("Summarizing {}: {}".format(cname, model_dict))
     tests = set()
     absworking_dir = os.path.join(WORKING_DIR, working_dir)
@@ -341,7 +403,7 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
 
     marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
     test_list = list(tests)
-    test_list.sort()
+    test_list.sort(key=lambda x : int(x.split('_')[0][3:]))
     for test in test_list:
         summarize_test(test, model_dict, working_dir, cname,
                        markersize=5,
@@ -353,6 +415,10 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
                        referenced=referenced,
                        referenced_dir=referenced_dir,
                        **kwargs)
+
+    if combined:
+        outfile = os.path.join(output_dir, 'combined_pareto_fronts.png')
+        combine_figure(outfile, working_dir, test_list, model_dict)
 
 
 def calc_average_metrics(summarization_list, working_dir, cname, testnames=None, referenced=False, bold=True, brief_name='average'):
