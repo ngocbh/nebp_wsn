@@ -418,7 +418,7 @@ def run_ept_5(testnames=None):
         max_hop1, max_hop2 = (6, 10) if TESTING else (16, 30)
         outname = 'relays\' distribution'
         if not os.path.isfile(os.path.join(out_test_dir, 'done_ept_5.flag')) or RERUN:
-            run(filepath, out_test_dir, max_hop1)
+            run(filepath, out_test_dir, 30)
         plot(out_test_dir, max_hop1, outname)
 
 if __name__ == '__main__':
@@ -428,4 +428,4 @@ if __name__ == '__main__':
     # run_ept_2(testnames)
     # run_ept_3(testnames)
     # run_ept_4(testnames)
-    run_ept_5(testnames)
+    run_ept_5(['NIn11', 'NIn12'])
