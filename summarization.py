@@ -31,15 +31,21 @@ def num2tex(n, p, mean=True):
             r = '{:.3g}'.format(n)
         elif -pow(10, p) < n and n < -pow(10, -p):
             r = '{:.3g}'.format(n)
+        elif -1e-10 < n and n < 1e-10:
+            r = 0
         else:
             r = '{:.2e}'.format(n)
+            r = r.replace('-0', '-')
     else:
         if pow(10, - p) < n and n < pow(10, p):
             r = '{:.2g}'.format(n)
         elif -pow(10, p) < n and n < -pow(10, -p):
             r = '{:.2g}'.format(n)
+        elif -1e-10 < n and n < 1e-10:
+            r = 0
         else:
             r = '{:.1e}'.format(n)
+            r = r.replace('-0', '-')
     return r
 
 def normalize_pareto_front(pareto, P):
@@ -126,13 +132,22 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
     data = {}
     for name, history in history_dict.items():
         igds = []
+        # print(name)
+        Ss = set()
         for i, S in enumerate(history):
+            # if i == 0:
+                # print(S)
             if NORMALIZE:
                 S = normalize_pareto_front_1(S, P)
                 normalized_S = normalize_pareto_front(S, extreme_points)
             else:
                 normalized_S = S
-            igds.append(IGD(normalized_S, normalized_optimal_pareto))
+            Ss.update(normalized_S)
+            Ss_list = list(Ss)
+            Ss_list.sort()
+            # if i == 0:
+            #     print(Ss_list)
+            igds.append(IGD(Ss_list, normalized_optimal_pareto))
         # print(name)
         # print(igds)
         data[name] = igds
@@ -140,6 +155,7 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
     plt.grid(True)
     fig, ax = plt.subplots()
 
+    # exit()
 
     marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
     iter_marker = itertools.cycle(marker)
@@ -340,7 +356,7 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
             obj1 = [e[0] for e in pareto]
             obj2 = [e[1] for e in pareto]
             ax.plot(obj1, obj2, marker=next(iter_marker), linestyle='--', linewidth=1, 
-                    markersize=3, fillstyle=next(iter_fillstyle))
+                    markersize=3, fillstyle=next(iter_fillstyle), alpha=0.8)
         ax.set_title(testname.split('_')[0])
 
     no_col = 3
@@ -368,10 +384,10 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     iter_fillstyle = itertools.cycle(fillstyle)
     names = ['Prufer', 'NetKeys', 'Prim', 'Kruskal', 'GPrim']
     for name in names:
-        ax.plot([], linestyle='--', marker=next(iter_marker), fillstyle=next(iter_fillstyle), label=name)
+        ax.plot([], linestyle='--', marker=next(iter_marker), fillstyle=next(iter_fillstyle), label=name, alpha=0.8)
 
     ax.legend(loc='upper center', bbox_to_anchor=(0., 1.02, 1., .102),
-              ncol=5, fancybox=True, shadow=True, frameon=True)
+              ncol=5, frameon=True)
     fig.tight_layout()
     plt.savefig(outfile, dpi=400, bbox_inches='tight')
     # plt.show()
@@ -567,9 +583,11 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
 
             for model in models:
                 normalized_data[f'{model}-mean'] = []
-                normalized_data[f'{model}-std'] = []
+                if pi != 'time':
+                    normalized_data[f'{model}-std'] = []
                 raw_data[f'{model}-mean'] = []
-                raw_data[f'{model}-std'] = []
+                if pi != 'time':
+                    raw_data[f'{model}-std'] = []
 
 
             for testname, test_data in data.items():
@@ -584,21 +602,20 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
                     if np.abs(d_mean*bold_pis[pi] - best) < 1e-10 and bold:
                         if pi == 'time':
                             d_mean_str = '\\textbf{' + '{:.1f}'.format(d_mean) + '}'
-                            d_std_str = '{:.1f}'.format(d_std)
                         else:
                             d_mean_str = '\\textbf{' + str(num2tex(d_mean, 2)) + '}'
-                            d_std_str = str(num2tex(d_std, 2, mean=False))
+                            d_std_str = '$\pm$' + str(num2tex(d_std, 2, mean=False))
                     else:
                         if pi == 'time':
                             d_mean_str = '{:.1f}'.format(d_mean)
-                            d_std_str = '{:.1f}'.format(d_std)
                         else:
                             d_mean_str = str(num2tex(d_mean, 2))
-                            d_std_str =  str(num2tex(d_std, 2, mean=False))
+                            d_std_str =  '$\pm$' + str(num2tex(d_std, 2, mean=False))
                     normalized_data[f'{model}-mean'].append(d_mean_str)
-                    normalized_data[f'{model}-std'].append(d_std_str)
                     raw_data[f'{model}-mean'].append(d_mean)
-                    raw_data[f'{model}-std'].append(d_std)
+                    if pi != 'time':
+                        normalized_data[f'{model}-std'].append(d_std_str)
+                        raw_data[f'{model}-std'].append(d_std)
 
             filepath = os.path.join(output_dir, '{}_{}.csv'.format(brief_name, pi))
             df = pd.DataFrame(data=normalized_data)

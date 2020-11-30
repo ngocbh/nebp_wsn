@@ -5,7 +5,7 @@
     "height": 10.0,
     "num_of_relays": 100,
     "num_of_sensors": 200,
-    "max_hop": 12,
+    "max_hop": 10,
     "relays": [
         {
             "x": 275.31789372275955,
