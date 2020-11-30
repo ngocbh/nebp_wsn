@@ -86,8 +86,8 @@ def run_aopf():
     else:
         config = {'models': {}, 'algorithm': {}}
         config['models']['gens'] = 1000
-        config['algorithm']['pop_size'] = 1000
-        config['algorithm']['selection_size'] = 1000
+        config['algorithm']['pop_size'] = 100
+        config['algorithm']['selection_size'] = 100
 
     solvers = [solver_mhn_gprim3, solver_mhn_kruskal, solver_mhn_nrk, solver_mhn_prim, solver_mhn_prufer]
     xs = [8, 2, 1, 4, 6]
