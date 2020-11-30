@@ -45,7 +45,7 @@ def check_config(config, filename, model):
     if config['algorithm']['name'] != 'nsgaii':
         raise ValueError('algorithm {} != {}'.format(config['algorithm']['name'], 'nsgaii'))
 
-def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True, seed=None):
+def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=True, seed=None, save=True):
     start_time = time.time()
 
     seed = seed or 42
@@ -138,17 +138,32 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     out_dir = os.path.join(WORKING_DIR,  f'{output_dir}/{basename}')
 
 
-    history.dump(os.path.join(out_dir, 'history.json'))
-    with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
-        f.write(f"running time: {end_time-start_time:}")
+    if save:
+        history.dump(os.path.join(out_dir, 'history.json'))
+        with open(os.path.join(out_dir, 'time.txt'), mode='w') as f:
+            f.write(f"running time: {end_time-start_time:}")
 
-    save_results(pareto_front, solutions, best_mr,
-                 out_dir, visualization=False)
+        save_results(pareto_front, solutions, best_mr,
+                     out_dir, visualization=False)
 
-    visualize_fronts({'nsgaii': pareto_front}, show=False, save=True,
-                     title=f'pareto fronts {basename}',
-                     filepath=os.path.join(out_dir, 'pareto_fronts.png'),
-                     objective_name=['relays', 'energy consumption'])
+        visualize_fronts({'nsgaii': pareto_front}, show=False, save=True,
+                         title=f'pareto fronts {basename}',
+                         filepath=os.path.join(out_dir, 'pareto_fronts.png'),
+                         objective_name=['relays', 'energy consumption'])
+
+
+        # save config
+        with open(os.path.join(out_dir, '_config.yml'), mode='w') as f:
+            f.write(yaml.dump(config))
+
+        with open(os.path.join(out_dir, 'r.txt'), mode='w') as f:
+            f.write('{} {}'.format(problem._num_of_relays, energy_consumption(problem._num_of_sensors, 1, problem._radius * 2)))
+
+        P = [[0, 0],[0, 0]]
+        P[0][0], P[0][1] = 1, energy_consumption(problem._num_of_sensors, 1, problem._radius * 2)
+        P[1][0], P[1][1] = problem._num_of_relays, energy_consumption(problem._num_of_sensors/problem._num_of_relays, 0, 0)
+        with open(os.path.join(out_dir, 'P.txt'), mode='w') as f:
+            f.write('{} {}\n{} {}'.format(P[0][0], P[0][1], P[1][0], P[1][1]))
 
     if save_history:
         save_history_as_gif(history,
@@ -156,21 +171,11 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
                             objective_name=['relays', 'energy'],
                             gen_filter=lambda x: (x % 5 == 0),
                             out_dir=out_dir)
+    
+    if save or save_history:
+        open(os.path.join(out_dir, 'done.flag'), 'a').close()
 
-    # save config
-    with open(os.path.join(out_dir, '_config.yml'), mode='w') as f:
-        f.write(yaml.dump(config))
-
-    with open(os.path.join(out_dir, 'r.txt'), mode='w') as f:
-        f.write('{} {}'.format(problem._num_of_relays, energy_consumption(problem._num_of_sensors, 1, problem._radius * 2)))
-
-    P = [[0, 0],[0, 0]]
-    P[0][0], P[0][1] = 1, energy_consumption(problem._num_of_sensors, 1, problem._radius * 2)
-    P[1][0], P[1][1] = problem._num_of_relays, energy_consumption(problem._num_of_sensors/problem._num_of_relays, 0, 0)
-    with open(os.path.join(out_dir, 'P.txt'), mode='w') as f:
-        f.write('{} {}\n{} {}'.format(P[0][0], P[0][1], P[1][0], P[1][1]))
-
-    open(os.path.join(out_dir, 'done.flag'), 'a').close()
+    return pareto_front
 
 
 if __name__ == '__main__':
