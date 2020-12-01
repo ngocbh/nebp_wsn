@@ -4,7 +4,7 @@ algorithm:
   slt_size: 100
   tournament_size: 2
 data:
-  max_hop: 4
+  max_hop: 2
   name: ept_sparsity
 encoding:
   alpha: 2
