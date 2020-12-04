@@ -34,6 +34,7 @@ class WusnNetwork(RootedTree):
         self.potential_edges = problem._idx2edge
         self.potential_adj = problem.potential_adj
 
+        self.set_initialization_method('PrimRST')
         self.initialize()
 
     # def clone(self):
@@ -199,9 +200,8 @@ class MultiHopNetwork(WusnNetwork):
     def update_max_childs(self, u, max_childs, _print=False):
         if u == self.root:
             return 100000000
+        # print("update_max_childs: {}: {} {}".format(u, max_childs[u], self.parent[u]))
         x = self.update_max_childs(self.parent[u], max_childs, _print)
-        # if _print:
-            # print("update_max_childs: {}: {} {}".format(u, max_childs[u], x))
         max_childs[u] = min(x, max_childs[u])
         return max_childs[u]
 
@@ -214,6 +214,9 @@ class MultiHopNetwork(WusnNetwork):
                 # if v not in C:
                 #     print("max_hop bound {}: {}".format(u, self.depth[u]))
                 continue
+
+            if u not in C:
+                raise ValueError(u)
 
             if used_max_childs:
                 self.update_max_childs(u, max_childs, False)
@@ -271,6 +274,7 @@ class MultiHopNetwork(WusnNetwork):
         uadj = self.get_adjacency(uedges)
         for u in uadj[0]:
             C.add(u)
+            self.add_edge(0, u)
             d = distance(self._points[0], self._points[u])
             max_childs[u] = self.max_childs(u, max_energy, d, strict_lower=True)
             if max_childs[u] > 0:

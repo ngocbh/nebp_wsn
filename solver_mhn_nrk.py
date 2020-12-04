@@ -137,6 +137,16 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
         else:
             return float('inf')
 
+    # indv_temp.random_init(2)
+    # network.from_edge_list([(0, 1), (0, 2), (0, 3), (0, 4), (0, 5), (0, 6), (0, 7), (0, 8), (0, 9), (0, 10), (0, 11), (0, 12), (0, 13), (0, 14), (0, 15), (0, 16), (0, 17), (0, 18), (0, 19), (0, 20), (0, 27), (0, 36), (0, 28), (0, 32), (0, 21), (0, 24), (0, 40), (0, 29), (0, 33), (0, 58), (0, 25), (0, 38), (0, 30), (0, 23), (0, 59), (0, 26), (0, 52), (0, 46), (0, 31), (0, 35), (0, 34), (1, 43), (3, 50), (8, 45), (10, 49), (16, 55), (18, 44), (19, 56), (20, 57), (27, 51), (36, 22), (21, 54), (40, 39), (33, 37), (38, 60), (30, 53), (26, 42), (52, 41), (31, 47), (34, 48)])
+    # indv_temp.encode(network)
+    # print(indv_temp.chromosome.genes)
+    # solution = indv_temp.decode()
+    # print(solution._is_valid)
+    # print(solution.num_used_relays)
+    # print(solution.calc_max_energy_consumption())
+    # return
+
     history = engine.run(generations=config['models']['gens'])
 
     pareto_front = engine.get_pareto_front()
@@ -189,6 +199,6 @@ if __name__ == '__main__':
     config = {'data': {'max_hop': 12},
                   'models': {'gens': 100},
 		  'encoding': {'init_method': 'DCPrimRST'}}
-    # solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.8.0', config=config)
+    solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.1.0', config=config)
     # solve('data/_medium/multi_hop/medium_ga-dem2_r25_1_0.json', model='1.8.1.0', config=config)
-    solve('data/_large/multi_hop/large_ga-dem1_r25_1_40.json', model='1.9.1.0', config=config)
+    # solve('data/_large/multi_hop/large_ga-dem1_r25_1_40.json', model='1.9.1.0', config=config)

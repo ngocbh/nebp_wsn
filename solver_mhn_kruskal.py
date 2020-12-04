@@ -88,9 +88,13 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
 
     # print(problem._idx2edge)
     # indv_temp.random_init(2)
-    # print(indv_temp.chromosome.genes)
+    # indv_temp.update_genes([0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 15, 0, 16, 0, 17, 0, 18, 0, 19, 0, 20, 0, 32, 0, 58, 0, 30, 0, 52, 0, 27, 0, 36, 0, 21, 0, 24, 0, 33, 0, 59, 0, 46, 0, 31, 0, 28, 0, 40, 0, 25, 0, 34, 0, 29, 0, 38, 0, 26, 0, 35, 0, 23, 3, 50, 16, 55, 20, 57, 32, 49, 30, 42, 52, 44, 27, 43, 36, 22, 21, 54, 24, 39, 33, 37, 31, 56, 28, 45, 34, 48, 29, 51, 38, 60, 26, 47, 35, 41, 23, 53])
+    # # print(indv_temp.chromosome.genes)
     # solution = indv_temp.decode()
     # print(solution._is_valid)
+    # print(solution.num_used_relays)
+    # print(solution.calc_max_energy_consumption())
+    # return
     # indv2 = indv_temp.clone()
     # indv2.random_init(3)
     # print(indv2.chromosome.genes)
@@ -98,7 +102,6 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     # print(child1.chromosome.genes)
     # child = mutation.mutate(indv_temp, 2)
     # print(child.chromosome.genes)
-    # return
     engine = NSGAIIEngine(population=population,
                           crossover=crossover,
                           tournament_size=config['algorithm']['tournament_size'],
@@ -183,5 +186,6 @@ if __name__ == '__main__':
                   'models': {'gens': 100},
           'encoding': {'init_method': 'DCPrimRST'}}
     # solve('data/_tiny/multi_hop/tiny_uu-dem2_r25_1_0.json', model = '1.7.2.0', config=config)
-    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model='1.8.2.0', config=config)
+    solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.2.0', config=config)
+    # solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model='1.8.2.0', config=config)
 

@@ -260,7 +260,8 @@ if __name__ == '__main__':
     config = {'data': {'max_hop': 3},
                   'models': {'gens': 100},
           'encoding': {'init_method': 'DCPrimRST'}}
+    solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.6.0', config=config)
     # solve('data/_tiny/multi_hop/tiny_ga-dem2_r25_1_0.json', model = '1.7.6.0', config=config)
     # solve('data/_medium/multi_hop/medium_ga-dem2_r25_1_40.json', model='1.8.6.0', config=config)
-    solve('data/_large/multi_hop/large_ga-dem3_r25_1_40.json', model='1.9.6.0', config=config)
+    # solve('data/_large/multi_hop/large_ga-dem3_r25_1_40.json', model='1.9.6.0', config=config)
 

@@ -83,6 +83,20 @@ class WusnProblem():
                         self.potential_adj[v].append(u)
                         self._num_encoded_edges += 1
 
+            for sn in inp.sensors:
+                if distance(sn, inp.BS) <= 2*inp.radius:
+                    u, v = 0, point2idx[sn]
+                    edges[u].append(v)
+                    edges[v].append(u)
+
+                    self._edge2idx[u,v] = self._num_encoded_edges
+                    self._edge2idx[v,u] = self._num_encoded_edges
+                    self._idx2edge.append((u,v))
+                    self.potential_adj[u].append(v)
+                    self.potential_adj[v].append(u)
+                    self._num_encoded_edges += 1
+
+
 
         edge_list = list(self._idx2edge)
         for i in range(1, self._num_of_relays + 1):

@@ -1,6 +1,0 @@
-models,delta,spacing,onvg,hypervolume,time,c_Prufer,c_NetKeys,c_Prim,c_Kruskal,c_GPrim,score
-Prufer,1.0,inf,1,inf,136.4276978969574,0.0,0.0,0.0,0.0,0.0,0
-NetKeys,1.0,inf,1,inf,155.00617337226868,0.0,0.0,0.0,0.0,0.0,0
-Prim,1.0,inf,1,inf,104.21681833267212,0.0,0.0,0.0,0.0,0.0,0
-Kruskal,1.0,inf,1,inf,128.288743019104,0.0,0.0,0.0,0.0,0.0,0
-GPrim,1.0,inf,1,inf,260.20934414863586,0.0,0.0,0.0,0.0,0.0,0

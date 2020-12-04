@@ -109,6 +109,9 @@ def solve(filename, output_dir=None, model='0.0.0.0', config=None, save_history=
     mutations.add_mutation(mutation3, config['encoding']['mut_prob_b'])
 
     # indv_temp.random_init(2)
+    # indv_temp2 = indv_temp.clone()
+    # indv_temp2.random_init(3)
+    # childs = crossover.cross(indv_temp, indv_temp2, 1)
     # # indv_temp.update_genes([0, 1, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 15, 0, 16, 0, 17, 0, 18, 0, 19, 0, 20, 14, 36, 14, 25, 16, 37, 16, 30, 10, 29, 15, 27, 18, 35, 18, 40, 5, 26, 1, 33, 1, 31, 13, 32, 13, 38, 6, 23, 29, 39, 27, 22, 23, 34, 26, 28, 2, 21, 2, 24])
     # # print(indv_temp.chromosome)
     # sol1 = indv_temp.decode()
@@ -219,6 +222,6 @@ if __name__ == '__main__':
     config = {'data': {'max_hop': 12},
                   'models': {'gens': 100},
 		  'encoding': {'init_method': 'DCPrimRST'}}
-    # solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.8.0', config=config)
-    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model='1.8.8.0', config=config)
+    solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.8.0', config=config)
+    # solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model='1.8.8.0', config=config)
 

@@ -419,7 +419,9 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
 
     marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
     test_list = list(tests)
-    test_list.sort(key=lambda x : int(x.split('_')[0][3:]))
+    if 'NIn' in test_list[0]:
+        test_list.sort(key=lambda x : int(x.split('_')[0][3:]))
+
     for test in test_list:
         summarize_test(test, model_dict, working_dir, cname,
                        markersize=5,
@@ -746,11 +748,11 @@ def average_tests_score(working_dir):
 if __name__ == "__main__":
     marker = ['>', (5, 0), (5, 1), (5, 2), '+', 'o']
     marker.reverse()
-    summarize_model({"netkeys": "1.7.1.0.0",
-                     # "prufer": "1.0.6.0",
-                     "gprim4": "1.7.9.0.1",
-                     "gprim": "1.7.7.0.0",
-                     "gprim2": "1.7.8.0.1"},
+    summarize_model({"netkeys": "1.7.1.0",
+                     "prufer": "1.7.6.0",
+                     "prim": "1.7.4.0",
+                     "kruskal": "1.7.2.0",
+                     "gprim3": "1.7.8.0"},
                     working_dir="results/_tiny/multi_hop",
                     s=20,
                     marker=marker,

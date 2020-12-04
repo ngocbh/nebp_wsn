@@ -51,6 +51,7 @@ class WusnMutation(TreeMutation):
         # choose new edge
         idx = random_state.random_integers(0, len(unused_edges)-1)
         new_edge = unused_edges[idx]
+        # print(new_edge)
 
         # find cycle path after create new edge
         path = tree.find_path(source=new_edge[0], destination=new_edge[1])
@@ -59,6 +60,11 @@ class WusnMutation(TreeMutation):
         for i in range(len(path)-1):
             if path[i] != 0 and path[i+1] != 0:
                 removable_edges.append((path[i],path[i+1]))
+
+        # print(path)
+        # print(removable_edges)
+        if len(removable_edges) == 0:
+            return ret_indv
 
         # choose random edge on cycle to remove (break cycle)
         idx = random_state.random_integers(0, len(removable_edges)-1)
