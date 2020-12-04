@@ -106,8 +106,8 @@ def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
     filepath = os.path.join(output_dir, 'front_comparison.png')
     visualize_fronts(pareto_dict,
                      filepath=filepath,
-                     title='pareto fronts comparison',
-                     objective_name=['used relays', 'energy'],
+                     title='',
+                     objective_name=['No. selected relays', 'Energy consumption'],
                      save=True, show=show, do_axis=do_axis, do_plt=do_plt, dpi=400, frameon=True, **kwargs)
 
 def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, marker=None,
@@ -184,8 +184,8 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
     # ax.set_yscale('log')
     filepath = os.path.join(output_dir, 'igd_over_generations.png')
     plt.ylabel("$IDG$")
-    plt.xlabel("generations")
-    plt.title("IGD over generations")
+    plt.xlabel("No. generations")
+    # plt.title("IGD over generations")
     plt.legend(frameon=True)
     plt.savefig(filepath, dpi=400)
     plt.close('all')
@@ -375,7 +375,7 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     ax = fig.add_subplot(111, frameon=False)
     # hide tick and tick label of the big axis
     plt.tick_params(labelcolor='none', top=False, bottom=False, left=False, right=False)
-    plt.xlabel("No. used relays")
+    plt.xlabel("No. selected relays")
     plt.ylabel("Energy consumption")
 
     marker = ['+', 'o', (5, 2), (5, 1), (5, 0)]
