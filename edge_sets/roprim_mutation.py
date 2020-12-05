@@ -48,6 +48,10 @@ class ROPrimMutation(Mutation):
                 unused_relays.append(i)
             else:
                 used_relays.append(i)
+        
+        if len(used_relays) == 0:
+            return ret_indv
+
         slt_relay = random_state.choice(used_relays)
         used_relays.remove(slt_relay)
 
