@@ -182,5 +182,6 @@ if __name__ == '__main__':
                   'models': {'gens': 100},
           'encoding': {'init_method': 'DCPrimRST'}}
     # solve('data/_tiny/multi_hop/tiny_uu-dem2_r25_1_0.json', model = '1.7.2.0', config=config)
-    solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model='1.8.4.0', config=config)
+    solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.4.0', config=config)
+    # solve('data/_medium/multi_hop/medium_ga-dem1_r25_1_40.json', model='1.8.4.0', config=config)
 

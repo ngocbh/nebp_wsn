@@ -149,8 +149,9 @@ class MultiHopNetwork(WusnNetwork):
 
     def energy_consumption(self, x, y, d):
         e_t = self.transmission_energy(wc.k_bit, d)
-        e_r = x * wc.k_bit * (wc.e_elec + wc.e_da) + y * wc.k_bit * wc.e_da
-        e = e_r + e_t
+        # e_r = x * wc.k_bit * (wc.e_elec + wc.e_da) + y * wc.k_bit * wc.e_da
+        e_r = wc.k_bit * wc.e_elec
+        e = x * e_r + (x + y) * e_t
         return e
 
     def get_energy_consumption_list(self):
@@ -183,9 +184,12 @@ class MultiHopNetwork(WusnNetwork):
         if max_energy > 10000000:
             return 10000000
 
+        e_t = self.transmission_energy(wc.k_bit, d)
+        e_r = wc.k_bit * wc.e_elec
         y = (i > self.n) 
-        nmc = (max_energy - self.transmission_energy(wc.k_bit, d) - y * wc.k_bit * wc.e_da) \
-                   / (wc.k_bit * wc.e_elec + wc.k_bit * wc.e_da)
+        # nmc = (max_energy - self.transmission_energy(wc.k_bit, d) - y * wc.k_bit * wc.e_da) \
+        #            / (wc.k_bit * wc.e_elec + wc.k_bit * wc.e_da)
+        nmc = (max_energy - y * e_t) / (e_r + e_t)
         if abs(nmc - int(nmc)) < 1e-10 and strict_lower:
             return int(nmc) - 1
         else:

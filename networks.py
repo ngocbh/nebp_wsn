@@ -6,7 +6,7 @@
 from __future__ import absolute_import
 from problems import SingleHopProblem, MultiHopProblem
 from utils.point import distance
-from utils.input import WusnInput, WusnConstants
+from utils.input import WusnInput, WusnConstants as wc
 from collections import deque
 from geneticpython.models.tree import KruskalTree
 import sys
@@ -129,11 +129,11 @@ class SingleHopNetwork(WusnKruskalNetwork):
                 d = distance(self._points[index],
                              self._points[self.parent[index]])
                 if index > self.n:
-                    e = WusnConstants.k_bit * \
-                        (WusnConstants.e_elec + WusnConstants.e_fs * d ** 2)
+                    e = wc.k_bit * \
+                        (wc.e_elec + wc.e_fs * d ** 2)
                 else:
-                    e = WusnConstants.k_bit * (self.num_childs[index] * (
-                        WusnConstants.e_elec + WusnConstants.e_da) + WusnConstants.e_mp * d ** 4)
+                    e = wc.k_bit * (self.num_childs[index] * (
+                        wc.e_elec + wc.e_da) + wc.e_mp * d ** 4)
 
                 max_energy_consumption = max(max_energy_consumption, e)
 
@@ -146,28 +146,42 @@ class MultiHopNetwork(WusnKruskalNetwork):
         ret = MultiHopNetwork(self.problem)
         return ret
 
-    def calc_max_energy_consumption(self):
+    def transmission_energy(self, k, d):
+        d0 = math.sqrt(wc.e_fs / wc.e_mp)
+        if d <= d0:
+            return k * wc.e_elec + k * wc.e_fs * (d ** 2)
+        else:
+            return k * wc.e_elec + k * wc.e_mp * (d ** 4)
 
-        def transmission_energy(k, d):
-            d0 = math.sqrt(WusnConstants.e_fs / WusnConstants.e_mp)
-            if d <= d0:
-                return k * WusnConstants.e_elec + k * WusnConstants.e_fs * (d ** 2)
-            else:
-                return k * WusnConstants.e_elec + k * WusnConstants.e_mp * (d ** 4)
+    def energy_consumption(self, x, y, d):
+        e_t = self.transmission_energy(wc.k_bit, d)
+        # e_r = x * wc.k_bit * (wc.e_elec + wc.e_da) + y * wc.k_bit * wc.e_da
+        e_r = wc.k_bit * wc.e_elec
+        e = x * e_r + (x + y) * e_t
+        return e
 
-        max_energy_consumption = 0
-
+    def get_energy_consumption_list(self):
+        ret = [0]
         for index in range(1, self.node_count):
             if self.parent[index] != -1:
                 d = distance(self._points[index],
                              self._points[self.parent[index]])
-                e_t = transmission_energy(WusnConstants.k_bit, d)
+                e = self.energy_consumption(self.num_childs[index], (index > self.n), d)
+                ret.append(e)
+            else:
+                ret.append(0)
 
-                e_r = self.num_childs[index] * WusnConstants.k_bit * (WusnConstants.e_elec + WusnConstants.e_da) + (
-                    index > self.n) * WusnConstants.k_bit * WusnConstants.e_da
+        return ret
 
-                e = e_r + e_t
+    def get_number_of_used_relays(self):
+        if self.is_valid:
+            return self.num_used_relays
+        else:
+            return float('inf')
 
-                max_energy_consumption = max(max_energy_consumption, e)
-
-        return max_energy_consumption
+    def calc_max_energy_consumption(self):
+        ep_list = self.get_energy_consumption_list()
+        if self.is_valid:
+            return max(ep_list) 
+        else:
+            return float('inf')
