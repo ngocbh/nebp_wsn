@@ -1,1 +1,1 @@
-running time: 68.41165399551392
+running time: 67.09237432479858
