@@ -75,7 +75,7 @@ def run_aopf():
     output_dir = './results/test/referenced_pareto' if TESTING else './results/ept_efficiency/referenced_pareto'
     testset = 0 if TESTING else 3
     testnames = ['dem'] if TESTING else ['']
-    k = 5 if TESTING else 10
+    k = 5 if TESTING else 100
 
     config = None
     if TESTING:
@@ -86,7 +86,7 @@ def run_aopf():
     else:
         config = {'models': {}, 'algorithm': {}}
         config['models']['gens'] = 1000
-        config['algorithm']['pop_size'] = 1000
+        config['algorithm']['pop_size'] = 100
         config['algorithm']['selection_size'] = 1000
 
     solvers = [solver_mhn_gprim3, solver_mhn_kruskal, solver_mhn_nrk, solver_mhn_prim, solver_mhn_prufer]
