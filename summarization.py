@@ -211,10 +211,9 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
 
     for name, pareto in pareto_dict.items():
         # print(name)
-        # print(len(pareto))
+        # print(pareto)
         if name != metrics['models'][i]:
             raise ValueError("Summarize metrics error")
-        # print(Pe)
         # print(pareto)
         if NORMALIZE:
             normalized_pareto = normalize_pareto_front(pareto, Pe)
@@ -242,6 +241,11 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
         metrics['time'].append(time_dict[name])
         metrics['spacing'].append(SP(normalized_pareto))
         metrics['onvg'].append(ONVG(normalized_pareto))
+
+        # print('hyper_r', hyper_r)
+        # print(normalized_pareto)
+        # print(HV_2d(normalized_pareto, hyper_r))
+        # print('\n\n')
         metrics['hypervolume'].append(HV_2d(normalized_pareto, hyper_r))
 
         for other_name, other_pareto in pareto_dict.items():
@@ -250,6 +254,7 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
             c_matrix[i].append(c)
 
         i += 1
+    # exit()
 
     for i in range(n):
         score = 0

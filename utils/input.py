@@ -28,6 +28,7 @@ class WusnConstants:
 
 wc = WusnConstants()
 
+
 def transmission_energy(k, d):
     d0 = math.sqrt(wc.e_fs / wc.e_mp)
     if d <= d0:
@@ -37,8 +38,9 @@ def transmission_energy(k, d):
 
 def energy_consumption(x, y, d):
     e_t = transmission_energy(wc.k_bit, d)
-    e_r = x * wc.k_bit * (wc.e_elec + wc.e_da) + y * wc.k_bit * wc.e_da
-    e = e_r + e_t
+    # e_r = x * wc.k_bit * (wc.e_elec + wc.e_da) + y * wc.k_bit * wc.e_da
+    e_r = wc.k_bit * wc.e_elec
+    e = x * e_r + (x + y) * e_t
     return e
 
 class WusnInput:

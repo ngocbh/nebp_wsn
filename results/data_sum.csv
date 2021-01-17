@@ -10,7 +10,7 @@ $T2$,NIn7,Type 2,Gaussian,T1,$200 \times 200$,40,40,0.28
 ,NIn9,Type 3,Gaussian,T2,$500 \times 500$,100,100,0.19
 ,NIn10,Type 3,Uniform,T3,$500 \times 500$,100,100,0.17
 ,NIn11,Type 4,Gaussian,T3,$1000 \times 1000$,200,200,0.52
-,NIn12,Type 4,Uniform,T1,$1000 \times 1000$,200,200,0.52
+,NIn12,Type 4,Uniform,T1,$1000 \times 1000$,200,200,0.15
 $T3$,NIn13,Type 2,Gaussian,T1,$200 \times 200$,40,80,0.20
 ,NIn14,Type 2,Uniform,T2,$200 \times 200$,40,80,0.18
 ,NIn15,Type 3,Gaussian,T2,$500 \times 500$,100,200,0.10
