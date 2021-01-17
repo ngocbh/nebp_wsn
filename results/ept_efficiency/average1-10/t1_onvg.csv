@@ -1,0 +1,7 @@
+Instance,Prufer-mean,Prufer-std,NetKeys-mean,NetKeys-std,Prim-mean,Prim-std,Kruskal-mean,Kruskal-std,GPrim-mean,GPrim-std
+NIn1,7.8,$\pm$0.87,9,$\pm$1.1,9.9,$\pm$2.3,8.9,$\pm$0.94,\textbf{20},$\pm$0
+NIn2,7.4,$\pm$0.92,8.7,$\pm$1,9.6,$\pm$1.7,9.4,$\pm$1.6,\textbf{20},$\pm$0
+NIn3,8,$\pm$0.89,8.4,$\pm$0.92,9.3,$\pm$1.6,9.3,$\pm$0.9,\textbf{20},$\pm$0
+NIn4,8,$\pm$1.3,9.1,$\pm$0.7,9.1,$\pm$1.7,8.3,$\pm$1.1,\textbf{20},$\pm$0
+NIn5,7.2,$\pm$1.3,8.8,$\pm$1.8,9.7,$\pm$1.6,8.6,$\pm$1.6,\textbf{20},$\pm$0
+NIn6,7.8,$\pm$0.87,8.8,$\pm$1.7,10,$\pm$2.4,9.7,$\pm$1.9,\textbf{20},$\pm$0
