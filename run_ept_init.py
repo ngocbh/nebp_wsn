@@ -120,26 +120,50 @@ def run_ept_1(testnames=None):
 
         for i in range(len(ds)):
             print(INIT_METHODS_LEGEND[i], ds[i][13])
-            if 'NIn12' in cname:
+            if 'NIn15' in cname:
                 ds[i] = ds[i][8:]
-            elif 'NIn11' in cname:
+            elif 'NIn9' in cname:
                 ds[i] = ds[i][:16]
+
+        plt.rcParams.update({'font.size': 20})
+        plt.rcParams.update({'lines.linewidth': 3})
+        plt.rcParams.update({'axes.linewidth': 2})
 
         plt.figure()
         ax = plt.figure().gca()
+        # fig, axs = plt.subplots(2,2)
+        # ax = axs[0, 0]
+        # axs[1, 0].axis('off')
+        # axs[1, 1].axis('off')
+        # axs[0, 1].axis('off')
+
+        ps = []
         for d in ds:
             h = [e[0] for e in d]
             p = [e[1] for e in d]
-            plt.plot(h, p, alpha=0.9)
+            p = ax.plot(h, p, alpha=0.9)
+            ps.append(p[0])
 
         ax.grid(b=True, axis='y')
         ax.grid(b=False, axis='x')
         ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-        plt.ylabel("Feasible ratio (%)")
-        plt.xlabel("max-hop constraint ($\hbar$)")
+        ax.set_ylabel("Feasible ratio (%)")
+        ax.set_xlabel("max-hop constraint ($\hbar$)")
+        # ax.tick_params(width=3)
+        # for axis in ['top','bottom','left','right']:
+        #     ax.spines[axis].set_linewidth(2)
         # plt.title("Feasible ratio comparison on {}".format(cname))
-        plt.legend(INIT_METHODS_LEGEND, frameon=True)
+        if 'NIn9' in cname:
+            plt.legend(ps[:2], ['PrimRST', 'KruskalRST'], frameon=False, 
+                      loc='upper center', bbox_to_anchor=(0., 1.1, 1., .11), ncol=2)
+        elif 'NIn15' in cname:
+            plt.legend(ps[2:], ['RandWalkRST', 'HCPrimRST'], frameon=False, 
+                      loc='upper center', bbox_to_anchor=(0., 1.1, 1., .11), ncol=2)
+        # ax.legend(INIT_METHODS_LEGEND, frameon=True, loc=4)
         out_filepath = join(out_test_dir, 'feasible_ratio.png')
+        plt.tight_layout()
+        # fig = plt.gcf()
+        # fig.set_size_inches(4, 4)
         plt.savefig(out_filepath, dpi=400)
         plt.close('all')
 
@@ -210,6 +234,9 @@ def run_ept_2(testnames=None):
         with open(join(out_test_dir, 'ept_2.data'), 'rb') as f:
             data_1, data_2, label_1, label_2 = pickle.load(f)
 
+        plt.rcParams.update({'font.size': 16})
+        plt.rcParams.update({'lines.linewidth': 3})
+        plt.rcParams.update({'axes.linewidth': 2})
         plt.style.use('seaborn-white')
         plt.grid(True)
         fig, ax = plt.subplots()
@@ -382,6 +409,9 @@ def run_ept_5(testnames=None):
         with open(join(out_test_dir, 'ept_5.data'), 'rb') as f:
             data = pickle.load(f)
 
+        plt.rcParams.update({'font.size': 13})
+        plt.rcParams.update({'lines.linewidth': 3})
+        plt.rcParams.update({'axes.linewidth': 2})
         plt.style.use('seaborn-white')
         plt.grid(True)
         fig, ax = plt.subplots()
@@ -411,6 +441,7 @@ def run_ept_5(testnames=None):
         ax.grid(b=True, axis='y')
         ax.grid(b=False, axis='x')
 
+        plt.tight_layout()
         out_filepath = join(out_test_dir, outname)
         plt.savefig(out_filepath, dpi=400)
         plt.close('all')
@@ -437,4 +468,4 @@ if __name__ == '__main__':
     # run_ept_2(testnames)
     # run_ept_3(testnames)
     # run_ept_4(testnames)
-    # run_ept_5(['NIn11', 'NIn12'])
+    # run_ept_5(['NIn9', 'NIn15'])

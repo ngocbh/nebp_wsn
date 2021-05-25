@@ -1,0 +1,13 @@
+Instance,Prufer-mean,Prufer-std,NetKeys-mean,NetKeys-std,Prim-mean,Prim-std,Kruskal-mean,Kruskal-std,GPrim-mean,GPrim-std
+NIn7,0.849,$\pm$0,0.907,$\pm$0,0.841,$\pm$0,0.837,$\pm$0,\textbf{0.6},$\pm$0
+NIn8,0.88,$\pm$0,0.879,$\pm$0,0.881,$\pm$0,0.913,$\pm$0,\textbf{0.69},$\pm$0
+NIn9,0.935,$\pm$0,0.967,$\pm$0,0.956,$\pm$0,0.938,$\pm$0,\textbf{0.729},$\pm$0
+NIn10,0.941,$\pm$0,0.941,$\pm$0,0.951,$\pm$0,0.977,$\pm$0,\textbf{0.792},$\pm$0
+NIn11,0.957,$\pm$0,0.951,$\pm$0,0.976,$\pm$0,0.959,$\pm$0,\textbf{0.764},$\pm$0
+NIn12,0.96,$\pm$0,0.958,$\pm$0,0.959,$\pm$0,0.939,$\pm$0,\textbf{0.811},$\pm$0
+NIn13,0.939,$\pm$0,0.93,$\pm$0,0.913,$\pm$0,\textbf{0.908},$\pm$0,0.942,$\pm$0
+NIn14,0.971,$\pm$0,0.967,$\pm$0,\textbf{0.887},$\pm$0,0.958,$\pm$0,0.969,$\pm$0
+NIn15,0.976,$\pm$0,0.988,$\pm$0,0.988,$\pm$0,1,$\pm$0,\textbf{0.95},$\pm$0
+NIn16,\textbf{0.909},$\pm$0,1,$\pm$0,0.977,$\pm$0,0.965,$\pm$0,0.977,$\pm$0
+NIn17,0.965,$\pm$0,0.987,$\pm$0,0.982,$\pm$0,0.992,$\pm$0,\textbf{0.949},$\pm$0
+NIn18,\textbf{0.946},$\pm$0,0.986,$\pm$0,0.995,$\pm$0,0.994,$\pm$0,0.949,$\pm$0

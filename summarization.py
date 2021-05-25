@@ -99,7 +99,13 @@ def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
         ax.grid(b=True, axis='y')
         ax.grid(b=False, axis='x')
 
+        # for axis in ['top','bottom','left','right']:
+        #     ax.spines[axis].set_linewidth(2)
+
     def do_plt(plt):
+        # plt.rcParams.update({'font.size': 20})
+        # plt.rcParams.update({'lines.linewidth': 3})
+        # plt.rcParams.update({'axes.linewidth': 2})
         plt.style.use('seaborn-white')
         plt.grid(False)
 
@@ -111,7 +117,7 @@ def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
                      save=True, show=show, do_axis=do_axis, do_plt=do_plt, dpi=400, frameon=True, **kwargs)
 
 def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, marker=None,
-                                   linewidth=0.8, markersize=5, linestyle='--', fillstyle=None, **kwargs):
+                                   linewidth=2, markersize=5, linestyle='--', fillstyle=None, **kwargs):
     def normalize_pareto_front_1(S, P):
         S.sort()
         ret = [S[0]]
@@ -151,6 +157,10 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
         # print(name)
         # print(igds)
         data[name] = igds
+
+    plt.rcParams.update({'font.size': 20})
+    plt.rcParams.update({'lines.linewidth': 3})
+    plt.rcParams.update({'axes.linewidth': 2})
     plt.style.use('seaborn-white')
     plt.grid(True)
     fig, ax = plt.subplots()
@@ -176,15 +186,19 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
         m = next(iter_marker)
         fs = next(iter_fillstyle)
         ax.plot(list(range(len(history))), history, label=name,
-                linewidth=2, linestyle='-', color=None, alpha=0.9, fillstyle=fs)
+                linewidth=3, linestyle='-', color=None, alpha=0.9, fillstyle=fs)
 
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.grid(b=True, axis='y')
     ax.grid(b=False, axis='x')
+
+    for axis in ['top','bottom','left','right']:
+        ax.spines[axis].set_linewidth(2)
     # ax.set_yscale('log')
     filepath = os.path.join(output_dir, 'igd_over_generations.png')
     plt.ylabel("$IDG$")
     plt.xlabel("No. generations")
+    plt.tight_layout()
     # plt.title("IGD over generations")
     plt.legend(frameon=True)
     plt.savefig(filepath, dpi=400)
@@ -364,11 +378,11 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
                     markersize=3, fillstyle=next(iter_fillstyle), alpha=0.8)
         ax.set_title(testname.split('_')[0])
 
-    no_col = 3
+    no_col = 4
     no_tests = len(used_tests)
     no_row = (no_tests + no_col - 1)//no_col
 
-    fig, axs = plt.subplots(no_row, no_col, figsize=(7, 7), dpi=400)
+    fig, axs = plt.subplots(no_row, no_col, figsize=(9, 5), dpi=400)
     plt.grid(False)
 
     for i, testname in enumerate(used_tests):
@@ -391,7 +405,7 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     for name in names:
         ax.plot([], linestyle='--', marker=next(iter_marker), fillstyle=next(iter_fillstyle), label=name, alpha=0.8)
 
-    ax.legend(loc='upper center', bbox_to_anchor=(0., 1.02, 1., .102),
+    ax.legend(loc='upper center', bbox_to_anchor=(0., 1.06, 1., .106),
               ncol=5, frameon=True)
     fig.tight_layout()
     plt.savefig(outfile, dpi=400, bbox_inches='tight')
@@ -431,10 +445,10 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
 
     for test in test_list:
         summarize_test(test, model_dict, working_dir, cname,
-                       markersize=5,
+                       markersize=7,
                        marker=marker,
                        plot_line=True,
-                       linewidth=0.8,
+                       linewidth=1.3,
                        linestyle='dashed',
                        fillstyle='flicker',
                        referenced=referenced,
@@ -454,6 +468,9 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
             sp.set_visible(False)
 
     def plot_bar_chart(test_dir, data):
+        plt.rcParams.update({'font.size': 17})
+        plt.rcParams.update({'lines.linewidth': 3})
+        plt.rcParams.update({'axes.linewidth': 2})
         plt.style.use('seaborn-white')
         plt.grid(False)
         palette = plt.get_cmap('Set1')
@@ -517,11 +534,11 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
             ax.grid(False)
 
         host.set_xticks(ind)
-        host.tick_params(axis='x')
-        ax.set_xticklabels(models)
+        host.tick_params(axis='x', labelrotation=40)
+        ax.set_xticklabels(models, fontsize=14)
         # ax.set_ylabel()
         # ax.set_title("")
-        axs[-1].legend(bars, [PI_MAP[pi] for pi in pis], frameon=True)
+        # axs[-1].legend(bars, [PI_MAP[pi] for pi in pis], frameon=True)
         fig.tight_layout()
         filepath = os.path.join(test_dir, 'bar_plot.png')
         plt.savefig(filepath, dpi=400)
