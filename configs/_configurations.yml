@@ -37,10 +37,10 @@ data:
   - name: "tiny" # 7
     max_hop: 0
 
-  - name: "medium" # 8
+  - name: "ept_terrain" # 8
     max_hop: 0
 
-  - name: "large" # 9
+  - name: "ept_radius" # 9
     max_hop: 0
 
 

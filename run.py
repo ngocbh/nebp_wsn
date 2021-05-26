@@ -52,6 +52,7 @@ def run_solver(solver, model, input_dir, output_dir=None, testnames=None, overwr
 
     print(testnames)
     output_dir = output_dir or gen_output_dir(input_dir, model)
+    print(datapath)
     for file in os.listdir(datapath):
         if ('dem' not in file) or (testnames is not None and all(e not in file for e in testnames)):
             continue

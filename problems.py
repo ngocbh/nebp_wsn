@@ -67,6 +67,7 @@ class WusnProblem():
                     self._num_encoded_edges += 1
 
 
+        print(inp.radius)
         self.num_rl2ss_edges = self._num_encoded_edges
         if multi_hop:
             for i, sn1 in enumerate(inp.sensors):
