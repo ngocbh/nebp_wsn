@@ -1,0 +1,102 @@
+[
+  {
+    "crowding_distance": Infinity,
+    "edges": [0, 1, 0, 2, 0, 3, 0, 4, 4, 8, 2, 6, 1, 5, 3, 7],
+    "energy_consumption": 0.0004890000000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [8, 1, 1, 1, 1, 0, 0, 0, 0],
+    "num_used_relays": 4.0,
+    "parent": [-1, 0, 0, 0, 0, 1, 2, 3, 4]
+  },
+  {
+    "crowding_distance": Infinity,
+    "edges": [0, 1, 0, 2, 0, 3, 0, 4, 4, 8, 2, 6, 1, 5, 3, 7],
+    "energy_consumption": 0.0004890000000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [8, 1, 1, 1, 1, 0, 0, 0, 0],
+    "num_used_relays": 4.0,
+    "parent": [-1, 0, 0, 0, 0, 1, 2, 3, 4]
+  },
+  {
+    "crowding_distance": Infinity,
+    "edges": [0, 1, 0, 2, 0, 3, 0, 4, 5, 7, 6, 8, 1, 5, 1, 6],
+    "energy_consumption": 0.0017000000000000001,
+    "hop": 3,
+    "nondominated_rank": 0,
+    "num_childs": [5, 4, 0, 0, 0, 1, 1, 0, 0],
+    "num_used_relays": 1.0,
+    "parent": [-1, 0, -1, -1, -1, 1, 1, 5, 6]
+  },
+  {
+    "crowding_distance": 1.0335810624827966,
+    "edges": [0, 1, 0, 2, 0, 3, 0, 4, 2, 7, 5, 7, 1, 6, 6, 8],
+    "energy_consumption": 0.0008520000000000001,
+    "hop": 3,
+    "nondominated_rank": 0,
+    "num_childs": [6, 2, 2, 0, 0, 0, 1, 1, 0],
+    "num_used_relays": 2.0,
+    "parent": [-1, 0, 0, -1, -1, 7, 1, 2, 6]
+  },
+  {
+    "crowding_distance": 0.6314340765207818,
+    "edges": [0, 1, 0, 2, 0, 3, 0, 4, 1, 6, 4, 8, 2, 7, 1, 5],
+    "energy_consumption": 0.0008500000000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [7, 2, 1, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 3.0,
+    "parent": [-1, 0, 0, -1, 0, 1, 1, 2, 4]
+  },
+  {
+    "crowding_distance": 0.3349848609964217,
+    "edges": [0, 1, 0, 2, 0, 3, 0, 4, 2, 7, 5, 7, 6, 8, 1, 6],
+    "energy_consumption": 0.0008520000000000001,
+    "hop": 3,
+    "nondominated_rank": 0,
+    "num_childs": [6, 2, 2, 0, 0, 0, 1, 1, 0],
+    "num_used_relays": 2.0,
+    "parent": [-1, 0, 0, -1, -1, 7, 1, 2, 6]
+  },
+  {
+    "crowding_distance": 0.3349848609964217,
+    "edges": [0, 1, 0, 2, 0, 3, 0, 4, 1, 6, 4, 8, 2, 7, 1, 5],
+    "energy_consumption": 0.0008500000000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [7, 2, 1, 0, 1, 0, 0, 0, 0],
+    "num_used_relays": 3.0,
+    "parent": [-1, 0, 0, -1, 0, 1, 1, 2, 4]
+  },
+  {
+    "crowding_distance": 0.0,
+    "edges": [0, 1, 0, 2, 0, 3, 0, 4, 4, 8, 2, 6, 1, 5, 3, 7],
+    "energy_consumption": 0.0004890000000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [8, 1, 1, 1, 1, 0, 0, 0, 0],
+    "num_used_relays": 4.0,
+    "parent": [-1, 0, 0, 0, 0, 1, 2, 3, 4]
+  },
+  {
+    "crowding_distance": 0.0,
+    "edges": [0, 1, 0, 2, 0, 3, 0, 4, 4, 8, 2, 6, 1, 5, 3, 7],
+    "energy_consumption": 0.0004890000000000001,
+    "hop": 2,
+    "nondominated_rank": 0,
+    "num_childs": [8, 1, 1, 1, 1, 0, 0, 0, 0],
+    "num_used_relays": 4.0,
+    "parent": [-1, 0, 0, 0, 0, 1, 2, 3, 4]
+  },
+  {
+    "crowding_distance": 0.0,
+    "edges": [0, 1, 0, 2, 0, 3, 0, 4, 5, 7, 4, 8, 2, 6, 1, 5],
+    "energy_consumption": 0.0008500000000000001,
+    "hop": 3,
+    "nondominated_rank": 0,
+    "num_childs": [7, 2, 1, 0, 1, 1, 0, 0, 0],
+    "num_used_relays": 3.0,
+    "parent": [-1, 0, 0, -1, 0, 1, 2, 5, 4]
+  }
+]
