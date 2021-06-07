@@ -19,11 +19,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import copy
+import re
 import itertools
 from decimal import Decimal
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 NORMALIZE = True
+
+def toint(x):
+    x = re.findall(r'\d+', x)
+    x = tuple(int(e) for e in x)
+    return x
 
 def num2tex(n, p, mean=True):
     if mean:
@@ -439,8 +445,9 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
     marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
     test_list = list(tests)
     try:
-        test_list.sort(key=lambda x : int(x.split('_')[0][3:]))
+        test_list.sort(key=toint)
     except:
+        print("ERROR")
         pass
 
     for test in test_list:
@@ -594,7 +601,8 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
 
     def compact_data_to_csv(output_dir, data, brief_name=None, bold=True):
         def normalize_name(name):
-            return name.split('_')[0] if 'NIn' in name else name
+            x = re.split(r'_|-|\.', name)
+            return x[0] + '_' + x[4] if 'NIn' in name else name
         models = list(next(iter(data.values())).keys())
         pis = list(next(iter(next(iter(data.values())).values())).keys())
         bold_pis = {'hypervolume': 1, 'igd': -1, 'delta': -1, 'onvg': 1, 'time': -1}
@@ -619,6 +627,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
             for testname, test_data in data.items():
                 normalized_data['Instance'].append(normalize_name(testname))
                 raw_data['Instance'].append(normalize_name(testname))
+                print(testname)
                 best = np.max(np.array([ np.mean(np.array(x[pi]) * bold_pis[pi]) for x in test_data.values() ]))
 
                 for model, model_data in test_data.items():
@@ -645,12 +654,12 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
 
             filepath = os.path.join(output_dir, '{}_{}.csv'.format(brief_name, pi))
             df = pd.DataFrame(data=normalized_data)
-            df = df.sort_values(by='Instance', key= lambda col : col.apply(lambda x : int(x[3:])) )
+            df = df.sort_values(by='Instance', key= lambda col : col.apply(toint))
             df.to_csv(filepath, index=False)
 
             filepath = os.path.join(output_dir, 'raw_{}_{}.csv'.format(brief_name, pi))
             df = pd.DataFrame(data=raw_data)
-            df = df.sort_values(by='Instance', key= lambda col: col.apply(lambda x : int(x[3:])) )
+            df = df.sort_values(by='Instance', key= lambda col: col.apply(toint))
             df.to_csv(filepath, index=False)
 
     all_tests = set()
@@ -686,8 +695,8 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
     boxchart_data = []
     barchart_data = {}
     feasible_tests = list(feasible_tests)
-    feasible_tests.sort(key=lambda x: int(x.split('_')[0][3:]))
-    # print(feasible_tests)
+    feasible_tests.sort(key=toint)
+    print(feasible_tests)
 
     for test in feasible_tests:
         metric_sum = None

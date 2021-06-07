@@ -179,9 +179,9 @@ def run_mhn_experiment(ept,
         model_dict['GPrim'] = gprim3_model_list[i]
         cname = f'summarization_{i+1}'
         summarization_list.append(cname)
-        summarization.summarize_model(
-            model_dict, output_dir, cname, testnames,
-            referenced=referenced, referenced_dir=referenced_dir, **kwargs)
+        # summarization.summarize_model(
+            # model_dict, output_dir, cname, testnames,
+            # referenced=referenced, referenced_dir=referenced_dir, **kwargs)
 
     summarization.calc_average_metrics(
         summarization_list, output_dir, f'average1-{k}', testnames, referenced=referenced, brief_name=brief_name)
