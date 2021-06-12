@@ -30,7 +30,7 @@ CONFIG_FILE = os.path.join(WORKING_DIR, './configs/_configurations.yml')
 DATA_DIR = os.path.join(WORKING_DIR, "./data/small/multi_hop")
 
 RERUN=False
-TESTING=True
+TESTING=False
 
 
 def run_ept():
