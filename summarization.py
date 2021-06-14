@@ -262,7 +262,9 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
         metrics['spacing'].append(SP(normalized_pareto))
         metrics['onvg'].append(ONVG(normalized_pareto))
 
+        # print(Pe)
         # print('hyper_r', hyper_r)
+        # print(pareto)
         # print(normalized_pareto)
         # print(HV_2d(normalized_pareto, hyper_r))
         # print('\n\n')
@@ -602,7 +604,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
     def compact_data_to_csv(output_dir, data, brief_name=None, bold=True):
         def normalize_name(name):
             x = re.split(r'_|-|\.', name)
-            return x[0] + '_' + x[4] if 'NIn' in name else name
+            return x[0] if 'NIn' in name else name
         models = list(next(iter(data.values())).keys())
         pis = list(next(iter(next(iter(data.values())).values())).keys())
         bold_pis = {'hypervolume': 1, 'igd': -1, 'delta': -1, 'onvg': 1, 'time': -1}
@@ -785,6 +787,7 @@ if __name__ == "__main__":
                      "prufer": "1.7.6.0",
                      "kruskal": "1.7.2.0",
                      "prim": "1.7.4.0",
+                     "hmoea": "1.7.7.0",
                      "gprim": "1.7.8.0"},
                     working_dir="results/_tiny/multi_hop",
                     s=20,

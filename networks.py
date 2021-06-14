@@ -167,6 +167,7 @@ class MultiHopNetwork(WusnKruskalNetwork):
                 d = distance(self._points[index],
                              self._points[self.parent[index]])
                 e = self.energy_consumption(self.num_childs[index], (index > self.n), d)
+                print(index, e, d, self.num_childs[index], (index > self.n))
                 ret.append(e)
             else:
                 ret.append(0)

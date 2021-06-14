@@ -16,6 +16,7 @@ import solver_mhn_gprim2
 import solver_mhn_gprim3
 import solver_mhn_gprim4
 import solver_mhn_kruskal
+import solver_mhn_hmoea
 import solver_mhn_prim
 import solver_mhn_prufer
 import summarization
@@ -120,6 +121,17 @@ def run_mhn_experiment(ept,
     #                                     overwrite=overwrite,
     #                                     config=config)
 
+
+    print("Running hmoea solver...")
+    hmoea_model = f'{ept}.{testset}.7.0'
+    hmoea_model_list = multi_run_solver(solver_mhn_hmoea,
+                                          model=hmoea_model,
+                                          input_dir=input_dir,
+                                          k=k,
+                                          testnames=testnames,
+                                          save_history=False,
+                                          overwrite=overwrite,
+                                          config=config)
     print("Running kruskal solver...")
     kruskal_model = f'{ept}.{testset}.2.0'
     kruskal_model_list = multi_run_solver(solver_mhn_kruskal,
@@ -179,9 +191,9 @@ def run_mhn_experiment(ept,
         model_dict['GPrim'] = gprim3_model_list[i]
         cname = f'summarization_{i+1}'
         summarization_list.append(cname)
-        # summarization.summarize_model(
-            # model_dict, output_dir, cname, testnames,
-            # referenced=referenced, referenced_dir=referenced_dir, **kwargs)
+        summarization.summarize_model(
+            model_dict, output_dir, cname, testnames,
+            referenced=referenced, referenced_dir=referenced_dir, **kwargs)
 
     summarization.calc_average_metrics(
         summarization_list, output_dir, f'average1-{k}', testnames, referenced=referenced, brief_name=brief_name)

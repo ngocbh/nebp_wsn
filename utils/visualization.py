@@ -112,12 +112,14 @@ def remove_file(fileexp):
 
 
 def default_extract(solution):
+    obj1 = solution.objectives[0]
+    obj2 = solution.objectives[1]
     network = solution.decode()
     edges = []
     for u, v in network.edges:
         edges.append(u)
         edges.append(v)
-    return network.parent, network.num_childs, network.max_depth, edges
+    return obj1, obj2, network.parent, network.num_childs, network.max_depth, edges
 
 def my_np_to_list(x):
     ret = []
@@ -135,9 +137,11 @@ def save_results(pareto_front, solutions, best_mr, out_dir, visualization=False,
     for solution in pareto_front:
         solution_dict = {}
         # solution_dict["chromosome"] = NoIndent(my_np_to_list(solution.chromosome.genes))
-        solution_dict["num_used_relays"] = solution.objectives[0]
-        solution_dict["energy_consumption"] = solution.objectives[1]
-        parent, num_childs, max_depth, edges = extract(solution)
+        obj1, obj2, parent, num_childs, max_depth, edges = extract(solution)
+
+        solution_dict["num_used_relays"] = obj1
+        solution_dict["energy_consumption"] = obj2
+
         solution_dict["parent"] = NoIndent(my_np_to_list(parent))
         solution_dict["num_childs"] = NoIndent(num_childs)
         solution_dict["edges"] = NoIndent(my_np_to_list(edges))
