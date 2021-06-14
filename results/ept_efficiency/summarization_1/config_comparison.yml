@@ -1,0 +1,113 @@
+GPrim:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 3
+    name: ept_efficiency
+  encoding:
+    cro_prob: 0.5
+    init_method: DCPrimRST
+    mut_prob_a: 0.5
+    mut_prob_b: 0.5
+    name: mprim3
+  model_name: 1.3.8.0.1
+  models:
+    gens: 100
+    name: run 1
+HMOEA:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 3
+    name: ept_efficiency
+  encoding:
+    cro_prob: 0.8
+    init_method: DCPrimRST
+    mut_prob: 0.1
+    name: hmoea
+  model_name: 1.3.7.0.1
+  models:
+    gens: 100
+    name: run 1
+Kruskal:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 3
+    name: ept_efficiency
+  encoding:
+    cro_prob: 0.9
+    init_method: DCPrimRST
+    mut_prob: 0.5
+    name: kruskal
+  model_name: 1.3.2.0.1
+  models:
+    gens: 100
+    name: run 1
+NetKeys:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 3
+    name: ept_efficiency
+  encoding:
+    alpha: 2
+    beta: 6
+    cro_di: 20
+    cro_prob: 0.9
+    init_method: DCPrimRST
+    mut_di: 5
+    mut_prob: 0.1
+    name: netkeys
+  model_name: 1.3.1.0.1
+  models:
+    gens: 100
+    name: run 1
+Prim:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 3
+    name: ept_efficiency
+  encoding:
+    cro_prob: 0.9
+    init_method: DCPrimRST
+    mut_prob: 0.5
+    name: prim
+  model_name: 1.3.4.0.1
+  models:
+    gens: 100
+    name: run 1
+Prufer:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 3
+    name: ept_efficiency
+  encoding:
+    cro_prob: 0.9
+    init_method: DCPrimRST
+    mut_prob: 0.5
+    name: prufer
+  model_name: 1.3.6.0.1
+  models:
+    gens: 100
+    name: run 1
