@@ -35,8 +35,8 @@ class HMOEAEngine(MultiObjectiveEngine):
     def update_pareto(self, pareto, indv):
         objs = indv.compute_objectives(self.min_relays, self.max_relays, self.step)
         for obj1, obj2 in objs:
-            if obj2 < pareto[obj1][0]:
-                pareto[obj1] = (obj2, indv)
+            if obj2 < pareto[int(obj1)][0]:
+                pareto[int(obj1)] = (obj2, indv)
 
 
     def do_evaluation(self, population: List[Individual]) -> List[Individual]:
