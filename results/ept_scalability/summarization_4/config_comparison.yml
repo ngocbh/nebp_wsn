@@ -17,6 +17,24 @@ GPrim:
   models:
     gens: 100
     name: run 1
+HMOEA:
+  algorithm:
+    name: nsgaii
+    pop_size: 100
+    slt_size: 100
+    tournament_size: 2
+  data:
+    max_hop: 16
+    name: ept_scalability
+  encoding:
+    cro_prob: 0.8
+    init_method: DCPrimRST
+    mut_prob: 0.1
+    name: hmoea
+  model_name: 1.4.7.0.4
+  models:
+    gens: 100
+    name: run 1
 Kruskal:
   algorithm:
     name: nsgaii

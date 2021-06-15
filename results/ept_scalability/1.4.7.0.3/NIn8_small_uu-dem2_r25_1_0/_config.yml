@@ -1,0 +1,16 @@
+algorithm:
+  name: nsgaii
+  pop_size: 100
+  slt_size: 100
+  tournament_size: 2
+data:
+  max_hop: 8
+  name: ept_scalability
+encoding:
+  cro_prob: 0.8
+  init_method: DCPrimRST
+  mut_prob: 0.1
+  name: hmoea
+models:
+  gens: 100
+  name: run 1
