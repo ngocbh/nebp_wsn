@@ -109,9 +109,9 @@ def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
         #     ax.spines[axis].set_linewidth(2)
 
     def do_plt(plt):
-        # plt.rcParams.update({'font.size': 20})
-        # plt.rcParams.update({'lines.linewidth': 3})
-        # plt.rcParams.update({'axes.linewidth': 2})
+        plt.rcParams.update({'font.size': 20})
+        plt.rcParams.update({'lines.linewidth': 2})
+        plt.rcParams.update({'axes.linewidth': 2})
         plt.style.use('seaborn-white')
         plt.grid(False)
 
@@ -173,7 +173,9 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
 
     # exit()
 
-    marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
+
+    marker = marker or ['+', (5, 1), 'v', '^', 'o', (5, 0)]
+    marker.reverse()
     iter_marker = itertools.cycle(marker)
 
     if fillstyle == 'flicker':
@@ -206,7 +208,7 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
     plt.xlabel("No. generations")
     plt.tight_layout()
     # plt.title("IGD over generations")
-    plt.legend(frameon=True)
+    plt.legend(frameon=True, loc='center right')
     plt.savefig(filepath, dpi=400)
     plt.close('all')
 
@@ -367,9 +369,11 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     
     def plot_test(ax, working_dir, testname, model_dict):
         pareto_dict = {}
-        marker = ['+', 'o', (5, 2), (5, 1), (5, 0)]
+
+        marker = ['+', (5, 1), 'v', '^', 'o', (5, 0)]
+        marker.reverse()
         iter_marker = itertools.cycle(marker)
-        fillstyle = ['full', 'none']
+        fillstyle = ['none']
         iter_fillstyle = itertools.cycle(fillstyle)
         for name, model in model_dict.items():
             model_dir = os.path.join(working_dir, model)
@@ -405,16 +409,17 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     plt.xlabel("No. selected relays")
     plt.ylabel("Energy consumption")
 
-    marker = ['+', 'o', (5, 2), (5, 1), (5, 0)]
+    marker = ['+', (5, 1), 'v', '^', 'o', (5, 0)]
+    marker.reverse()
     iter_marker = itertools.cycle(marker)
-    fillstyle = ['full', 'none']
+    fillstyle = ['none']
     iter_fillstyle = itertools.cycle(fillstyle)
-    names = ['Prufer', 'NetKeys', 'Prim', 'Kruskal', 'GPrim']
+    names = ['Prufer', 'NetKeys', 'Prim', 'Kruskal',  'HMOEA', 'GPrim']
     for name in names:
         ax.plot([], linestyle='--', marker=next(iter_marker), fillstyle=next(iter_fillstyle), label=name, alpha=0.8)
 
     ax.legend(loc='upper center', bbox_to_anchor=(0., 1.06, 1., .106),
-              ncol=5, frameon=True)
+              ncol=6, frameon=True)
     fig.tight_layout()
     plt.savefig(outfile, dpi=400, bbox_inches='tight')
     # plt.show()
@@ -444,7 +449,9 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
     with open(join(output_dir, 'model_dict.json'), mode='w') as f:
         f.write(json.dumps(model_dict, indent=4))
 
-    marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
+    marker = ['+', (5, 1), 'v', '^', 'o', (5, 0)]
+    marker.reverse()
+
     test_list = list(tests)
     try:
         test_list.sort(key=toint)
@@ -459,7 +466,7 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
                        plot_line=True,
                        linewidth=1.3,
                        linestyle='dashed',
-                       fillstyle='flicker',
+                       fillstyle='none',
                        referenced=referenced,
                        referenced_dir=referenced_dir,
                        **kwargs)
@@ -568,12 +575,12 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
                        flierprops=flierprops)
 
         def name_plot(ax, name):
-            ax.text(0.5, 0.5, name.upper(), ha='center', va='center', weight="bold", size=14)
+            ax.text(0.5, 0.5, name.upper(), ha='center', va='center', weight="bold", size=15)
             ax.grid(False)
 
         models = list(data[0].keys())
         n = len(models)
-        fig, axs = plt.subplots(n, n, figsize=(7, 7), sharey=True, sharex=True, dpi=100)
+        fig, axs = plt.subplots(n, n, figsize=(9, 9), sharey=True, sharex=True, dpi=100)
         plt.grid(True)
         for i in range(n):
             for j in range(n):
