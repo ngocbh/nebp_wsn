@@ -1,7 +1,7 @@
-Instance,Prufer-mean,NetKeys-mean,Prim-mean,Kruskal-mean,HMOEA-mean,GPrim-mean
-NIn1,19.1,25.0,\textbf{17.2},21.8,35.1,23.9
-NIn2,19.3,26.6,\textbf{17.2},21.8,39.2,24.0
-NIn3,27.3,34.3,\textbf{19.8},29.8,39.6,26.1
-NIn4,28.4,34.5,\textbf{19.8},30.0,39.6,26.0
-NIn5,27.9,34.5,\textbf{19.8},30.5,39.6,26.2
-NIn6,28.0,34.3,\textbf{19.9},30.5,37.1,25.8
+Instance,HMOEA-mean,Prufer-mean,NetKeys-mean,Prim-mean,Kruskal-mean,GPrim-mean
+NIn1,35.1,19.1,25.0,\textbf{17.2},21.8,23.9
+NIn2,39.2,19.3,26.6,\textbf{17.2},21.8,24.0
+NIn3,39.6,27.3,34.3,\textbf{19.8},29.8,26.1
+NIn4,39.6,28.4,34.5,\textbf{19.8},30.0,26.0
+NIn5,39.6,27.9,34.5,\textbf{19.8},30.5,26.2
+NIn6,37.1,28.0,34.3,\textbf{19.9},30.5,25.8

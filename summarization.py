@@ -109,9 +109,9 @@ def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
         #     ax.spines[axis].set_linewidth(2)
 
     def do_plt(plt):
-        plt.rcParams.update({'font.size': 20})
-        plt.rcParams.update({'lines.linewidth': 2})
-        plt.rcParams.update({'axes.linewidth': 2})
+        # plt.rcParams.update({'font.size': 20})
+        # plt.rcParams.update({'lines.linewidth': 2})
+        # plt.rcParams.update({'axes.linewidth': 2})
         plt.style.use('seaborn-white')
         plt.grid(False)
 
@@ -174,7 +174,7 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
     # exit()
 
 
-    marker = marker or ['+', (5, 1), 'v', '^', 'o', (5, 0)]
+    marker = marker or ['+', 'v', '^', 'o', (5, 1), (5, 0)]
     marker.reverse()
     iter_marker = itertools.cycle(marker)
 
@@ -370,7 +370,8 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     def plot_test(ax, working_dir, testname, model_dict):
         pareto_dict = {}
 
-        marker = ['+', (5, 1), 'v', '^', 'o', (5, 0)]
+
+        marker = ['+', 'v', '^', 'o', (5, 1), (5, 0)]
         marker.reverse()
         iter_marker = itertools.cycle(marker)
         fillstyle = ['none']
@@ -394,7 +395,7 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     no_tests = len(used_tests)
     no_row = (no_tests + no_col - 1)//no_col
 
-    fig, axs = plt.subplots(no_row, no_col, figsize=(9, 5), dpi=400)
+    fig, axs = plt.subplots(no_row, no_col, figsize=(9, 5), dpi=100)
     plt.grid(False)
 
     for i, testname in enumerate(used_tests):
@@ -409,12 +410,12 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     plt.xlabel("No. selected relays")
     plt.ylabel("Energy consumption")
 
-    marker = ['+', (5, 1), 'v', '^', 'o', (5, 0)]
+    marker = ['+', 'v', '^', 'o', (5, 1), (5, 0)]
     marker.reverse()
     iter_marker = itertools.cycle(marker)
     fillstyle = ['none']
     iter_fillstyle = itertools.cycle(fillstyle)
-    names = ['Prufer', 'NetKeys', 'Prim', 'Kruskal',  'HMOEA', 'GPrim']
+    names = ['HMOEA', 'Prufer', 'NetKeys', 'Prim', 'Kruskal',  'GPrim']
     for name in names:
         ax.plot([], linestyle='--', marker=next(iter_marker), fillstyle=next(iter_fillstyle), label=name, alpha=0.8)
 

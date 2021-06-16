@@ -117,6 +117,6 @@ def plot_ept():
     pass
 
 if __name__ == '__main__':
-    # run_ept()
-    plot_ept()
+    run_ept()
+    # plot_ept()
 
