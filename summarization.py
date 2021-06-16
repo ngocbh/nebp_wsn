@@ -273,12 +273,6 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
         metrics['spacing'].append(SP(normalized_pareto))
         metrics['onvg'].append(ONVG(normalized_pareto))
 
-        # print(Pe)
-        # print('hyper_r', hyper_r)
-        # print(pareto)
-        # print(normalized_pareto)
-        # print(HV_2d(normalized_pareto, hyper_r))
-        # print('\n\n')
         metrics['hypervolume'].append(HV_2d(normalized_pareto, hyper_r))
 
         for other_name, other_pareto in pareto_dict.items():

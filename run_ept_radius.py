@@ -75,7 +75,8 @@ def plot_ept():
 
             ax = plt.figure().gca()
 
-            marker = ['+', 'o', (5, 2), (5, 1), (5, 0)]
+            marker = ['+', 'v', '^', 'o', (5, 1), (5, 0)]
+            marker.reverse()
             iter_marker = itertools.cycle(marker)
             fillstyle = ['full', 'none']
             iter_fillstyle = itertools.cycle(fillstyle)
@@ -96,10 +97,10 @@ def plot_ept():
                 plt.legend(ps[:2], legends[:2], frameon=False, 
                           loc='upper center', bbox_to_anchor=(0., 1.1, 1., .11), ncol=2)
             elif 'Delta' in name:
-                plt.legend(ps[2:3], legends[2:3], frameon=False, 
-                          loc='upper center', bbox_to_anchor=(0., 1.1, 1., .11), ncol=1)
+                plt.legend(ps[2:4], legends[2:4], frameon=False, 
+                          loc='upper center', bbox_to_anchor=(0., 1.1, 1., .11), ncol=2)
             elif 'ONVG' in name:
-                plt.legend(ps[3:], legends[3:], frameon=False, 
+                plt.legend(ps[4:], legends[4:], frameon=False, 
                           loc='upper center', bbox_to_anchor=(0., 1.1, 1., .11), ncol=2)
 
 
@@ -118,5 +119,5 @@ def plot_ept():
 
 if __name__ == '__main__':
     run_ept()
-    # plot_ept()
+    plot_ept()
 

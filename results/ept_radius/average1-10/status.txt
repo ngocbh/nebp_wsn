@@ -1,2 +1,2 @@
-Feasible_tests: {'NIn9_medium_ga-dem2_r40_1_0', 'NIn9_medium_ga-dem2_r25_1_0', 'NIn15_medium_ga-dem2_r35_1_40', 'NIn15_medium_ga-dem2_r30_1_40', 'NIn9_medium_ga-dem2_r30_1_0', 'NIn9_medium_ga-dem2_r35_1_0', 'NIn15_medium_ga-dem2_r25_1_40', 'NIn15_medium_ga-dem2_r40_1_40'}
+Feasible_tests: {'NIn9_medium_ga-dem2_r30_1_0', 'NIn9_medium_ga-dem2_r25_1_0', 'NIn15_medium_ga-dem2_r40_1_40', 'NIn9_medium_ga-dem2_r35_1_0', 'NIn15_medium_ga-dem2_r30_1_40', 'NIn9_medium_ga-dem2_r40_1_0', 'NIn15_medium_ga-dem2_r25_1_40', 'NIn15_medium_ga-dem2_r35_1_40'}
 Unsolved_tests: set()
