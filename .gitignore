@@ -10,6 +10,7 @@ __pycache__/
 .vim/*
 # vscode
 .vscode/*
+.idea/*
 
 # Macos
 *.DS_Store
