@@ -1,7 +1,0 @@
-Instance,Prufer-mean,NetKeys-mean,Prim-mean,Kruskal-mean,GPrim-mean
-NIn1,17.3,20.6,\textbf{16.1},18.4,22.4
-NIn2,17.3,22.4,\textbf{16.0},18.4,22.6
-NIn3,\textbf{16.7},23.2,17.3,20.0,25.0
-NIn4,\textbf{17.1},23.1,17.6,19.8,24.5
-NIn5,\textbf{16.9},22.3,17.1,19.8,24.4
-NIn6,\textbf{17.5},21.2,18.1,19.7,24.2
