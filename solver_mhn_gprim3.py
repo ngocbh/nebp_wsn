@@ -221,7 +221,7 @@ if __name__ == '__main__':
     config = {'data': {'max_hop': 12},
                   'models': {'gens': 100},
 		  'encoding': {'init_method': 'DCPrimRST'}}
+    solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.8.0', config=config)
     # solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.8.0', config=config)
-    # solve('data/_tiny/multi_hop/tiny_ga-dem1_r25_1_40.json', model = '1.7.8.0', config=config)
-    solve('data/test/NIn14_small_uu-dem2_r25_1_40.json', model='1.0.8.0', config=config)
+    # solve('data/test/NIn14_small_uu-dem2_r25_1_40.json', model='1.0.8.0', config=config)
 

@@ -19,11 +19,17 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import copy
+import re
 import itertools
 from decimal import Decimal
 
 WORKING_DIR = os.path.dirname(os.path.abspath(__file__))
 NORMALIZE = True
+
+def toint(x):
+    x = re.findall(r'\d+', x)
+    x = tuple(int(e) for e in x)
+    return x
 
 def num2tex(n, p, mean=True):
     if mean:
@@ -98,13 +104,12 @@ def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
         # ax.set_yscale('logit')
         ax.grid(b=True, axis='y')
         ax.grid(b=False, axis='x')
-
         # for axis in ['top','bottom','left','right']:
         #     ax.spines[axis].set_linewidth(2)
 
     def do_plt(plt):
         # plt.rcParams.update({'font.size': 20})
-        # plt.rcParams.update({'lines.linewidth': 3})
+        # plt.rcParams.update({'lines.linewidth': 2})
         # plt.rcParams.update({'axes.linewidth': 2})
         plt.style.use('seaborn-white')
         plt.grid(False)
@@ -144,7 +149,7 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
             # if i == 0:
                 # print(S)
             if NORMALIZE:
-                S = normalize_pareto_front_1(S, P)
+                # S = normalize_pareto_front_1(S, P)
                 normalized_S = normalize_pareto_front(S, extreme_points)
             else:
                 normalized_S = S
@@ -152,8 +157,13 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
             Ss_list = list(Ss)
             Ss_list.sort()
             # if i == 0:
-            #     print(Ss_list)
+            # print(Ss_list)
+            # print(S)
+            # print(normalized_S)
+            # print(normalized_optimal_pareto)
             igds.append(IGD(Ss_list, normalized_optimal_pareto))
+            # print(igds)
+            # raise ValueError
         # print(name)
         # print(igds)
         data[name] = igds
@@ -167,7 +177,9 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
 
     # exit()
 
-    marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
+
+    marker = marker or ['+', 'v', '^', 'o', (5, 1), (5, 0)]
+    marker.reverse()
     iter_marker = itertools.cycle(marker)
 
     if fillstyle == 'flicker':
@@ -198,9 +210,10 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
     filepath = os.path.join(output_dir, 'igd_over_generations.png')
     plt.ylabel("$IDG$")
     plt.xlabel("No. generations")
+
+    plt.legend(frameon=False, loc='upper center', bbox_to_anchor=(0.5, 1.27), ncol=3, fontsize=15)
     plt.tight_layout()
     # plt.title("IGD over generations")
-    plt.legend(frameon=True)
     plt.savefig(filepath, dpi=400)
     plt.close('all')
 
@@ -242,8 +255,12 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
         # print(pareto)
 
         # print(pareto, normalized_pareto)
+        # print(normalized_pareto)
+        # print(normalized_P)
         if referenced:
             metrics['igd'].append(IGD(normalized_pareto, normalized_P))
+            # print(metrics['igd'])
+        # raise ValueError
 
         # print(name)
         if Pe is None:
@@ -256,10 +273,6 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
         metrics['spacing'].append(SP(normalized_pareto))
         metrics['onvg'].append(ONVG(normalized_pareto))
 
-        # print('hyper_r', hyper_r)
-        # print(normalized_pareto)
-        # print(HV_2d(normalized_pareto, hyper_r))
-        # print('\n\n')
         metrics['hypervolume'].append(HV_2d(normalized_pareto, hyper_r))
 
         for other_name, other_pareto in pareto_dict.items():
@@ -359,9 +372,12 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     
     def plot_test(ax, working_dir, testname, model_dict):
         pareto_dict = {}
-        marker = ['+', 'o', (5, 2), (5, 1), (5, 0)]
+
+
+        marker = ['+', 'v', '^', 'o', (5, 1), (5, 0)]
+        marker.reverse()
         iter_marker = itertools.cycle(marker)
-        fillstyle = ['full', 'none']
+        fillstyle = ['none']
         iter_fillstyle = itertools.cycle(fillstyle)
         for name, model in model_dict.items():
             model_dir = os.path.join(working_dir, model)
@@ -382,7 +398,7 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     no_tests = len(used_tests)
     no_row = (no_tests + no_col - 1)//no_col
 
-    fig, axs = plt.subplots(no_row, no_col, figsize=(9, 5), dpi=400)
+    fig, axs = plt.subplots(no_row, no_col, figsize=(9, 5), dpi=100)
     plt.grid(False)
 
     for i, testname in enumerate(used_tests):
@@ -397,16 +413,17 @@ def combine_figure(outfile, working_dir, test_list, model_dict):
     plt.xlabel("No. selected relays")
     plt.ylabel("Energy consumption")
 
-    marker = ['+', 'o', (5, 2), (5, 1), (5, 0)]
+    marker = ['+', 'v', '^', 'o', (5, 1), (5, 0)]
+    marker.reverse()
     iter_marker = itertools.cycle(marker)
-    fillstyle = ['full', 'none']
+    fillstyle = ['none']
     iter_fillstyle = itertools.cycle(fillstyle)
-    names = ['Prufer', 'NetKeys', 'Prim', 'Kruskal', 'GPrim']
+    names = ['HMOEA', 'Prufer', 'NetKeys', 'Prim', 'Kruskal',  'GPrim']
     for name in names:
         ax.plot([], linestyle='--', marker=next(iter_marker), fillstyle=next(iter_fillstyle), label=name, alpha=0.8)
 
     ax.legend(loc='upper center', bbox_to_anchor=(0., 1.06, 1., .106),
-              ncol=5, frameon=True)
+              ncol=6, frameon=True)
     fig.tight_layout()
     plt.savefig(outfile, dpi=400, bbox_inches='tight')
     # plt.show()
@@ -436,11 +453,14 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
     with open(join(output_dir, 'model_dict.json'), mode='w') as f:
         f.write(json.dumps(model_dict, indent=4))
 
-    marker = marker or ['+', 'o', (5, 2), (5, 1), (5, 0), '>']
+    marker = ['+', (5, 1), 'v', '^', 'o', (5, 0)]
+    marker.reverse()
+
     test_list = list(tests)
     try:
-        test_list.sort(key=lambda x : int(x.split('_')[0][3:]))
+        test_list.sort(key=toint)
     except:
+        print("ERROR")
         pass
 
     for test in test_list:
@@ -450,7 +470,7 @@ def summarize_model(model_dict, working_dir, cname=None, testnames=None,
                        plot_line=True,
                        linewidth=1.3,
                        linestyle='dashed',
-                       fillstyle='flicker',
+                       fillstyle='none',
                        referenced=referenced,
                        referenced_dir=referenced_dir,
                        **kwargs)
@@ -559,12 +579,12 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
                        flierprops=flierprops)
 
         def name_plot(ax, name):
-            ax.text(0.5, 0.5, name.upper(), ha='center', va='center', weight="bold", size=14)
+            ax.text(0.5, 0.5, name.upper(), ha='center', va='center', weight="bold", size=15)
             ax.grid(False)
 
         models = list(data[0].keys())
         n = len(models)
-        fig, axs = plt.subplots(n, n, figsize=(7, 7), sharey=True, sharex=True, dpi=100)
+        fig, axs = plt.subplots(n, n, figsize=(9, 9), sharey=True, sharex=True, dpi=100)
         plt.grid(True)
         for i in range(n):
             for j in range(n):
@@ -594,7 +614,8 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
 
     def compact_data_to_csv(output_dir, data, brief_name=None, bold=True):
         def normalize_name(name):
-            return name.split('_')[0] if 'NIn' in name else name
+            x = re.split(r'_|-|\.', name)
+            return x[0] if 'NIn' in name else name
         models = list(next(iter(data.values())).keys())
         pis = list(next(iter(next(iter(data.values())).values())).keys())
         bold_pis = {'hypervolume': 1, 'igd': -1, 'delta': -1, 'onvg': 1, 'time': -1}
@@ -619,6 +640,7 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
             for testname, test_data in data.items():
                 normalized_data['Instance'].append(normalize_name(testname))
                 raw_data['Instance'].append(normalize_name(testname))
+                print(testname)
                 best = np.max(np.array([ np.mean(np.array(x[pi]) * bold_pis[pi]) for x in test_data.values() ]))
 
                 for model, model_data in test_data.items():
@@ -645,12 +667,12 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
 
             filepath = os.path.join(output_dir, '{}_{}.csv'.format(brief_name, pi))
             df = pd.DataFrame(data=normalized_data)
-            df = df.sort_values(by='Instance', key= lambda col : col.apply(lambda x : int(x[3:])) )
+            df = df.sort_values(by='Instance', key= lambda col : col.apply(toint))
             df.to_csv(filepath, index=False)
 
             filepath = os.path.join(output_dir, 'raw_{}_{}.csv'.format(brief_name, pi))
             df = pd.DataFrame(data=raw_data)
-            df = df.sort_values(by='Instance', key= lambda col: col.apply(lambda x : int(x[3:])) )
+            df = df.sort_values(by='Instance', key= lambda col: col.apply(toint))
             df.to_csv(filepath, index=False)
 
     all_tests = set()
@@ -686,8 +708,8 @@ def calc_average_metrics(summarization_list, working_dir, cname, testnames=None,
     boxchart_data = []
     barchart_data = {}
     feasible_tests = list(feasible_tests)
-    feasible_tests.sort(key=lambda x: int(x.split('_')[0][3:]))
-    # print(feasible_tests)
+    feasible_tests.sort(key=toint)
+    print(feasible_tests)
 
     for test in feasible_tests:
         metric_sum = None
@@ -776,6 +798,7 @@ if __name__ == "__main__":
                      "prufer": "1.7.6.0",
                      "kruskal": "1.7.2.0",
                      "prim": "1.7.4.0",
+                     "hmoea": "1.7.7.0",
                      "gprim": "1.7.8.0"},
                     working_dir="results/_tiny/multi_hop",
                     s=20,

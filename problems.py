@@ -51,10 +51,13 @@ class WusnProblem():
 
         self.node_count = self._num_of_relays + self._num_of_sensors + 1
         self.potential_adj = [list() for _ in range(self.node_count)]
+        self.weighted_adj = [list() for _ in range(self.node_count)]
+        
 
         for rl in inp.relays:
             for sn in inp.sensors:
-                if distance(rl, sn) <= 2*inp.radius:
+                d = distance(rl, sn)
+                if d <= 2*inp.radius:
                     u, v = point2idx[rl], point2idx[sn]
                     edges[u].append(v)
                     edges[v].append(u)
@@ -64,15 +67,20 @@ class WusnProblem():
                     self._idx2edge.append((u,v))
                     self.potential_adj[u].append(v)
                     self.potential_adj[v].append(u)
+
+                    self.weighted_adj[u].append((d, v))
+                    self.weighted_adj[v].append((d, u))
+
                     self._num_encoded_edges += 1
 
 
-        print(inp.radius)
+        # print(inp.radius)
         self.num_rl2ss_edges = self._num_encoded_edges
         if multi_hop:
             for i, sn1 in enumerate(inp.sensors):
                 for j, sn2 in enumerate(inp.sensors):
-                    if i < j and distance(sn1, sn2) <= 2*inp.radius:
+                    d = distance(sn1, sn2)
+                    if i < j and d <= 2*inp.radius:
                         u, v = point2idx[sn1], point2idx[sn2]
                         edges[u].append(v)
                         edges[v].append(u)
@@ -82,6 +90,10 @@ class WusnProblem():
                         self._idx2edge.append((u,v))
                         self.potential_adj[u].append(v)
                         self.potential_adj[v].append(u)
+
+                        self.weighted_adj[u].append((d, v))
+                        self.weighted_adj[v].append((d, u))
+
                         self._num_encoded_edges += 1
     
         edge_list = list(self._idx2edge)

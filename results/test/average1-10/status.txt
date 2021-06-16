@@ -1,2 +1,2 @@
-Feasible_tests: set()
+Feasible_tests: {'NIn14_small_uu-dem2_r25_1_40', 'NIn1_dem1', 'NIn6_dem6', 'NIn4_dem4', 'NIn2_dem2', 'NIn3_dem3', 'uu-dem1_r25_1_0', 'NIn5_dem5'}
 Unsolved_tests: set()

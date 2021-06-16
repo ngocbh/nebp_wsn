@@ -1,7 +1,7 @@
-Instance,Prufer-mean,Prufer-std,NetKeys-mean,NetKeys-std,Prim-mean,Prim-std,Kruskal-mean,Kruskal-std,GPrim-mean,GPrim-std
-NIn1,0.803,$\pm$0.029,0.767,$\pm$0.032,0.742,$\pm$0.063,0.77,$\pm$0.026,\textbf{0.6},$\pm$2.6e-3
-NIn2,0.809,$\pm$0.026,0.772,$\pm$0.03,0.755,$\pm$0.04,0.755,$\pm$0.044,\textbf{0.6},$\pm$2.1e-3
-NIn3,0.791,$\pm$0.024,0.777,$\pm$0.021,0.763,$\pm$0.049,0.759,$\pm$0.025,\textbf{0.598},$\pm$2.2e-3
-NIn4,0.804,$\pm$0.033,0.765,$\pm$0.021,0.763,$\pm$0.048,0.785,$\pm$0.032,\textbf{0.601},$\pm$8.9e-4
-NIn5,0.813,$\pm$0.028,0.789,$\pm$0.034,0.749,$\pm$0.044,0.78,$\pm$0.043,\textbf{0.599},$\pm$2.0e-3
-NIn6,0.801,$\pm$0.024,0.772,$\pm$0.042,0.737,$\pm$0.07,0.746,$\pm$0.053,\textbf{0.599},$\pm$1.3e-3
+Instance,HMOEA-mean,HMOEA-std,Prufer-mean,Prufer-std,NetKeys-mean,NetKeys-std,Prim-mean,Prim-std,Kruskal-mean,Kruskal-std,GPrim-mean,GPrim-std
+NIn1,0.757,$\pm$0.019,0.804,$\pm$0.042,0.794,$\pm$0.035,0.745,$\pm$0.065,0.774,$\pm$0.027,\textbf{0.537},$\pm$1.1e-3
+NIn2,0.772,$\pm$0.036,0.804,$\pm$0.034,0.788,$\pm$0.032,0.757,$\pm$0.043,0.758,$\pm$0.044,\textbf{0.537},$\pm$7.7e-4
+NIn3,0.749,$\pm$0.023,0.802,$\pm$0.036,0.735,$\pm$0.043,0.77,$\pm$0.052,0.764,$\pm$0.029,\textbf{0.536},$\pm$9.7e-4
+NIn4,0.745,$\pm$0.028,0.79,$\pm$0.041,0.792,$\pm$0.04,0.772,$\pm$0.049,0.792,$\pm$0.031,\textbf{0.538},$\pm$3.4e-4
+NIn5,0.751,$\pm$0.034,0.797,$\pm$0.04,0.788,$\pm$0.03,0.756,$\pm$0.044,0.783,$\pm$0.042,\textbf{0.537},$\pm$8.0e-4
+NIn6,0.733,$\pm$0.021,0.819,$\pm$0.033,0.786,$\pm$0.043,0.741,$\pm$0.073,0.749,$\pm$0.056,\textbf{0.537},$\pm$6.0e-4

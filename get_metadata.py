@@ -15,8 +15,14 @@ def get_graph_dense(inp, problem):
     b = n * (n-1) / 2
     return a / b 
 
+def toint(x):
+    x = re.findall(r'\d+', x)
+    x = tuple(int(e) for e in x)
+    return x
+
+
 def get_data_summarization():
-    inp_dirs = ['./data/ept_efficiency', './data/ept_scalability']
+    inp_dirs = ['./data/ept_efficiency', './data/ept_scalability', './data/ept_radius']
 
     data = defaultdict(list)
 
@@ -28,7 +34,7 @@ def get_data_summarization():
             inp = WusnInput.from_file(os.path.join(inp_dir, file))
             problem = MultiHopProblem(inp)
             data['set'].append('')
-            data['instance'].append(x[0])
+            data['instance'].append(x[0] + '_' + x[4] if 'radius' in inp_dir else x[0])
             data['type'].append(type_map[x[1]])
             data['distribution'].append(distribution[x[2]])
             data['terrain'].append(x[3].replace('dem', 'T'))
@@ -38,7 +44,7 @@ def get_data_summarization():
             data['density'].append('{:.2f}'.format(get_graph_dense(inp, problem)))
 
     df = pd.DataFrame(data)
-    df = df.sort_values(by='instance', key=lambda col : col.apply(lambda x : int(x.replace('NIn', ''))))
+    df = df.sort_values(by='instance', key=lambda col : col.apply(toint))
     df = df.reset_index(drop=True)
     df.at[0, 'set'] = '$T1$'
     df.at[6, 'set'] = '$T2$'
