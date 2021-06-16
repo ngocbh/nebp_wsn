@@ -1,6 +1,7 @@
-models,delta,spacing,onvg,hypervolume,time,c_Prufer,c_NetKeys,c_Prim,c_Kruskal,c_GPrim,score
-Prufer,1.0,inf,1,inf,141.69446182250977,0.0,0.0,0.0,0.0,0.0,0
-NetKeys,1.0,inf,1,inf,158.34520387649536,0.0,0.0,0.0,0.0,0.0,0
-Prim,1.0,inf,1,inf,104.36219215393066,0.0,0.0,0.0,0.0,0.0,0
-Kruskal,1.0,inf,1,inf,120.81444239616394,0.0,0.0,0.0,0.0,0.0,0
-GPrim,1.0,inf,1,inf,254.11015844345093,0.0,0.0,0.0,0.0,0.0,0
+models,delta,spacing,onvg,hypervolume,time,c_HMOEA,c_Prufer,c_NetKeys,c_Prim,c_Kruskal,c_GPrim,score
+HMOEA,1.0,inf,0,0.0,331.6213893890381,1,0.0,0.0,0.0,0.0,0.0,0
+Prufer,1.0,inf,1,inf,141.69446182250977,1,0.0,0.0,0.0,0.0,0.0,1
+NetKeys,1.0,inf,1,inf,158.34520387649536,1,0.0,0.0,0.0,0.0,0.0,1
+Prim,1.0,inf,1,inf,104.36219215393066,1,0.0,0.0,0.0,0.0,0.0,1
+Kruskal,1.0,inf,1,inf,120.81444239616394,1,0.0,0.0,0.0,0.0,0.0,1
+GPrim,1.0,inf,1,inf,254.11015844345093,1,0.0,0.0,0.0,0.0,0.0,1

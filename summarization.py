@@ -104,7 +104,6 @@ def visualize_test(pareto_dict, output_dir, show=True, **kwargs):
         # ax.set_yscale('logit')
         ax.grid(b=True, axis='y')
         ax.grid(b=False, axis='x')
-
         # for axis in ['top','bottom','left','right']:
         #     ax.spines[axis].set_linewidth(2)
 
@@ -150,7 +149,7 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
             # if i == 0:
                 # print(S)
             if NORMALIZE:
-                S = normalize_pareto_front_1(S, P)
+                # S = normalize_pareto_front_1(S, P)
                 normalized_S = normalize_pareto_front(S, extreme_points)
             else:
                 normalized_S = S
@@ -158,8 +157,13 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
             Ss_list = list(Ss)
             Ss_list.sort()
             # if i == 0:
-            #     print(Ss_list)
+            # print(Ss_list)
+            # print(S)
+            # print(normalized_S)
+            # print(normalized_optimal_pareto)
             igds.append(IGD(Ss_list, normalized_optimal_pareto))
+            # print(igds)
+            # raise ValueError
         # print(name)
         # print(igds)
         data[name] = igds
@@ -206,9 +210,10 @@ def visualize_igd_over_generations(history_dict, output_dir, P, extreme_points, 
     filepath = os.path.join(output_dir, 'igd_over_generations.png')
     plt.ylabel("$IDG$")
     plt.xlabel("No. generations")
+
+    plt.legend(frameon=False, loc='upper center', bbox_to_anchor=(0.5, 1.27), ncol=3, fontsize=15)
     plt.tight_layout()
     # plt.title("IGD over generations")
-    plt.legend(frameon=True, loc='center right')
     plt.savefig(filepath, dpi=400)
     plt.close('all')
 
@@ -250,8 +255,12 @@ def summarize_metrics(pareto_dict, time_dict, output_dir, r, referenced=False, P
         # print(pareto)
 
         # print(pareto, normalized_pareto)
+        # print(normalized_pareto)
+        # print(normalized_P)
         if referenced:
             metrics['igd'].append(IGD(normalized_pareto, normalized_P))
+            # print(metrics['igd'])
+        # raise ValueError
 
         # print(name)
         if Pe is None:
